@@ -30,7 +30,7 @@
   <script src="{{asset('asset/js/jquery.min.js')}}"></script>
   <script src="{{asset('asset/js/jquery.ui.min.js')}}"></script>
 
-  <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
   <style type="text/css">
   .preloader {
     position: fixed;

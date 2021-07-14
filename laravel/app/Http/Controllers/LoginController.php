@@ -26,13 +26,17 @@ class LoginController extends Controller
             $pass=$request->pass;
 
 
-            $url="your url login";
+            $url="http://sittl.teluklamong.co.id/wsouth.asmx?wsdl";
             $client=new SoapClient($url);
             $p = $client->valLoginAkun([
                 "xIDAPLIKASI"=>"42",
                 "xUsername"=>$username,
                 "xPassword"=>$pass
+                // "xUsername"=>$username,
+                // "xPassword"=>$pass
             ]);
+            // 210797001
+            // Pelindo3
             $response=$p->valLoginAkunResult;
             // dd($response);
             // E-002 user/pas salah

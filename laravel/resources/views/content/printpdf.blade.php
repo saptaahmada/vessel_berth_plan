@@ -505,12 +505,12 @@ circle2 {
 </body>
 </html>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     window.onload = function () {
     window.print();
     setTimeout(function(){window.close();}, 1);
   }
-</script>
+</script> -->
 
 
 
@@ -583,7 +583,7 @@ circle2 {
                                 '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
                                 '<div style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
                                 '<div style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].real_load+'/'+vessel[i-1].real_disch+' BOX</div>'+
+                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
                                 '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
                                 '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
                                 ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+

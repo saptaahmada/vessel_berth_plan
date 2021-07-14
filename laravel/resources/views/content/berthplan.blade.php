@@ -135,7 +135,7 @@
                                     </div>
                                 <!-- end -->
                                 <!-- Modal Add Vessel -->
-                                <div class="modal fade" id="addVessel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="addVessel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -144,8 +144,8 @@
                                       </div>
                                       <div class="modal-body">
                                         <label for="ocean_interisland">Pilih Tipe Kapal :  </label>
-                                          <input type="radio" id="con" class="kapal" name="kapal" value="C" checked onchange="borang('C')"> Container</input> 
-                                          <input type="radio" id="dry" class="kapal" name="kapal" value="D"  onchange="borang('D')"> Dry Bulk</input> 
+                                          <input type="radio" id="con" class="kapal" name="kapal" value="C" checked > Container</input> 
+                                          <input type="radio" id="dry" class="kapal" name="kapal" value="D"  > Dry Bulk</input> 
                                         <br>        
                                         <form>
                                             {{csrf_field()}}
@@ -154,7 +154,7 @@
                                                 
                                                 <div class="form-group">
                                                     <label class="col-form-label">Vessel Name Vessel 3: </label>
-                                                    <select  id="vessel3" class="form-control "  data-live-search="true">
+                                                    <select  id="vessel3"  class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                 </div>
@@ -189,7 +189,7 @@
                                                 
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
-                                                    <select  id="nextPDry" class="form-control "  data-live-search="true">
+                                                    <select  id="nextPDry" class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                     
@@ -197,7 +197,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">DEST PORT : </label>
-                                                    <select  id="deshPDry" class="form-control "  data-live-search="true">
+                                                    <select  id="deshPDry" class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                 </div>
@@ -245,7 +245,7 @@
                                                 
                                                 <div class="form-group">
                                                     <label class="col-form-label">Vessel Name Vessel 2 : </label>
-                                                    <select  id="vessel2" class="form-control "  data-live-search="true">
+                                                    <select  id="vessel2" class="select2-A" style="width:100%;">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                 </div>
@@ -280,14 +280,14 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
-                                                    <select  id="nextP" class="form-control "  data-live-search="true">
+                                                    <select  id="nextP"  class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                     
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">DEST PORT : </label>
-                                                    <select  id="deshP" class="form-control "  data-live-search="true">
+                                                    <select  id="deshP"  class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                 </div>

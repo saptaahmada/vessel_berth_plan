@@ -3,11 +3,18 @@
 <script src="{{asset('asset/js/plugins/select2.full.min.js')}}"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{asset('js/jquery.blockUI.js')}}"></script>
+<!-- <script src="{{asset('asset/js/main.js')}}"></script> -->
 
 
 
 <script>
         $(document).ready(function () {
+
+            $(".select2-A").select2({
+                placeholder: "Select..",
+                allowClear: false
+            });
+
             var imgPath = "{{asset('img/ajax-loader.gif')}}";
             var img = '<img src="' + imgPath + '" style="margin-top: 5px;" />';
             loadAll('D');
@@ -112,6 +119,22 @@
                 }, 3000);
             });
             
+            $("#dry").click(function () {
+                $("body").css("cursor", "wait");
+                setTimeout(function () {
+                    borang('D');
+                    $("body").css("cursor", "default");
+                }, 1000);
+               
+            });
+
+            $("#con").click(function () {
+                $("body").css("cursor", "wait");
+                setTimeout(function () {
+                    borang('C');
+                    $("body").css("cursor", "default");
+                }, 1000);
+            });
            
         });
 </script>
@@ -208,10 +231,7 @@ function borang(param) {
                 $("#vessel2").append('<option  name="vesnam" value="'+dermaga[i-1].ves_id+'">'+dermaga[i-1].ves_code+' - '+dermaga[i-1].ves_name+' ('+dermaga[i-1].ves_type_name+')</option>');  
                 $("#vessel3").append('<option  name="vesnam" value="'+dermaga[i-1].ves_id+'">'+dermaga[i-1].ves_code+' - '+dermaga[i-1].ves_name+' ('+dermaga[i-1].ves_type_name+')</option>'); 
             }
-            $(".select2-A").select2({
-                placeholder: "Select Vessel",
-                allowClear: true
-            });
+            
         }
     });
 
@@ -778,8 +798,9 @@ function convertToDrag() {
           
             
             // $('#results').text('top: '+ menit);
-
-            $('.kade_box_'+urutan).text(kiri+' On '+ bto);
+            var math_kiri = Math.round(kiri);
+            var math_bto = Math.round(bto);
+            $('.kade_box_'+urutan).text(math_kiri+' On '+ math_bto);
             $('.ETB_'+urutan).text('ETB :'+etb);
             $('.ETD_'+urutan).text('ETD :'+etd);
 
