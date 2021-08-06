@@ -1,7 +1,7 @@
 @extends('home.home')
 
 @section('content')
-@include('cssjs.css')
+@include('cssjs.css3')
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/select2.min.css')}}"/>
@@ -42,6 +42,9 @@
 
                         <button type="button" class="btn ripple-infinite btn-round btn-3d btn-primary"  data-toggle="modal" data-target="#addVessel" style='margin:10px;'>
                         Add Vessel
+                        </button>
+                        <button type="button" class="btn ripple-infinite btn-round btn-3d btn-info"  data-toggle="modal" data-target="#modal_note" style='margin:10px;'>
+                        Add Note
                         </button>
                         <button type="button"  id="saveupdate" class="btn ripple-infinite btn-round btn-3d btn-success" onclick="setTimeout('updatebox()', 1000)" data-toggle="modal" data-target="#" style='margin:10px;'>
                         Save Berthing Plan
@@ -347,6 +350,126 @@
                                 </div><!-- /.modal -->
                                 <!-- Modal end Add Vessel -->
 
+                                <!-- Modal Add Vessel -->
+                                <div class="modal fade" id="editVessel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Edit Vessel</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <label for="ocean_interisland">Pilih Tipe Kapal :  </label>
+                                          <input type="radio" id="con" class="kapal" name="kapal" value="C" checked > Container</input> 
+                                          <input type="radio" id="dry" class="kapal" name="kapal" value="D"  > Dry Bulk</input> 
+                                        <br>        
+                                        <form>
+                                            {{csrf_field()}}
+
+                                            <div id="formCon" >
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Vessel ID: </label>
+                                                    <input id="edit_vessel" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Vessel Name: </label>
+                                                    <input id="edit_vessel_name" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">ETA : </label>
+                                                    <input id="edit_eta" type="datetime-local" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">RBT </label>
+                                                    <input id="edit_rbt" type="datetime-local" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">ETB :</label>
+                                                    <input id="edit_etb" type="datetime-local"  onchange="autofillCon()" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">ETD :</label>
+                                                    <input id="edit_etd" type="text" class="form-control" disabled>
+                                                </div>
+                                                
+
+                                                <div class="form-group" >
+                                                    <label class="col-form-label text-right">CRANE :</label><br>
+                                                    <div id="edit_crane">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-form-label">BSH :</label>
+                                                    <input id="edit_bsh" type="text" class="form-control" onkeyup="autofillCon()">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">NEXT PORT :</label>
+                                                    <select  id="edit_nextp" class="form-control">
+                                                            <!-- <option>-----------</option> -->
+                                                    </select>
+                                                    
+                                                    <!-- <input id="nextPDry" type="text" class="form-control"> -->
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">DEST PORT : </label>
+                                                    <select  id="edit_deshp" class="form-control">
+                                                            <!-- <option>-----------</option> -->
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Jumlah Bongkar : </label>
+                                                    <input id="edit_bongkar" type="number" class="form-control" onkeyup="autofillCon()">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Jumlah Muat : </label>
+                                                    <input id="edit_muat" type="number" class="form-control" onkeyup="autofillCon()">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Kade Meter : </label>
+                                                    <div class="row">
+                                                        <div class= "col-sm-5">
+                                                            <input id="edit_start" placeholder="Start" type="number" class="form-control" onkeyup="autofillCon();" required>  
+                                                        </div>
+                                                        <div class= "col-sm-2" style = "margin-left: auto; margin-right: auto;" >
+                                                            TO
+                                                        </div>
+                                                        <div class= "col-sm-5">
+                                                            <input id="edit_end" placeholder="End" type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Along Side : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="edit_side_s" class ="edit_side" name="edit_option" value="S"> Star Board
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="edit_side_p" class ="edit_side" name="edit_option" value="P"> Port Side
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Info : </label>
+                                                    <textarea style="resize: none;" rows="5" class="form-control" id="edit_info"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                        </form>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="eraseTextModalContainer();">Close</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="editvessel();" >Edit Vessel</button>
+                                      </div>
+                                    </div><!-- /.modal-content -->
+                                  </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                                <!-- Modal end Add Vessel -->
+
+
                                 <!-- Modal Edit Customer -->
 
                                 <div class="modal fade" id="modal_print"  role="dialog">
@@ -386,6 +509,31 @@
                                     </div>
                                 </div>
 
+                                <div class="modal fade" id="modal_note"  role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Note</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Note: </label>
+                                                <textarea class="form-control" id="note"></textarea>
+                                            </div>
+                                        
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn_add_note" >Tambah</button>
+                                            </div>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+
                                     <!-- Modal Edit Customer End-->
 
 
@@ -398,5 +546,5 @@
 
 </div>
 
-@include('cssjs.script')
+@include('cssjs.script3')
 @endsection

@@ -4,24 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use App\Dermaga;
+use App\Blokirkade;
 use DataTables;
 
-class DermagaController extends Controller
+class BlokirkadeController extends Controller
 {
     public function index()
     {
-        // $dermaga = DB::table('TOWER.VBP_GEN_REF')
-        // ->where('PARAM1', 'DERMAGA')
+        // $blokirkade = DB::table('TOWER.VBP_GEN_REF')
+        // ->where('PARAM1', 'BLOKIR_KADE')
         // ->get();
-        return view('content.dermaga.view');
+        return view('content.blokirkade.view');
     }
 
     public function add(Request $request)
     {
         $result = DB::table('TOWER.VBP_GEN_REF')
         ->insert([
-        	'PARAM1'	=> 'DERMAGA',
+        	'PARAM1'	=> 'BLOKIR_KADE',
         	'PARAM2'	=> $request->param2,
         	'PARAM3'	=> $request->param3,
         	'PARAM4'	=> $request->param4,
@@ -50,7 +50,7 @@ class DermagaController extends Controller
     public function remove(Request $request)
     {
         $result = DB::table('TOWER.VBP_GEN_REF')
-        ->where('PARAM1', 'DERMAGA')
+        ->where('PARAM1', 'BLOKIR_KADE')
         ->where('PARAM2', $request->param2)
         ->delete();
         return [
@@ -60,6 +60,6 @@ class DermagaController extends Controller
     }
 
     public function json(){
-        return DataTables::of(Dermaga::where('PARAM1', 'DERMAGA')->get())->make(true);
+        return DataTables::of(Blokirkade::where('PARAM1', 'BLOKIR_KADE')->get())->make(true);
     }
 }

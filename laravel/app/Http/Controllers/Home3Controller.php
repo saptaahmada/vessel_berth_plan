@@ -6,22 +6,20 @@ use Illuminate\Http\Request;
 use DB;
 use PDF;
 use Session;
+use App\Blokirkade;
 
 
-
-class HomeController extends Controller
+class Home3Controller extends Controller
 {
     
     public function index()
     {
-        
         return view('content.printplan');
     }
 
     public function parking()
     {
-        return view('content.berthplan');
-        
+        return view('content.berthplan3');
     }
 
     public function parkingbackup()
@@ -35,8 +33,10 @@ class HomeController extends Controller
             -> get();
         $al = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
             -> get();
+        $blokirkade = Blokirkade::where('PARAM1', 'BLOKIR_KADE')->get();
+
     
-        return view('content.berthplan', compact("domes", "intern","al"));
+        return view('content.berthplan3', compact("domes", "intern","al","blokirkade"));
     }
 
     public function getdermaga() 

@@ -19,6 +19,8 @@
       <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/simple-line-icons.css')}}"/>
       <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/animate.min.css')}}"/>
       <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/fullcalendar.min.css')}}"/>
+      <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/ionrangeslider/ion.rangeSlider.css')}}"/>
+      <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css')}}"/>
     	<link href="{{asset('asset/css/style.css')}}" rel="stylesheet">
 	<!-- end: Css -->
 
@@ -165,6 +167,7 @@
     <script src="{{asset('asset/js/plugins/datatables.bootstrap.min.js')}}"></script>
     <script src="{{asset('asset/js/plugins/fullcalendar.min.js')}}"></script>
     <script src="{{asset('asset/js/plugins/jquery.nicescroll.js')}}"></script>
+
   
 
     <!-- custom -->
