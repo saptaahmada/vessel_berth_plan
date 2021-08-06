@@ -8,6 +8,12 @@
 
 
 <script>
+    var m_crane_con = [];
+    var m_crane_dry = [];
+    var m_index_edit = 0;
+    var m_blokirkade = <?=$blokirkade?>;
+    var m_dermaga_current = 'D';
+
         $(document).ready(function () {
 
 //for vessel pada modal add vessel
@@ -44,12 +50,24 @@
                 success : function(result){
                     getport=result;
 
+                    $("#nextPDry").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
+                    $("#nextP").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
+
+                    $("#deshPDry").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
+                    $("#deshP").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
+
+                    $("#edit_nextp").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
+                    $("#edit_deshp").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
+
                     for (i = 1; i < getport.length+1; ++i) {
                         $("#nextPDry").append('<option  name="next" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+') </option>');  
                         $("#nextP").append('<option  name="next" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+')</option>'); 
 
                         $("#deshPDry").append('<option  name="desh" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+') </option>');  
-                        $("#deshP").append('<option  name="desh" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+')</option>');  
+                        $("#deshP").append('<option  name="desh" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+')</option>'); 
+
+                        $("#edit_nextp").append('<option  name="next" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+')</option>'); 
+                        $("#edit_deshp").append('<option  name="next" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+')</option>');  
 
                     }
                 
@@ -61,12 +79,16 @@
 //for crane pada modal add vessel
             $("#craneCon").empty();
             $("#craneDry").empty();
+            $("#edit_crane").empty();
+            $("#edit_crane").empty();
             $.ajax({  
                 url : "{{route('getcrane')}}",
                 type : "get",
                 dataType : "json",
                 async : false,
                 success : function(result){
+                    m_crane_con = result.Con;
+                    m_crane_dry = result.Dry;
                     for (s= 1; s < result.Con.length+1; ++s){
                         $("#craneCon").append('<input type="checkbox" name="crane" id="checkbox'+result.Con[s-1].che_name+'" value="'+result.Con[s-1].che_name+'" class="crane" />'+
                                                             '<label>STS '+result.Con[s-1].che_name+'</label><span> </span><span> </span>');
@@ -77,6 +99,7 @@
                         }
                 }       
             });
+
 //end for crane pada modal add vessel
 
 //for signature pada modal Print
@@ -137,6 +160,8 @@
                     // Timer to unblock    
                     $.unblockUI();
                 }, 1000);
+
+                changeDermaga('D');
             });
             
             $("#cekbox2").click(function () {
@@ -163,6 +188,8 @@
                     setTimeout(function () {
                         $.unblockUI();
                     }, 1000);
+                changeDermaga('I');
+
             });
 
             $("#cekbox3").click(function () {
@@ -189,6 +216,8 @@
                     // Timer to unblock    
                     $.unblockUI();
                 }, 1000);
+                changeDermaga('C');
+
             });
             $("#saveupdate").click(function () {
                 // Default blockUI code
@@ -229,8 +258,30 @@
                     $("body").css("cursor", "default");
                 }, 1000);
             });
+
+
+            changeDermaga(m_dermaga_current);
            
         });
+
+    function changeDermaga(der) {
+
+        $('.blokirkade').remove();
+
+        for (var i = 0; i < m_blokirkade.length; i++) {
+            if(m_blokirkade[i].param2 == der) {
+                var width = (m_blokirkade[i].param4-m_blokirkade[i].param3)*2;
+                var left = m_blokirkade[i].param3*2;
+                $('#canvas').prepend(
+                    "<div class='blokirkade' style='background-color: #000; left: "+left+"px; width: "+width+"px; height: 100%; position: absolute;'></div>"
+                );
+            }
+        }
+
+        m_dermaga_current = der;
+
+        
+    }
 </script>
 
 
@@ -242,6 +293,7 @@ var dermaga =[];
 var thisocean = "D";
 var kd_end_glb = "";
 var vesselCurrent= ["0"];
+var m_note_index = 1;
 
 borang('C');
 
@@ -256,11 +308,37 @@ function borang(param) {
     }
 }
 
+function getRandomColor() {
+    var colors = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
+    var rand = colors[Math.floor(Math.random() * colors.length)];
+    return rand;
+}
+
 $('#vessel2').on('change', function() {
     getVessel();
 })
 $('#vessel3').on('change', function() {
     getVessel();
+})
+$('#btn_add_note').on('click', function() {
+    $("#wrap_sw").append(
+        '<div id="box_note_'+m_note_index+'" urutan="'+m_note_index+'" class="box_note draggable">'+
+            '<div class="widget-inner">'+
+                '<div class="text_detail">'+
+                    $('#note').val()+
+                '</div>'+
+            '</div>'+
+        '</div>');
+
+    $("#box_note_"+m_note_index).css("left", "100px");
+    $("#box_note_"+m_note_index).css("width", "100px");
+    $("#box_note_"+m_note_index).css("top", "100px");
+    $("#box_note_"+m_note_index).css("height", "50px");
+    $("#box_note_"+m_note_index).css("background-color", "#fff");
+
+    convertToDragNote(m_note_index);
+
+    m_note_index++;
 })
 
 function autofillCon() {
@@ -352,6 +430,92 @@ function getVessel() {
 } 
 
 
+function reloadAll() {
+    $("#wrap_sw").empty();
+    
+    for (i = 1; i < vessel.length+1; ++i) {
+        var crane_vess =  vessel[i-1].crane;
+        var uncrane=[];
+        if (crane_vess==null)
+        uncrane=[];
+        else
+        uncrane = crane_vess.split(',');
+
+        var craneloopload = "";
+        for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
+            craneloopload += '<circle2><span>'+uncrane[x]+'</span></circle2>';
+        };
+      
+            
+
+        $("#wrap_sw").append(
+        '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
+            '<div class="widget-inner">'+
+                '<div id="img'+i+'">'+
+                     '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vessel[i-1].image+'" style= "width: 20%; height: 20%; "/>'+
+                '</div>'+
+                '<div id="text_judul'+i+'" class="text_judul">'+
+                    'MV. '+vessel[i-1].ves_name+''+
+                '</div>'+
+                '<div id="text_detail'+i+'" class="text_detail">'+
+                    '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
+                    '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
+                    '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
+                    '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
+                    '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
+                    '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
+                    '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
+                    ' <circle><span class="kade_box_'+i+'">'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
+                    craneloopload+
+                '</div>'+
+            '</div>'+
+        '</div>');
+        // $("#canvas").append('<div id="box'+i+'" class="box draggable"><div class="text_judul"> MV. '+vessel[i-1].ves_name+'</div><div class="text_detail">ETA : '+vessel[i-1].est_berth_ts+'<br>ETB : '+vessel[i-1].est_berth_ts+'<br>ETD : '+vessel[i-1].est_dep_ts+'</div>   </div>');
+        convertToDrag();
+        
+    }
+
+    for (i = 1; i < vessel.length+1; ++i) {
+        // var r = () => Math.random() * 256 >> 0;
+        // var color = `rgb(${r()}, ${r()}, ${r()})`;
+
+        var colors = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
+
+        var rand = colors[Math.floor(Math.random() * colors.length)];
+        var btoa = vessel[i-1].btoa_side;
+
+        
+            
+            if(btoa == "P"){ //kiri star
+                $("#box"+i).css("left", vessel[i-1].berth_fr_metre+"px");
+                $("#box"+i).css("width", vessel[i-1].width+"px");
+                $("#box"+i).css("top", vessel[i-1].y_awal+"px");
+                $("#box"+i).css("height", vessel[i-1].height+"px");
+                $("#box"+i).css("background-color", rand);
+                $("#text_judul"+i).css("padding-left", "24%");
+                $("#text_detail"+i).css("padding-left", "25%");
+               
+                $("#box"+i).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
+
+            
+            }else if (btoa == "S") { //kanan port
+                $("#box"+i).css("left", vessel[i-1].berth_fr_metre+"px");
+                $("#box"+i).css("width", vessel[i-1].width+"px");
+                $("#box"+i).css("top", vessel[i-1].y_awal+"px");
+                $("#box"+i).css("height", vessel[i-1].height+"px");
+                $("#box"+i).css("background-color", rand);
+                $("#text_judul"+i).css("padding-left", "12px");
+                $("#text_detail"+i).css("padding-left", "12px");
+                // $("#img"+i).css("text-align", "left");
+                // $("#img"+i).css("padding-left", "20px");
+                // $("#img"+i).css("padding-top", "5px");
+                $("#box"+i).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
+
+            }
+    
+    }
+}
+
 function loadAll(ocean) {
   
 //    console.log(ocean);
@@ -402,23 +566,25 @@ function loadAll(ocean) {
 
                 $("#wrap_sw").append(
                 '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
-                    '<div id="img'+i+'">'+
-                         '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vessel[i-1].image+'" style= "width: 20%; height: 20%; "/>'+
+                    '<div class="widget-inner">'+
+                        '<div id="img'+i+'">'+
+                             '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vessel[i-1].image+'" style= "width: 20%; height: 20%; "/>'+
+                        '</div>'+
+                        '<div id="text_judul'+i+'" class="text_judul">'+
+                            'MV. '+vessel[i-1].ves_name+''+
+                        '</div>'+
+                        '<div id="text_detail'+i+'" class="text_detail">'+
+                            '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
+                            '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
+                            '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
+                            '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
+                            '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
+                            '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
+                            '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
+                            ' <circle><span class="kade_box_'+i+'">'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
+                            craneloopload+
+                        '</div>'+
                     '</div>'+
-                    '<div id="text_judul'+i+'" class="text_judul">'+
-                        'MV. '+vessel[i-1].ves_name+''+
-                    '</div>'+
-                    '<div id="text_detail'+i+'" class="text_detail">'+
-                        '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
-                        '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
-                        '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
-                        '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
-                        '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
-                        '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
-                        ' <circle><span class="kade_box_'+i+'">'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
-                        craneloopload+
-                    '</div>'+
-                    '<div class="widget-inner"></div>'+
                 '</div>');
                 // $("#canvas").append('<div id="box'+i+'" class="box draggable"><div class="text_judul"> MV. '+vessel[i-1].ves_name+'</div><div class="text_detail">ETA : '+vessel[i-1].est_berth_ts+'<br>ETB : '+vessel[i-1].est_berth_ts+'<br>ETD : '+vessel[i-1].est_dep_ts+'</div>   </div>');
                 convertToDrag();
@@ -481,7 +647,108 @@ crane = [];
 var crane_select=[];
 // console.log(crane);
 
+$('#edit_start').on('change', function(){
+    var vees = vessel[m_index_edit];
+    $('#edit_end').val(parseInt($(this).val())+parseInt(vees.width_ori));
+});
+
+function toEdit(index) {
+    m_index_edit = index;
+    var vees = vessel[index];
+    console.log(vees);
+    $('#editVessel').modal('show');
+    $('#edit_vessel').val(vees.ves_id);
+    $('#edit_vessel_name').val(vees.ves_name);
+    $('#edit_eta').val(vees.est_berth_ts.substring(0,16).replace(" ", "T"));
+    $('#edit_rbt').val(vees.est_berth_ts.substring(0,16).replace(" ", "T"));
+    $('#edit_etb').val(vees.est_berth_ts.substring(0,16).replace(" ", "T"));
+    $('#edit_etd').val(vees.est_dep_ts.substring(0,16));
+    $('#edit_bsh').val(vees.bsh);
+    $('#edit_nextp').val(vees.next_port);
+    $('#edit_deshp').val(vees.dest_port);
+    $('#edit_bongkar').val(vees.est_discharge);
+    $('#edit_muat').val(vees.est_load);
+    $('#edit_start').val(vees.berth_fr_metre_ori);
+    $('#edit_end').val(vees.berth_to_metre_ori);
+    // $('.edit_side').val(vees.btoa_side);
+    if(vees.btoa_side == 'S')
+        $("#edit_side_s").attr('checked', 'checked');
+    if(vees.btoa_side == 'P')
+        $("#edit_side_p").attr('checked', 'checked');
+
+    $('#edit_info').val(vees.info);
+
+    var arr_crane = vees.crane.split(",");
+
+    $("#edit_crane").empty();
+
+    for (s= 1; s < m_crane_con.length+1; ++s){
+        var checked = false;
+        for(a=0; a<arr_crane.length; a++) {
+            if(m_crane_con[s-1].che_name==arr_crane[a]) {
+                checked = true;
+                break;
+            }
+        }
+        $("#edit_crane").append('<input type="checkbox" name="crane" id="checkbox'+m_crane_con[s-1].che_name+'" value="'+m_crane_con[s-1].che_name+'" class="crane" '+(checked?"checked":"")+' />'+
+                                        '<label>STS '+m_crane_con[s-1].che_name+'</label><span> </span><span> </span>');
+    }
+}
+
+    function CheckStack(area, rectangle)
+    {
+
+        console.log(area);
+        console.log(rectangle);
+
+        var a1 = rectangle.X;
+        var a2 = rectangle.X + rectangle.Width;
+        var b1 = rectangle.Y;
+        var b2 = rectangle.Y + rectangle.Height;
+
+
+
+        //if the node is inside click field
+        if (area.X1 <= a1 && area.X2 >= a2 && area.Y1 <= b1 && area.Y2 >= b2)
+            return true;
+        //if mouseDownClick is inside the node or mouseUpClick is inside the node
+        if ((area.X1 >= a1 && area.X1 <= a2 && area.Y1 >= b1 && area.Y1 <= b2) || (area.X2 >= a1 && area.X2 <= a2 && area.Y2 >= b1 && area.Y2 <= b2))
+            return true;
+        //if the corner node is inside click field
+        if ((a1 >= area.X1 && a1 <= area.X2 && b1 >= area.Y1 && b1 <= area.Y2) ||
+            (a2 >= area.X1 && a2 <= area.X2 && b2 >= area.Y1 && b2 <= area.Y2) ||
+            (a2 >= area.X1 && a2 <= area.X2 && b1 >= area.Y1 && b1 <= area.Y2) ||
+            (a1 >= area.X1 && a1 <= area.X2 && b2 >= area.Y1 && b2 <= area.Y2))
+            return true;
+        //if click field and the node intersect at vertical line node
+        if (area.Y1 >= b1 && area.Y1 <= b2 && a1 >= area.X1 && a1 <= area.X2)
+            return true;
+        //if click field and the node intersect at horizontal line node
+        if (b1 >= area.Y1 && b1 <= area.Y2 && area.X1 >= a1 && area.X1 <= a2)
+            return true;
+
+        return false;
+    }
+
+    function isVesselStack(area) {
+        var isStack = false;
+        for (i = 0; i < vessel.length; i++) {
+            var rectangle = {
+                X:parseInt(vessel[i].berth_fr_metre), 
+                Y:parseInt(vessel[i].y_awal),
+                Width:parseInt(vessel[i].width),
+                Height:parseInt(vessel[i].height)
+            }
+
+            isStack = CheckStack(area, rectangle);
+            if(isStack)
+                break;
+        }
+        return isStack;
+    }
+
 function addvessel(){
+
     var vessid ="";
     var etA ="";
     var rbT="";
@@ -499,6 +766,10 @@ function addvessel(){
     var along_side= "";
     var info ="";
     var crane_string="";
+
+    var type_moves = "";
+
+    crane_select = [];
     
     if($("#con").is(':checked')){
     
@@ -529,7 +800,8 @@ function addvessel(){
         kade_start = document.getElementById("start").value;
         kade_to= document.getElementById("end").value;
         info= document.getElementById("info").value;
-     
+        
+        type_moves = "BOX";
 
     } else if($("#dry").is(':checked')){
        
@@ -558,6 +830,8 @@ function addvessel(){
 
         kade_start = document.getElementById("startDry").value;
         kade_to= document.getElementById("endDry").value;
+
+        type_moves = "MT";
  
     }
     
@@ -595,7 +869,7 @@ function addvessel(){
   
     
         $.ajax({  
-            url : "{{ url('VesselBerthPlan/addvessel') }}",
+            url : "{{ url('VesselBerthPlan3/addvessel') }}",
             data: {
             "_token": "{{ csrf_token() }}",
             param_data:vessid
@@ -604,8 +878,10 @@ function addvessel(){
             dataType : "json",
             async : false,
             success : function(result){
+                console.log(result);
                 nama = result[0].ves_name;
                 width = result[0].width;
+                height = result[0].height;
                 id_vess = result[0].ves_id;
                 
                 ocean_ori = result[0].ocean_interisland;
@@ -620,113 +896,251 @@ function addvessel(){
                 var crane2=crane_select;
                 var kd_start = kade_start*2;
                 var kd_end = parseInt(kade_start)+parseInt(width_ves);
-                
-                
 
-                // var kade_end= kade_start+width;
-               
-                // var countol = result.length;
-                // var count = $('.box').length;
-               
-                for (i = 1; i < vessel.length+1; ++i) {
-                // var r = () => Math.random() * 256 >> 0;
-                // var color = `rgb(${r()}, ${r()}, ${r()})`;
 
-                var colors = ['#FFC312', '#006266', '#1289A7', '#EE5A24', '#B53471'];
-
-                var rand = colors[Math.floor(Math.random() * colors.length)];
+                var area = {
+                    X1:parseInt(kd_start),
+                    X2:parseInt(kd_start)+parseInt(width),
+                    Y1:parseInt(y_awal_etb),
+                    Y2:parseInt(y_awal_etb)+parseInt(y_akhir_etd)
                 }
-               
 
-                if (cok.includes(id_vess)){
-                    crane = [];
-                    swal({
-                        title: "Kapal Sudah Ditambahkan !! Simpan Terlebih Dahulu !!",
-                        text: "You clicked the button!",
-                        icon: "warning",
-                        });                   
-                } else {
-                  
-                    var craneloop2 = "";
-                        for (var x = 0; x < crane_select.length; x++) { //Move the for loop from here
-                            craneloop2 += '<circle2><span>'+crane_select[x]+'</span></circle2>';
-                        };
-                    $("#wrap_sw").append(
-                        '<div id="box'+(vessel.length+1)+'" urutan="'+(vessel.length+1)+'" class="box draggable">'+
-                            '<div id="img'+(vessel.length+1)+'">'+
-                                '<img id="ims'+(vessel.length+1)+'" class="ims" src = "{{asset('/img/')}}/'+img+'" style= "width: 20%; height: 20%; "/>'+
-                            '</div>'+
-                            '<div id="text_judul'+(vessel.length+1)+'" class="text_judul">'+
-                                'MV. '+nama+''+
-                            '</div>'+
-                            '<div id="text_detail'+(vessel.length+1)+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+etBout+'</div>'+
-                                '<div class="ETB_'+(vessel.length+1)+'" style="margin:1px;">ETB :'+etBout+'</div>'+
-                                '<div class="ETD_'+(vessel.length+1)+'" style="margin:1px;">ETD : '+etDout+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+jum_bongkar+'/'+jum_muat+' BOX</div>'+
-                                '<div style="margin:1px;">LOA : '+width_ves+' M</div>'+
-                                '<div style="margin:1px;">POD : '+dest_port+'</div>'+
-                                ' <circle><span class="kade_box_'+(vessel.length+1)+'">'+kade_start+' On '+kd_end+'</span></circle>'+
-                                craneloop2+
-                            '</div>'+
-                            '<div class="widget-inner"></div>'+
-                        '</div>');
+                var isStack = isVesselStack(area);
 
-                        convertToDrag();
-                        
-                        
+                
+                if(!isStack) {
+                    // var kade_end= kade_start+width;
+                   
+                    // var countol = result.length;
+                    // var count = $('.box').length;
+                   
+                    for (i = 1; i < vessel.length+1; ++i) {
+                    // var r = () => Math.random() * 256 >> 0;
+                    // var color = `rgb(${r()}, ${r()}, ${r()})`;
 
-                    // $("#canvas").append('<div id="box'+(vessel.length+1)+'" class="box draggable"><div class="text_judul"> MV. '+nama+'</div></div>');
-                    if (along_side == "P") { //kiri
-                            $("#box"+(vessel.length+1)).css("width",width+"px");
-                            $("#box"+(vessel.length+1)).css("left",kd_start+"px");
-                            $("#box"+(vessel.length+1)).css("height",y_akhir_etd+"px");
-                            $("#box"+(vessel.length+1)).css("top",y_awal_etb+"px");
-                            $("#box"+(vessel.length+1)).css("background-color", rand);
+                    var colors = ['#FFC312', '#006266', '#1289A7', '#EE5A24', '#B53471'];
 
-                            $("#text_judul"+(vessel.length+1)).css("padding-left", "24%");
-                            $("#text_detail"+(vessel.length+1)).css("padding-left", "25%");
-                            $("#img"+(vessel.length+1)).css("text-align", "right");
-                            $("#img"+(vessel.length+1)).css("padding-right", "20px");
-                            $("#img"+(vessel.length+1)).css("padding-top", "5px");
-                            $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
-                            vessel.push({ves_type:ves_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,est_discharge:jum_bongkar,est_load:jum_muat,btoa_side:along_side ,crane:crane2, agent:agent, agent_name:agent_name,image:img,ves_id: id_vess, ves_name:nama, ocean_interisland:ocean_ori,ves_code:vess_code, est_berth_ts:null, is_simulation:"1" });
-                            cok.push(id_vess);
-                            crane = [];
-                             console.log("Add vess P",vessel);
-
-                           
-                    } else if (along_side == "S") { //kanan
-                            $("#box"+(vessel.length+1)).css("width",width+"px");
-                            $("#box"+(vessel.length+1)).css("left",kd_start+"px");
-                            $("#box"+(vessel.length+1)).css("height",y_akhir_etd+"px");
-                            $("#box"+(vessel.length+1)).css("top",y_awal_etb+"px");
-                            $("#box"+(vessel.length+1)).css("background-color", rand);
-
-                            $("#text_judul"+(vessel.length+1)).css("padding-left", "12px");
-                            $("#text_detail"+(vessel.length+1)).css("padding-left", "12px");
-                            $("#img"+(vessel.length+1)).css("text-align", "left");
-                            $("#img"+(vessel.length+1)).css("padding-left", "20px");
-                            $("#img"+(vessel.length+1)).css("padding-top", "5px");
-
-                            $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-                            vessel.push({ves_type:ves_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,est_discharge:jum_bongkar,est_load:jum_muat,btoa_side:along_side ,crane:crane2, agent:agent, agent_name:agent_name,image:img,ves_id: id_vess, ves_name:nama, ocean_interisland:ocean_ori,ves_code:vess_code, est_berth_ts:null, is_simulation:"1" });
-                            cok.push(id_vess);
-                            crane = [];
-                            console.log("Add vess S",vessel);
-
+                    var rand = colors[Math.floor(Math.random() * colors.length)];
                     }
-                  
-                    
-                }
+                   
 
-                eraseTextModalContainer();
+                    if (cok.includes(id_vess)){
+                        crane = [];
+                        swal({
+                            title: "Kapal Sudah Ditambahkan !! Simpan Terlebih Dahulu !!",
+                            text: "You clicked the button!",
+                            icon: "warning",
+                            });                   
+                    } else {
+                      
+                        var craneloop2 = "";
+                            for (var x = 0; x < crane_select.length; x++) { //Move the for loop from here
+                                craneloop2 += '<circle2><span>'+crane_select[x]+'</span></circle2>';
+                            };
+                        $("#wrap_sw").append(
+                            '<div id="box'+(vessel.length+1)+'" urutan="'+(vessel.length+1)+'" class="box draggable">'+
+                                '<div class="widget-inner">'+
+                                    '<div id="img'+(vessel.length+1)+'">'+
+                                        '<img id="ims'+(vessel.length+1)+'" class="ims" src = "{{asset('/img/')}}/'+img+'" style= "width: 20%; height: 20%; "/>'+
+                                    '</div>'+
+                                    '<div id="text_judul'+(vessel.length+1)+'" class="text_judul">'+
+                                        'MV. '+nama+''+
+                                    '</div>'+
+                                    '<div id="text_detail'+(vessel.length+1)+'" class="text_detail">'+
+                                        '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
+                                        '<div style="margin:1px; color:red;">ETA :'+etBout+'</div>'+
+                                        '<div class="ETB_'+(vessel.length+1)+'" style="margin:1px;">ETB :'+etBout+'</div>'+
+                                        '<div class="ETD_'+(vessel.length+1)+'" style="margin:1px;">ETD : '+etDout+'</div>'+
+                                        '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+jum_bongkar+'/'+jum_muat+' '+type_moves+'</div>'+
+                                        '<div style="margin:1px;">LOA : '+width_ves+' M</div>'+
+                                        '<div style="margin:1px;">POD : '+dest_port+'</div>'+
+                                        ' <circle><span class="kade_box_'+(vessel.length+1)+'">'+kade_start+' On '+kd_end+'</span></circle>'+
+                                        craneloop2+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>');
+
+                            convertToDrag();
+                            
+                            
+
+                        // $("#canvas").append('<div id="box'+(vessel.length+1)+'" class="box draggable"><div class="text_judul"> MV. '+nama+'</div></div>');
+                        if (along_side == "P") { //kiri
+                                $("#box"+(vessel.length+1)).css("width",width+"px");
+                                $("#box"+(vessel.length+1)).css("left",kd_start+"px");
+                                $("#box"+(vessel.length+1)).css("height",y_akhir_etd+"px");
+                                $("#box"+(vessel.length+1)).css("top",y_awal_etb+"px");
+                                $("#box"+(vessel.length+1)).css("background-color", rand);
+
+                                $("#text_judul"+(vessel.length+1)).css("padding-left", "24%");
+                                $("#text_detail"+(vessel.length+1)).css("padding-left", "25%");
+                                $("#img"+(vessel.length+1)).css("text-align", "right");
+                                $("#img"+(vessel.length+1)).css("padding-right", "20px");
+                                $("#img"+(vessel.length+1)).css("padding-top", "5px");
+                                $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
+                                vessel.push({ves_type:ves_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,est_discharge:jum_bongkar,est_load:jum_muat,btoa_side:along_side ,crane:crane2, agent:agent, agent_name:agent_name,image:img,ves_id: id_vess, ves_name:nama, ocean_interisland:ocean_ori,ves_code:vess_code, est_berth_ts:null, is_simulation:"1" });
+                                cok.push(id_vess);
+                                crane = [];
+                                 console.log("Add vess P",vessel);
+
+                               
+                        } else if (along_side == "S") { //kanan
+                                $("#box"+(vessel.length+1)).css("width",width+"px");
+                                $("#box"+(vessel.length+1)).css("left",kd_start+"px");
+                                $("#box"+(vessel.length+1)).css("height",y_akhir_etd+"px");
+                                $("#box"+(vessel.length+1)).css("top",y_awal_etb+"px");
+                                $("#box"+(vessel.length+1)).css("background-color", rand);
+
+                                $("#text_judul"+(vessel.length+1)).css("padding-left", "12px");
+                                $("#text_detail"+(vessel.length+1)).css("padding-left", "12px");
+                                $("#img"+(vessel.length+1)).css("text-align", "left");
+                                $("#img"+(vessel.length+1)).css("padding-left", "20px");
+                                $("#img"+(vessel.length+1)).css("padding-top", "5px");
+
+                                $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
+                                vessel.push({ves_type:ves_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,est_discharge:jum_bongkar,est_load:jum_muat,btoa_side:along_side ,crane:crane2, agent:agent, agent_name:agent_name,image:img,ves_id: id_vess, ves_name:nama, ocean_interisland:ocean_ori,ves_code:vess_code, est_berth_ts:null, is_simulation:"1" });
+                                cok.push(id_vess);
+                                crane = [];
+                                console.log("Add vess S",vessel);
+
+                        }
+                      
+                        
+                    }
+
+                    eraseTextModalContainer();
+                    
+                } else {
+                    swal({
+                        title: "Vessel",
+                        text: "Kapal Tumpuk",
+                        icon: "warning",
+                    });
+                }
                 
             }
         });
     
 }
 
+function editvessel() {
+
+    var vees = vessel[m_index_edit];
+    var vees_tmp = JSON.parse(JSON.stringify(vessel[m_index_edit]));
+
+    vees.act_berth_ts   = $('#edit_eta').val().replace('T', ' ')+":00";
+    vees.act_dep_ts     = $('#edit_eta').val().replace('T', ' ')+":00";
+    vees.est_berth_ts   = $('#edit_etb').val().replace('T', ' ')+":00";
+    vees.est_dep_ts     = $('#edit_etd').val().replace('T', ' ')+":00";
+    vees.ves_id         = $('#edit_vessel').val();
+    vees.btoa_side      =  $('input[class=edit_side]:checked').val();
+    vees.bsh            = $('#edit_bsh').val();
+    vees.next_port      = $('#edit_nextp').val();
+    vees.dest_port      = $('#edit_deshp').val();
+    vees.est_disch      = $('#edit_bongkar').val();
+    vees.est_discharge  = $('#edit_bongkar').val();
+    vees.est_load       = $('#edit_muat').val();
+    vees.berth_fr_metre = (parseInt($('#edit_start').val())*2).toString();
+    vees.berth_to_metre = (parseInt($('#edit_end').val())*2).toString();
+    vees.berth_fr_metre_ori = (parseInt($('#edit_start').val())).toString();
+    vees.berth_to_metre_ori = (parseInt($('#edit_end').val())).toString();
+
+    var vessid ="";
+    var etA ="";
+    var rbT="";
+    var etB="";
+    var etD="";
+    var sts="";
+    var kade_start ="";
+    var kade_to="";
+
+    var bsh="";
+    var next_port="";
+    var dest_port="";
+    var jum_bongkar="";
+    var jum_muat="";
+    var along_side= "";
+    var info ="";
+    var crane_string="";
+    
+    vessid = document.getElementById("edit_vessel").value;
+    etA = document.getElementById("edit_eta").value; 
+    rbT = document.getElementById("edit_rbt").value;
+    etB = document.getElementById("edit_etb").value; 
+    etD = document.getElementById("edit_etd").value;
+
+
+    bsh = document.getElementById("edit_bsh").value; 
+    next_port = document.getElementById("edit_nextp").value; 
+    dest_port = document.getElementById("edit_deshp").value; 
+    jum_bongkar = document.getElementById("edit_bongkar").value;
+    jum_muat= document.getElementById("edit_muat").value;
+
+    kade_start = document.getElementById("edit_start").value;
+    kade_to= document.getElementById("edit_end").value;
+    info= document.getElementById("edit_info").value;
+ 
+
+    var date_now = new Date();
+        date_now.setHours(00);
+        date_now.setMinutes(00);
+        date_now.setSeconds(00);
+
+    const format9 = "YYYY-MM-DD HH:mm:ss"
+        var etAout= moment(etA).format(format9);
+        var rbTout= moment(rbT).format(format9);
+        var etBout= moment(etB).format(format9);
+        var etDout= moment(etD).format(format9);
+        date_now = moment(date_now).format(format9);
+
+    // start ETB
+    var tglPertama = Date.parse(etBout);
+    var tglKedua = Date.parse(date_now);
+    var miliday = 60 * 1000;
+    // var top1 = etBout-date_now;
+    var second =(tglPertama-tglKedua)/miliday;
+    var y_awal_etb = (second/30)*10;    
+    // console.log("y awal etb",y_awal_etb);    
+    // end ETB
+
+
+    var tglPertamaEtd = Date.parse(etDout);
+    var tglKeduaEtd = Date.parse(etBout);
+    var secondEtd =(tglPertamaEtd-tglKeduaEtd)/miliday;
+    var height = (secondEtd/30)*10;
+
+
+    vees.y_awal     = y_awal_etb.toString();
+    vees.y_akhir    = height.toString();
+    vees.height     = height.toString();
+
+
+    vessel.splice(m_index_edit, 1);
+
+
+    var area = {
+        X1:parseInt(vees.berth_fr_metre),
+        X2:parseInt(vees.berth_fr_metre)+parseInt(vees.width),
+        Y1:parseInt(y_awal_etb),
+        Y2:parseInt(y_awal_etb)+parseInt(height)
+    }
+
+    var isStack = isVesselStack(area);
+
+    if(!isStack) {
+        vessel.splice(m_index_edit, 0, vees);
+    } else {
+        swal({
+            title: "Vessel",
+            text: "Kapal Tumpuk",
+            icon: "warning",
+        });
+        vessel.splice(m_index_edit, 0, vees_tmp);
+    }
+
+    reloadAll();
+
+}
 
 function convertToDrag() {   
     var xSave;
@@ -736,10 +1150,76 @@ function convertToDrag() {
         containment: "#canvas",
         // obstacle:".butNotHere",
         // preventCollision: true,
-        grid: [ 2, 10 ],
+        grid: [ 4, 10 ],
         scroll: false,
         stack: '.box',
+        drag: function(event, ui) {
+
+            otop =  $(this).position().top;
+            left =  $(this).position().left;
+            height =  $(this).height();
+            width =  $(this).width();
+
+            var area = {
+                X1:left,
+                X2:left+width,
+                Y1:otop,
+                Y2:otop+height
+            }
+
+            var urutan = $(this).attr('urutan')-1;
+            var isBreak = false;
+
+
+            for (i = 0; i < vessel.length; i++) {
+
+                if(i!=urutan) {
+
+                    var rect = {
+                        X1:$('#box'+(i+1)).position().left, 
+                        Y1:$('#box'+(i+1)).position().top,
+                        X2:$('#box'+(i+1)).position().left+$('#box'+(i+1)).width(),
+                        Y2:$('#box'+(i+1)).position().top+$('#box'+(i+1)).height()
+                    }
+
+                    var selisihKanan = rect.X1 - area.X2;
+                    var selisihKiri = area.X1 - rect.X2;
+
+                    selisihKanan    = selisihKanan<0?0:selisihKanan;
+                    selisihKiri     = selisihKiri<0?0:selisihKiri;
+                    
+                    if((rect.Y2 >= area.Y1 && rect.Y2<= area.Y2) || 
+                        (rect.Y2 >= area.Y2 && rect.Y1<= area.Y2) || 
+                        (rect.Y2 >= area.Y2 && rect.Y1<= area.Y1) || 
+                        (rect.Y1 >= area.Y1 && rect.Y2<= area.Y2)) {
+
+                        $( "#selisihKanan" ).remove();
+                        $( "#selisihKiri" ).remove();
+
+                        if(selisihKanan < 40 && selisihKanan > 0) {
+                            $("#wrap_sw").append("<div id='selisihKanan' "+
+                                "style='position:absolute; left:"+(area.X2+5)+"px; top:"+(area.Y1+width/2)+"px; color:#000; background-color:#fff'>"+
+                                parseInt(selisihKanan/2)+"m"+
+                                "</div>");
+                            isBreak = true;
+                        }
+                        if(selisihKiri < 40 && selisihKiri > 0) {
+                            $("#wrap_sw").append("<div id='selisihKiri' "+
+                                "style='position:absolute; left:"+(area.X1-20)+"px; top:"+(area.Y1+width/2)+"px; color:#000; background-color:#fff'>"+
+                                parseInt(selisihKiri/2)+"m"+
+                                "</div>");
+                            isBreak = true;
+                        }
+                    }
+                }
+
+                if(isBreak) 
+                    break;
+
+            }
+        },
         start: function (event,ui) {
+            // console.log("start");
             top = $(this).position().top;
             left =  $(this).position().left;
             // $(this).removeClass('butNotHere');
@@ -758,6 +1238,10 @@ function convertToDrag() {
         },
       
         stop: function (event,ui) {
+            // console.log("stop");
+            $( "#selisihKanan" ).remove();
+            $( "#selisihKiri" ).remove();
+
             topp = $(this).position().top;
             startW = $(this).outerWidth()/2;
             kiri =  $(this).position().left/2;
@@ -775,14 +1259,10 @@ function convertToDrag() {
                 date2.setMinutes(00);
                 date2.setSeconds(00);
 
-
            
             var tanggaletb =  date.setMinutes(date.getMinutes() + menit);
             var tanggaletd = date2.setMinutes(date2.getMinutes() + height);
                
-
-          
-         
 
             const format = "YYYY-MM-DD HH:mm:ss"
             var etb= moment(tanggaletb).format(format);
@@ -806,12 +1286,14 @@ function convertToDrag() {
 			var $elSibs = $(this).siblings('.box');
 			$el.removeClass('dragging');
 			$elSibs.addClass('not-dragging');
+
+
 			// DETECT COLLISION
 			$elSibs.each(function() {
 				var self = this;
 				var $sib = $(self);
-				collision($sib, $el);
-				var result = collision($sib, $el);
+				// collision($sib, $el);
+				var result = collision($sib, $el, true);
 				// if there is collision, we send back to start position.
 				if(result == true) {
 
@@ -820,6 +1302,38 @@ function convertToDrag() {
 					$sib.find('.widget-inner').removeClass('collision');
 				}
 			});
+
+            var x1 = left;
+            var x2 = left + $(this).width(); 
+
+            for (var i = 0; i < m_blokirkade.length; i++) {
+
+                if(m_blokirkade[i].param2 == m_dermaga_current) {
+                    var a1 = m_blokirkade[i].param3*2;
+                    var a2 = m_blokirkade[i].param4*2;
+
+                    if((x1 < a1 && x2 > a1) || 
+                        (x1 < a2 && x2 > a2) || 
+                        (x1 < a1 && x2 > a2) || 
+                        (x1 > a1 && x2 < a2)) {
+
+                        $el.css({'top':ySave, 'left':xSave});
+
+                        break;
+                    }
+                }
+
+            }
+
+            urutan = $(this).attr('urutan')-1;
+
+            vessel[urutan].y_awal = parseInt(topp).toString();
+            vessel[urutan].height =  parseInt($(this).height()).toString();
+            vessel[urutan].berth_fr_metre =  parseInt($(this).position().left).toString();
+            vessel[urutan].berth_to_metre =  parseInt(($(this).position().left+$(this).width())).toString();
+            vessel[urutan].berth_fr_metre_ori =  vessel[urutan].berth_fr_metre/2;
+            vessel[urutan].berth_to_metre_ori =  vessel[urutan].berth_to_metre/2;
+
         }
     })
 
@@ -880,7 +1394,7 @@ function convertToDrag() {
 			$elSibs.each(function() {
 				var self = this;
 				var $sib = $(self);
-				collision($sib, $el);
+				// collision($sib, $el);
 				var result = collision($sib, $el);
 				// if there is collision, we send back to start position.
 				if(result == true) {
@@ -895,7 +1409,7 @@ function convertToDrag() {
     }); 
 
     // Collision detection
-	function collision($sib, $el) {
+	function collision($sib, $el, isStop=false) {
 		var sibInner = $sib.find('.widget-inner');
 		var wigInner = $el.find('.widget-inner');
 		var x1 = wigInner.offset().left;
@@ -929,8 +1443,39 @@ function convertToDrag() {
 		} else { 
 			sibInner.removeClass('collision');
 		}
+
 	}
 }
+
+function convertToDragNote() {
+    $('#box_note_'+m_note_index)
+    .draggable({
+        containment: "#canvas",
+        grid: [ 4, 10 ],
+        scroll: false,
+        drag: function(event, ui) {
+
+        },
+        start: function (event,ui) {
+            
+        },
+      
+        stop: function (event,ui) {
+            
+        }
+    })
+    .resizable({
+        grid: 2,
+        containment: "#canvas",
+        start : function(event,ui) {
+            
+        },
+        stop : function(event,ui) {
+            
+        }
+    });
+}
+
 function eraseTextModalContainer() {
     if($("#con").is(':checked')){
      document.getElementById("etA").value = "";
@@ -1033,7 +1578,7 @@ function updatebox() {
     }
     // console.log("top arr",top_arr);
     $.ajax({  
-            url : "{{ url('VesselBerthPlan/updatevessel') }}",
+            url : "{{ url('VesselBerthPlan3/updatevessel') }}",
             data: {
             "_token": "{{ csrf_token() }}",
             // param_id:ves_id,
