@@ -99,7 +99,11 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/Arus/json','ArusController@json');
     
     Route::get('/print','HomeController@print')->name('print');
+    Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');
+
     Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
+
+
     Route::get('/logout',  'LoginController@logout')->name('logout');
     
 });

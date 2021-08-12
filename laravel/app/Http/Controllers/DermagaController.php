@@ -35,6 +35,7 @@ class DermagaController extends Controller
     public function update(Request $request)
     {
         $result = DB::table('TOWER.VBP_GEN_REF')
+        ->where('PARAM1', 'DERMAGA')
         ->where('PARAM2', $request->curParam2)
         ->update([
         	'PARAM2'	=> $request->param2,

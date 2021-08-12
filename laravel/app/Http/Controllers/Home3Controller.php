@@ -7,6 +7,7 @@ use DB;
 use PDF;
 use Session;
 use App\Blokirkade;
+use App\Note;
 
 
 class Home3Controller extends Controller
@@ -34,9 +35,9 @@ class Home3Controller extends Controller
         $al = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
             -> get();
         $blokirkade = Blokirkade::where('PARAM1', 'BLOKIR_KADE')->get();
-
+        $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
     
-        return view('content.berthplan3', compact("domes", "intern","al","blokirkade"));
+        return view('content.berthplan3', compact("domes", "intern","al","blokirkade","note"));
     }
 
     public function getdermaga() 
@@ -112,7 +113,7 @@ class Home3Controller extends Controller
         else
         $count = count($param_vess);
         $param_ocean =  $request->param_ocean;
-
+        $param_note = $request->param_note;
 
         
         DB::table('TOWER.VESSEL_DETAILS_SIM')
@@ -136,6 +137,8 @@ class Home3Controller extends Controller
             $jum_bongkar =($param_vess[$i]['jum_bongkar']);
             $jum_muat =($param_vess[$i]['jum_muat']);
             $along_side =($param_vess[$i]['along_side']);
+            $windows =($param_vess[$i]['windows']);
+
             $info =($param_vess[$i]['info']);
             $occ =($param_vess[$i]['occ']);
             
@@ -162,70 +165,71 @@ class Home3Controller extends Controller
             
 
 
-        $data_update = [
-            'berth_fr_metre' => $param_vess[$i]['berth_fr_ori'],
-            'berth_to_metre' => $param_vess[$i]['berth_to_ori'],
-            'est_berth_ts' => $est_berth_ts,
-            'est_dep_ts' => $est_dep_ts
-        ];
-        $data_push = [
-            'berth_fr_metre' => $param_vess[$i]['berth_fr_ori'],
-            'berth_to_metre' => $param_vess[$i]['berth_to_ori'],
-            'est_berth_ts' => $est_berth_ts,
-            'est_dep_ts' => $est_dep_ts,
-            'ves_id' =>  $ves_id,
-            'ves_name' => $ves_name,
-            'ves_code' => $ves_code,
-            'ocean_interisland' => $occ,
-            'ocean_interisland_fake' => $param_ocean,
-            'EST_ANCHORAGE_TS' =>$est_berth_ts,
-            'ACT_ANCHORAGE_TS' => $est_berth_ts,
-            'EST_PILOT_TS'  => $est_berth_ts,
-            'ACT_PILOT_TS' => $est_berth_ts,
-            'ACT_BERTH_TS' =>$est_berth_ts,
-            'EST_START_WORK_TS' =>$est_berth_ts,
-            'ACT_START_WORK_TS' => $est_berth_ts,
-            'EST_END_WORK_TS' => $est_berth_ts,
-            'ACT_END_WORK_TS' =>$est_berth_ts,
-            'DOCO_CUTOFF_TS' => $est_berth_ts,
-            'RECV_CTR_CUTOFF_TS' => $est_berth_ts,
-            'RECV_CARGO_CUTOFF_TS' => $est_berth_ts,
-            'ACT_DEP_TS' => $est_berth_ts,
-            'AGENT' => $agent,
-            'IS_SIMULATION' => $is_sim,
-            'CRANE' => $crane_string,
-            'BCH' => $bsh,
-            'BSH' => $bsh,
-            'NEXT_PORT' =>$next_port,
-            'DEST_PORT' => $dest_port,
-            'EST_LOAD' => $jum_muat,
-            'EST_DISCHARGE' => $jum_bongkar,
-            'BTOA_SIDE' => $along_side,
-            'INFO' => $info
-        ];
-      
-        if($is_sim == '1' ) {
-            DB::table('TOWER.VESSEL_DETAILS_SIM')
-            ->insert($data_push);
+            $data_update = [
+                'berth_fr_metre' => $param_vess[$i]['berth_fr_ori'],
+                'berth_to_metre' => $param_vess[$i]['berth_to_ori'],
+                'est_berth_ts' => $est_berth_ts,
+                'est_dep_ts' => $est_dep_ts
+            ];
+            $data_push = [
+                'berth_fr_metre' => $param_vess[$i]['berth_fr_ori'],
+                'berth_to_metre' => $param_vess[$i]['berth_to_ori'],
+                'est_berth_ts' => $est_berth_ts,
+                'est_dep_ts' => $est_dep_ts,
+                'ves_id' =>  $ves_id,
+                'ves_name' => $ves_name,
+                'ves_code' => $ves_code,
+                'ocean_interisland' => $occ,
+                'ocean_interisland_fake' => $param_ocean,
+                'EST_ANCHORAGE_TS' =>$est_berth_ts,
+                'ACT_ANCHORAGE_TS' => $est_berth_ts,
+                'EST_PILOT_TS'  => $est_berth_ts,
+                'ACT_PILOT_TS' => $est_berth_ts,
+                'ACT_BERTH_TS' =>$est_berth_ts,
+                'EST_START_WORK_TS' =>$est_berth_ts,
+                'ACT_START_WORK_TS' => $est_berth_ts,
+                'EST_END_WORK_TS' => $est_berth_ts,
+                'ACT_END_WORK_TS' =>$est_berth_ts,
+                'DOCO_CUTOFF_TS' => $est_berth_ts,
+                'RECV_CTR_CUTOFF_TS' => $est_berth_ts,
+                'RECV_CARGO_CUTOFF_TS' => $est_berth_ts,
+                'ACT_DEP_TS' => $est_berth_ts,
+                'AGENT' => $agent,
+                'IS_SIMULATION' => $is_sim,
+                'CRANE' => $crane_string,
+                'BCH' => $bsh,
+                'BSH' => $bsh,
+                'NEXT_PORT' =>$next_port,
+                'DEST_PORT' => $dest_port,
+                'EST_LOAD' => $jum_muat,
+                'EST_DISCHARGE' => $jum_bongkar,
+                'BTOA_SIDE' => $along_side,
+                'WINDOWS' => $windows,
+                'INFO' => $info
+            ];
+          
+            if($is_sim == '1' ) {
+                DB::table('TOWER.VESSEL_DETAILS_SIM')
+                ->insert($data_push);
 
-            
-            for ($a=0 ; $a < count($savecrane); $a++){
                 
-                $data_crane=[
-                    'ves_id' =>  $ves_id,
-                    'che_id' => $savecrane[$a]
-                ];
-            // dump("data crane",$data_crane);
-                DB::table('TOWER.VESSEL_DETAILS_CRANE')
-                ->insert($data_crane);
-            }
-    
+                for ($a=0 ; $a < count($savecrane); $a++){
+                    
+                    $data_crane=[
+                        'ves_id' =>  $ves_id,
+                        'che_id' => $savecrane[$a]
+                    ];
+                // dump("data crane",$data_crane);
+                    DB::table('TOWER.VESSEL_DETAILS_CRANE')
+                    ->insert($data_crane);
+                }
+        
 
-        } else {
-            DB::table('TOWER.VESSEL_DETAILS_SIM')
-            ->where('ves_id', $ves_id)
-            ->update($data_update);
-        }
+            } else {
+                DB::table('TOWER.VESSEL_DETAILS_SIM')
+                ->where('ves_id', $ves_id)
+                ->update($data_update);
+            }
 
 
         //////////////////////////////////////////////////////////
@@ -244,6 +248,13 @@ class Home3Controller extends Controller
 
         // $affected = DB::update($sql);
         }
+
+        Note::whereDate('START_DATE', '>=', date('Y-m-d'))->delete();
+
+        foreach ($param_note as $i => $val) {
+            Note::insert($val);
+        }
+
         return response()->json(["sukses"=> true ]);
        
     }
