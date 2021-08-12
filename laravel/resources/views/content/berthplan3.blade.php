@@ -242,6 +242,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-form-label">Window : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" class ="sideDry" name="windowDry" value="ON_WINDOW"> ON WINDOW
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" class ="sideDry" name="windowDry" value="OFF_WINDOW"> OFF WINDOW
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="infoDry"></textarea>
                                                 </div>
@@ -271,17 +282,12 @@
                                                     <label class="col-form-label">ETD :</label>
                                                     <input id="etD" type="text" class="form-control" disabled>
                                                 </div>
-                                                
-
                                                 <div class="form-group" >
                                                     <label class="col-form-label text-right">CRANE :</label><br>
                                                     <div id="craneCon">
 
                                                     </div>
                                                 </div>
-
-
-
                                                 <div class="form-group">
                                                     <label class="col-form-label">BSH :</label>
                                                     <input id="bsh" type="text" class="form-control" onkeyup="autofillCon()">
@@ -334,6 +340,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-form-label">Window : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" class ="side" name="window" value="ON_WINDOW"> ON WINDOW
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" class ="side" name="window" value="OFF_WINDOW"> OFF WINDOW
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="info"></textarea>
                                                 </div>
@@ -350,7 +367,7 @@
                                 </div><!-- /.modal -->
                                 <!-- Modal end Add Vessel -->
 
-                                <!-- Modal Add Vessel -->
+                                <!-- Modal Edit Vessel -->
                                 <div class="modal fade" id="editVessel" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
@@ -360,8 +377,8 @@
                                       </div>
                                       <div class="modal-body">
                                         <label for="ocean_interisland">Pilih Tipe Kapal :  </label>
-                                          <input type="radio" id="con" class="kapal" name="kapal" value="C" checked > Container</input> 
-                                          <input type="radio" id="dry" class="kapal" name="kapal" value="D"  > Dry Bulk</input> 
+                                          <input type="radio" id="con" class="kapal" name="kapal2" value="C" checked > Container</input> 
+                                          <input type="radio" id="dry" class="kapal" name="kapal2" value="D"  > Dry Bulk</input> 
                                         <br>        
                                         <form>
                                             {{csrf_field()}}
@@ -467,7 +484,7 @@
                                     </div><!-- /.modal-content -->
                                   </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-                                <!-- Modal end Add Vessel -->
+                                <!-- Modal end Edit Vessel -->
 
 
                                 <!-- Modal Edit Customer -->

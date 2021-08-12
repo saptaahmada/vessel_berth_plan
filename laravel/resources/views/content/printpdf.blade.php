@@ -129,15 +129,27 @@
     /* left: 66.5px; */
     left: 222px;
     top: 133px;
-    filter: border:1px solid #ca3433;
+    /* filter: border:1px solid #ca3433; */ 
     /* filter: drop-shadow(3px 3px 5px black); */
-
-
 }
+
+.arsirintern{
+    width: 65px;
+    height: 747px;
+    position: absolute;
+    left: 319.5px;
+    top: 133px;
+    background: #877F7D;   
+    opacity: 0.5;
+    z-index:0;
+}
+
 #domes{
     width: 356.5px;
     height: 747px;
     /* background: #95c8d8;    */
+    /* background: #877F7D;    */
+    /* opacity: 0.2; */
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
@@ -145,6 +157,20 @@
     top: 133px;
 
 }
+.arsirdomes{
+    width: 97.5px;
+    height: 747px;
+    background: #877F7D;   
+    opacity: 0.5;
+    /* border:0.1px solid #ca3433; */
+    position: absolute;
+    /* left: 66.5px; */
+    left: 675px;
+    top: 133px;
+    z-index:0;
+
+}
+
 #curah{
     width: 161.5px;
     height: 747px;
@@ -154,6 +180,22 @@
     /* left: 66.5px; */
     left: 60.5px;
     top: 133px;
+}
+.arsircurah{
+    width: 65px;
+    height: 747px;
+    background: #877F7D;
+    /* background: #ca3433; */
+    opacity: 0.5; 
+    /* border:0.1px solid #ca3433; */
+    position: absolute;
+    /* left: 157.5px; */
+    left :  93px; 
+    /* right: 100px; */
+    /* right: 0px; */
+
+    top: 133px;
+    z-index:0;
 }
 .box{
     background-color:#29e;
@@ -405,6 +447,18 @@ circle2 {
         text-shadow: 1px 1px #313131;
         -webkit-print-color-adjust: exact; 
     }
+    .arsirdomes{
+        color: #877F7D !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .arsirintern{
+        color: #877F7D !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .arsircurah{
+        color: #877F7D !important;
+        -webkit-print-color-adjust: exact; 
+    }
 }
 
 
@@ -462,26 +516,34 @@ circle2 {
 
     ?>
    
-    <img src="{{asset('/img/vessel_print2.png')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" >
+    <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" >
   <!-- <p class=hari>RABU / WEDNESDAY</p> -->
-
-    <div id="intern">
-  
-   
+    <div id="internarsir">
+         <!-- <div class="arsirintern" id="arsirintern"></div> -->
+    </div>
+        <div id="intern">
     
- 
+    
+        
+    
 
 
-        <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
+            <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
+        </div>
+
+    <div id="domesarsir">
+         <!-- <div class="arsirdomes" id="arsirdomes"></div> -->
     </div>
+        <div id="domes">
+        </div>
 
-    <div id="domes">
-      <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
-    </div>
+    <div id="curaharsir">
+         <!-- <div class="arsircurah" id="arsircurah"></div> -->
 
-    <div id="curah">
-        <!-- sas -->
     </div>
+        <div id="curah">
+            <!-- sas -->
+        </div>
 
 
     <div id="tanggal">
@@ -546,6 +608,85 @@ circle2 {
     Load();  
     signature();    
     function Load() {
+        $.ajax({
+            url : "{{route('blokirkade')}}",
+            type : "get",
+            dataType : "json",
+            async : false,
+            success : function(result){
+                blokir_intern = result.blokir_intern;
+                blokir_domes = result.blokir_domes;
+                blokir_curah = result.blokir_curah;
+                panjang_curah = result.panjang_curah[0].param4;
+                
+               
+                
+            //   console.log(panjang_curah);
+                //INTERNATIONAL
+                for (o = 1; o < blokir_intern.length+1; ++o) {
+                    $("#internarsir").append(
+                        '<div class="arsirintern" id="arsirintern'+o+'"></div>'
+                    )
+                }
+
+                for (p = 1; p < blokir_intern.length+1; ++p) {
+                    var realstart= blokir_intern[p-1].param3;
+                    var start = ((blokir_intern[p-1].param3 /10) * 6.5) + 222;
+                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *6.5;
+
+                   $("#arsirintern"+p).css("left", start+"px");
+                   $("#arsirintern"+p).css("width", end+"px");
+
+                }
+
+                // DOMESTIK
+                for (g = 1; g < blokir_domes.length+1; ++g) {
+                    $("#domesarsir").append(
+                        '<div class="arsirdomes" id="arsirdomes'+g+'"></div>'
+                    )
+                }
+                for (e = 1; e < blokir_domes.length+1; ++e) {
+                    var realstartdom= blokir_domes[e-1].param3;
+                    // console.log(realstartdom);
+
+                    var startdom = 0;
+                    var enddom = 0;
+                   
+                    if(realstartdom <= 50){
+                        startdom =  707.5;
+                        enddom = ((blokir_domes[e-1].param4 /10) *6.5)-26;
+                    } else  {
+                        startdom = ((blokir_domes[e-1].param3 /10) * 6.5) + 681.5;
+                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 6.5;
+                    }  
+
+                    $("#arsirdomes"+e).css("left", startdom+"px");
+                    $("#arsirdomes"+e).css("width", enddom+"px");
+
+                }
+
+                
+                // //CURAH
+                for (d = 1; d < blokir_curah.length+1; ++d) {
+                    $("#curaharsir").append(
+                        '<div class="arsircurah" id="arsircurah'+d+'"></div>'
+                    )
+                }
+
+                for (y = 1; y < blokir_curah.length+1; ++y) {
+                    var realstartcur= blokir_curah[y-1].param3;
+                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 6.5) + 60.5;
+                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 6.5) - (startcur - 60.5) ;
+
+                    $("#arsircurah"+y).css("left", startcur+"px");
+                    $("#arsircurah"+y).css("width", endcur+"px");
+                }
+                
+
+
+            }
+        });
+
         $.ajax({  
             url : "{{route('getvessel')}}",
             type : "get",
