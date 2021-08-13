@@ -253,6 +253,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-form-label">Tentatif : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="tentatifDry_yes" class ="tentatifDry" name="tentatifDry" value="1"> Yes
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="tentatifDry_no" class ="tentatifDry" name="tentatifDry" value="2"> No
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="infoDry"></textarea>
                                                 </div>
@@ -347,6 +358,17 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="radio" class ="side" name="window" value="OFF_WINDOW"> OFF WINDOW
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Tentatif : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="tentatif_yes" class ="tentatif" name="tentatif" value="1"> Yes
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="tentatif_no" class ="tentatif" name="tentatif" value="2"> No
                                                         </div>
                                                     </div>
                                                 </div>
@@ -466,6 +488,28 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="radio" id="edit_side_p" class ="edit_side" name="edit_option" value="P"> Port Side
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Window : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="edit_window_on" class ="edit_window" name="edit_window" value="ON_WINDOW"> ON WINDOW
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="edit_window_off" class ="edit_window" name="edit_window" value="OFF_WINDOW"> OFF WINDOW
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Tentatif : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="edit_tentatif_yes" class ="edit_tentatif" name="edit_tentatif" value="1"> Yes
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="edit_tentatif_no" class ="edit_tentatif" name="edit_tentatif" value="2"> No
                                                         </div>
                                                     </div>
                                                 </div>

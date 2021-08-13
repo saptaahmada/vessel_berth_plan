@@ -109,9 +109,9 @@ class Home3Controller extends Controller
         $param_vess = $request->param_vess;
 
         if ($param_vess == null)
-        $count = 0;
+            $count = 0;
         else
-        $count = count($param_vess);
+            $count = count($param_vess);
         $param_ocean =  $request->param_ocean;
         $param_note = $request->param_note;
 
@@ -182,14 +182,9 @@ class Home3Controller extends Controller
                 'ocean_interisland' => $occ,
                 'ocean_interisland_fake' => $param_ocean,
                 'EST_ANCHORAGE_TS' =>$est_berth_ts,
-                'ACT_ANCHORAGE_TS' => $est_berth_ts,
                 'EST_PILOT_TS'  => $est_berth_ts,
-                'ACT_PILOT_TS' => $est_berth_ts,
-                'ACT_BERTH_TS' =>$est_berth_ts,
                 'EST_START_WORK_TS' =>$est_berth_ts,
-                'ACT_START_WORK_TS' => $est_berth_ts,
                 'EST_END_WORK_TS' => $est_berth_ts,
-                'ACT_END_WORK_TS' =>$est_berth_ts,
                 'DOCO_CUTOFF_TS' => $est_berth_ts,
                 'RECV_CTR_CUTOFF_TS' => $est_berth_ts,
                 'RECV_CARGO_CUTOFF_TS' => $est_berth_ts,
@@ -251,9 +246,13 @@ class Home3Controller extends Controller
 
         Note::whereDate('START_DATE', '>=', date('Y-m-d'))->delete();
 
-        foreach ($param_note as $i => $val) {
-            Note::insert($val);
+        if($param_note != null) {
+            foreach ($param_note as $i => $val) {
+                Note::insert($val);
+            }
         }
+
+
 
         return response()->json(["sukses"=> true ]);
        
