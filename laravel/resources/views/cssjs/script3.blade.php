@@ -1,10 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-<!-- start dragable n resizing -->
 <script src="{{asset('asset/js/plugins/select2.full.min.js')}}"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{asset('js/jquery.blockUI.js')}}"></script>
-<!-- <script src="{{asset('asset/js/main.js')}}"></script> -->
-
 
 
 <script>
