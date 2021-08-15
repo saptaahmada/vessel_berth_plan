@@ -63,4 +63,32 @@ class DermagaController extends Controller
     public function json(){
         return DataTables::of(Dermaga::where('PARAM1', 'DERMAGA')->get())->make(true);
     }
+
+    public function getkade()
+    {
+        $all= DB::table('TOWER.VBP_GEN_REF')
+        ->where ('PARAM1', 'DERMAGA')
+        ->get();
+
+        $kadedom = DB::table('TOWER.VBP_GEN_REF')
+        ->where ('PARAM1', 'DERMAGA')
+        ->where ('PARAM2', 'D')
+        ->get('PARAM4');
+        $kadeint = DB::table('TOWER.VBP_GEN_REF')
+        ->where ('PARAM1', 'DERMAGA')
+        ->where ('PARAM2', 'I')
+        ->get('PARAM4');
+        $kadecur = DB::table('TOWER.VBP_GEN_REF')
+        ->where ('PARAM1', 'DERMAGA')
+        ->where ('PARAM2', 'C')
+        ->get('PARAM4');
+        
+        $kade = [
+                    'all' => $all,
+                    'dom' => $kadedom,
+                    'int' => $kadeint,
+                    'cur' => $kadecur,
+                ];
+        return response()->json($kade);
+    }
 }

@@ -48,6 +48,8 @@ class LoginController extends Controller
                 session(['email'=> $response->EMAIL]);
                 session(['hp'=> $response->HP]);
                 return redirect('/role');
+            } else if ($response->responType == "E-010"){
+                return redirect('/')->with('message', 'Akses Anda Telah Diblokir!!');
             } else {
                 return redirect('/')->with('message', 'Username atau Password salah');
             }

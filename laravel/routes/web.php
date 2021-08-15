@@ -43,10 +43,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
         return view('content.dashboard');
     });
    
-    Route::get('/Monitoring', function () {
-        return view('content.berthplan2');
-    });
-    Route::post('/Monitoring/proses',  'MonitorController@proses')->name('monitoringproses');
+  
 
     Route::get('/VesselBerthPlan', 'HomeController@parkingbackup')->name('vessel'); 
     Route::get('/VesselBerthPlan/getvessel', 'HomeController@getvessel')->name('getvessel');
@@ -56,6 +53,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan/getcrane', 'HomeController@getcrane')->name('getcrane');
     Route::get('/VesselBerthPlan/getport', 'HomeController@getport')->name('getport');
     Route::get('/VesselBerthPlan/getsignature', 'HomeController@getsignature')->name('getsignature');
+    
     
     Route::get('/VesselBerthPlan_Logo','HomeController@logo')->name('logo');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','HomeController@updatelogo')->name('updatelogo');
@@ -68,6 +66,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan3/getcrane', 'Home3Controller@getcrane')->name('getcrane3');
     Route::get('/VesselBerthPlan3/getport', 'Home3Controller@getport')->name('getport3');
     Route::get('/VesselBerthPlan3/getsignature', 'Home3Controller@getsignature')->name('getsignature3');
+    Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     
     Route::get('/VesselBerthPlan_Logo','Home3Controller@logo')->name('logo3');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
@@ -100,10 +99,14 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     
     Route::get('/print','HomeController@print')->name('print');
     Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');
-
     Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
 
+    Route::get('/Monitoring', function () {
+        return view('content.monitoring');
+    });
+    Route::post('/Monitoring/proses',  'MonitorController@proses')->name('monitoringproses');
 
+    
     Route::get('/logout',  'LoginController@logout')->name('logout');
     
 });
