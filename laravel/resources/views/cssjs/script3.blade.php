@@ -565,7 +565,7 @@ function reloadAll() {
         // var rand = colors[Math.floor(Math.random() * colors.length)];
         var btoa = vessel[i-1].btoa_side;
 
-        if(vessel[i-1].act_dep_ts != null) {
+        if(vessel[i-1].act_berth_ts != null) {
             rand = getColor(0);
         } else if(vessel[i-1].tentatif == "1") {
             rand = getColor(1);
@@ -695,7 +695,7 @@ function loadAll(ocean) {
 
                 var btoa = vessel[i-1].btoa_side;
 
-                if(vessel[i-1].act_dep_ts != null) {
+                if(vessel[i-1].act_berth_ts != null) {
                     rand = getColor(0);
                 } else if(vessel[i-1].tentatif == "1") {
                     rand = getColor(1);
