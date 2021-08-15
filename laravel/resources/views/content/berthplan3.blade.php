@@ -175,7 +175,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="etDDry" type="text" class="form-control" disabled>
+                                                    <input id="etDDry" type="datetime-local" class="form-control" disabled>
                                                 </div>
                                                 
 
@@ -259,7 +259,7 @@
                                                             <input type="radio" id="tentatifDry_yes" class ="tentatifDry" name="tentatifDry" value="1"> Yes
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="tentatifDry_no" class ="tentatifDry" name="tentatifDry" value="2"> No
+                                                            <input type="radio" id="tentatifDry_no" class ="tentatifDry" name="tentatifDry" value="0"> No
                                                         </div>
                                                     </div>
                                                 </div>
@@ -291,7 +291,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="etD" type="text" class="form-control" disabled>
+                                                    <input id="etD" type="datetime-local" class="form-control" disabled>
                                                 </div>
                                                 <div class="form-group" >
                                                     <label class="col-form-label text-right">CRANE :</label><br>
@@ -368,7 +368,7 @@
                                                             <input type="radio" id="tentatif_yes" class ="tentatif" name="tentatif" value="1"> Yes
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="tentatif_no" class ="tentatif" name="tentatif" value="2"> No
+                                                            <input type="radio" id="tentatif_no" class ="tentatif" name="tentatif" value="0"> No
                                                         </div>
                                                     </div>
                                                 </div>
@@ -428,9 +428,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="edit_etd" type="text" class="form-control" disabled>
+                                                    <input id="edit_etd" type="datetime-local" class="form-control" disabled>
                                                 </div>
-                                                
 
                                                 <div class="form-group" >
                                                     <label class="col-form-label text-right">CRANE :</label><br>
@@ -509,7 +508,7 @@
                                                             <input type="radio" id="edit_tentatif_yes" class ="edit_tentatif" name="edit_tentatif" value="1"> Yes
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="edit_tentatif_no" class ="edit_tentatif" name="edit_tentatif" value="2"> No
+                                                            <input type="radio" id="edit_tentatif_no" class ="edit_tentatif" name="edit_tentatif" value="0"> No
                                                         </div>
                                                     </div>
                                                 </div>

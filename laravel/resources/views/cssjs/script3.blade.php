@@ -1,10 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-<!-- start dragable n resizing -->
 <script src="{{asset('asset/js/plugins/select2.full.min.js')}}"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{asset('js/jquery.blockUI.js')}}"></script>
-<!-- <script src="{{asset('asset/js/main.js')}}"></script> -->
-
 
 
 <script>
@@ -27,11 +24,14 @@
                 dataType : "json",
                 async : false,
                 success : function(result){
+                    $("#vessel2").append('<option  name="next" value="">-- PILIH VESSEL --</option>');  
+                    $("#vessel3").append('<option  name="next" value="">-- PILIH VESSEL --</option>');
+
                     for (d = 1; d < result.Con.length+1; ++d) {
-                        $("#vessel2").append('<option  name="vesnam" value="'+result.Con[d-1].ves_id+'">'+result.Con[d-1].ves_code+' - '+result.Con[d-1].ves_name+' ('+result.Con[d-1].ves_type_name+')</option>');  
+                        $("#vessel2").append('<option  value="'+result.Con[d-1].ves_id+'">'+result.Con[d-1].ves_code+' - '+result.Con[d-1].ves_name+' ('+result.Con[d-1].ves_type_name+')</option>');  
                     }
                     for (p = 1; p < result.Dry.length+1; ++p) {
-                        $("#vessel3").append('<option  name="vesnam" value="'+result.Dry[p-1].ves_id+'">'+result.Dry[p-1].ves_code+' - '+result.Dry[p-1].ves_name+' ('+result.Dry[p-1].ves_type_name+')</option>');  
+                        $("#vessel3").append('<option  value="'+result.Dry[p-1].ves_id+'">'+result.Dry[p-1].ves_code+' - '+result.Dry[p-1].ves_name+' ('+result.Dry[p-1].ves_type_name+')</option>');  
                     }
                 }
             });
@@ -334,7 +334,7 @@ function borang(param) {
 function getColor(param) {
     var green = '#a9d18e';
     var blue = '#9dc3e6';
-    var yellow = '#FFC312';
+    var yellow = '#ffe699';
 
     if(param == 0)
         return green;
@@ -415,9 +415,9 @@ function autofillCon() {
    
     if (!isNaN(estimasimenit)) {
         if($("#con").is(':checked'))
-            document.getElementById('etD').value = newdateoutCon;
+            document.getElementById('etD').value = newdateoutCon.replace(" ", "T");
         else
-            document.getElementById('etDDry').value = newdateoutCon;
+            document.getElementById('etDDry').value = newdateoutCon.replace(" ", "T");
     } else{
         document.getElementById('etD').value = "";
     }
@@ -512,9 +512,9 @@ function reloadAll() {
         var crane_vess =  vessel[i-1].crane;
         var uncrane=[];
         if (crane_vess==null)
-        uncrane=[];
+            uncrane=[];
         else
-        uncrane = crane_vess.split(',');
+            uncrane = crane_vess.split(',');
 
         var craneloopload = "";
         for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
@@ -538,14 +538,14 @@ function reloadAll() {
                     '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
                     '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
                     '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
-                    '<div style="margin:1px;">LOAD BOX : '+vessel[i-1].load_act+'/'+vessel[i-1].load_plan+' => '+vessel[i-1].load_remain+'</div>'+
-                    '<div style="margin:1px;">DISC BOX : '+vessel[i-1].disc_act+'/'+vessel[i-1].disc_plan+' => '+vessel[i-1].disc_remain+'</div>'+
-                    (parseInt(vessel[i-1].time_remain)>0? '<div style="margin:1px;">Est End Work : '+vessel[i-1].est_end_date+'</div>':'')+
-                    (parseInt(vessel[i-1].time_remain)>0? '<div style="margin:1px;">Est Done : '+vessel[i-1].time_remain_label+' left</div>':'')+
+                    (vessel[i-1].load_act != null ? '<div style="margin:1px;">LOAD BOX : '+vessel[i-1].load_act+'/'+vessel[i-1].load_plan+' => '+vessel[i-1].load_remain+'</div>' : '')+
+                    (vessel[i-1].disc_act != null ? '<div style="margin:1px;">DISC BOX : '+vessel[i-1].disc_act+'/'+vessel[i-1].disc_plan+' => '+vessel[i-1].disc_remain+'</div>' : '')+
+                    (vessel[i-1].time_remain != null ? (parseInt(vessel[i-1].time_remain)>0? '<div style="margin:1px;">Est End Work : '+vessel[i-1].est_end_date+'</div>':'') : '')+
+                    (vessel[i-1].time_remain != null ? (parseInt(vessel[i-1].time_remain)>0? '<div style="margin:1px;">Est Done : '+vessel[i-1].time_remain_label+' left</div>':'') : '')+
                     '<div style="margin:1px;">WINDOW : '+windo+'</div>'+
                     '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
                     '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
-                    '<div style="margin:1px;">INFO : '+vessel[i-1].info+'</div>'+
+                    (vessel[i-1].info!=null?'<div class="INFO_'+(i-1)+'">INFO :'+vessel[i-1].info+'</div>':'')+
                     ' <circle><span class="kade_box_'+i+'">'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
                     craneloopload+
                 '</div>'+
@@ -565,7 +565,7 @@ function reloadAll() {
         // var rand = colors[Math.floor(Math.random() * colors.length)];
         var btoa = vessel[i-1].btoa_side;
 
-        if(vessel[i-1].act_dep_ts != null) {
+        if(vessel[i-1].act_berth_ts != null) {
             rand = getColor(0);
         } else if(vessel[i-1].tentatif == "1") {
             rand = getColor(1);
@@ -681,7 +681,7 @@ function loadAll(ocean) {
                             '<div style="margin:1px;">WINDOW : '+windo+'</div>'+
                             '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
                             '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
-                            '<div style="margin:1px;">INFO : '+vessel[i-1].info+'</div>'+
+                            (vessel[i-1].info!=null?'<div class="INFO_'+(i-1)+'">INFO :'+vessel[i-1].info+'</div>':'')+
                             ' <circle><span class="kade_box_'+i+'">'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
                             craneloopload+
                         '</div>'+
@@ -695,7 +695,7 @@ function loadAll(ocean) {
 
                 var btoa = vessel[i-1].btoa_side;
 
-                if(vessel[i-1].act_dep_ts != null) {
+                if(vessel[i-1].act_berth_ts != null) {
                     rand = getColor(0);
                 } else if(vessel[i-1].tentatif == "1") {
                     rand = getColor(1);
@@ -779,6 +779,11 @@ function toEdit(index) {
     $('#edit_start').val(vees.berth_fr_metre_ori);
     $('#edit_end').val(vees.berth_to_metre_ori);
     $('.edit_window').val(vees.windows);
+
+    if(vees.windows == "ON_WINDOW")
+        $('#edit_window_on').attr('checked', 'checked');
+    if(vees.windows == "OFF_WINDOW")
+        $('#edit_window_off').attr('checked', 'checked');
 
     if(vees.tentatif == "1")
         $('#edit_tentatif_yes').attr('checked', 'checked');
@@ -1094,7 +1099,49 @@ function addvessel(){
                                 $("#img"+(vessel.length+1)).css("padding-right", "20px");
                                 $("#img"+(vessel.length+1)).css("padding-top", "5px");
                                 $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
-                                vessel.push({ves_type:ves_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,est_discharge:jum_bongkar,est_load:jum_muat,btoa_side:along_side ,crane:crane2, agent:agent, agent_name:agent_name,image:img,ves_id: vessdumm, ves_name:nama, ocean_interisland:ocean_ori,ves_code:vess_code, is_simulation:"1",windows:windows, tentatif:tentatif, est_berth_ts:etBout, est_dep_ts:etDout, req_berth_ts:rbTout, est_pilot_ts:etAout });
+                                vessel.push({
+                                    ves_type:ves_type,
+                                    info:info,
+                                    bsh:bsh,
+                                    next_port:next_port,
+                                    dest_port:dest_port,
+                                    est_discharge:jum_bongkar,
+                                    est_load:jum_muat,
+                                    btoa_side:along_side,
+                                    crane:crane2,
+                                    agent:agent,
+                                    agent_name:agent_name,
+                                    image:img,
+                                    ves_id: vessdumm,
+                                    ves_name:nama,
+                                    ocean_interisland:ocean_ori,
+                                    ves_code:vess_code,
+                                    is_simulation:"1",
+                                    windows:windows,
+                                    tentatif:tentatif,
+                                    load_act:null,
+                                    load_plan:null,
+                                    load_remain:null,
+                                    disc_act:null,
+                                    disc_plan:null,
+                                    disc_remain:null,
+                                    time_remain:null,
+                                    time_remain_label:null,
+                                    est_end_date:null,
+                                    berth_fr_metre:kade_start*2,
+                                    berth_to_metre:kade_to*2,
+                                    berth_fr_metre_ori:kade_start,
+                                    berth_to_metre_ori:kade_to,
+                                    width:width,
+                                    width_ori:width_ves,
+                                    y_awal:y_awal_etb,
+                                    y_akhir:y_awal_etb+y_akhir_etd,
+                                    height:y_akhir_etd,
+                                    est_berth_ts:etBout,
+                                    est_dep_ts:etDout,
+                                    req_berth_ts:rbTout,
+                                    est_pilot_ts:etAout 
+                                });
                                 cok.push(id_vess);
                                 crane = [];
                                 console.log("Add vess P",vessel);
@@ -1115,7 +1162,49 @@ function addvessel(){
 
                                 $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
 
-                                vessel.push({ves_type:ves_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,est_discharge:jum_bongkar,est_load:jum_muat,btoa_side:along_side ,crane:crane2, agent:agent, agent_name:agent_name,image:img,ves_id: vessdumm, ves_name:nama, ocean_interisland:ocean_ori,ves_code:vess_code, is_simulation:"1",windows:windows, tentatif:tentatif, est_berth_ts:etBout, est_dep_ts:etDout, req_berth_ts:rbTout, est_pilot_ts:etAout});
+                                vessel.push({
+                                    ves_type:ves_type,
+                                    info:info,
+                                    bsh:bsh,
+                                    next_port:next_port,
+                                    dest_port:dest_port,
+                                    est_discharge:jum_bongkar,
+                                    est_load:jum_muat,
+                                    btoa_side:along_side,
+                                    crane:crane2,
+                                    agent:agent,
+                                    agent_name:agent_name,
+                                    image:img,
+                                    ves_id: vessdumm,
+                                    ves_name:nama,
+                                    ocean_interisland:ocean_ori,
+                                    ves_code:vess_code,
+                                    is_simulation:"1",
+                                    windows:windows,
+                                    tentatif:tentatif,
+                                    load_act:null,
+                                    load_plan:null,
+                                    load_remain:null,
+                                    disc_act:null,
+                                    disc_plan:null,
+                                    disc_remain:null,
+                                    time_remain:null,
+                                    time_remain_label:null,
+                                    est_end_date:null,
+                                    berth_fr_metre:kade_start*2,
+                                    berth_to_metre:kade_to*2,
+                                    berth_fr_metre_ori:kade_start,
+                                    berth_to_metre_ori:kade_to,
+                                    width:width,
+                                    width_ori:width_ves,
+                                    y_awal:y_awal_etb,
+                                    y_akhir:y_awal_etb+y_akhir_etd,
+                                    height:y_akhir_etd,
+                                    est_berth_ts:etBout,
+                                    est_dep_ts:etDout,
+                                    req_berth_ts:rbTout,
+                                    est_pilot_ts:etAout
+                                });
                                 cok.push(id_vess);
                                 crane = [];
                                 console.log("Add vess S",vessel);
@@ -1155,8 +1244,10 @@ function editvessel() {
     });
 
     vees.crane = arr_crane.join();
-    vees.est_pilot_ts   = $('#edit_eta').val().replace('T', ' ')+":00";
-    vees.req_berth_ts     = $('#edit_eta').val().replace('T', ' ')+":00";
+    vees.est_pilot_ts   = $('#edit_eta').val() != null && $('#edit_eta').val() != '' ? 
+                            $('#edit_eta').val().replace('T', ' ')+":00" : '';
+    vees.req_berth_ts   = $('#edit_rbt').val() != null && $('#edit_rbt').val() != '' ? 
+                            $('#edit_rbt').val().replace('T', ' ')+":00" : '';
     vees.est_berth_ts   = $('#edit_etb').val().replace('T', ' ')+":00";
     vees.est_dep_ts     = $('#edit_etd').val().replace('T', ' ')+":00";
     vees.ves_id         = $('#edit_vessel').val();
@@ -1193,8 +1284,8 @@ function editvessel() {
     var crane_string="";
     
     vessid = document.getElementById("edit_vessel").value;
-    etA = document.getElementById("edit_eta").value.replace("T", " "); 
-    rbT = document.getElementById("edit_rbt").value.replace("T", " ");
+    etA = document.getElementById("edit_eta").value; 
+    rbT = document.getElementById("edit_rbt").value;
     etB = document.getElementById("edit_etb").value; 
     etD = document.getElementById("edit_etd").value;
 
@@ -1693,42 +1784,42 @@ function updatebox() {
     cok = ["0"];
 
 
-    for (i = 1; i < count+1 ; ++i){
+    // for (i = 1; i < count+1 ; ++i){
         
-        var height =  parseInt($('#box'+i).css('height')) ;
-        var top =  parseInt($('#box'+i).css('top')); // Y.Awal
-        var width_ori =  parseInt($('#box'+i).css('width'))/2;
-        var width =  parseInt($('#box'+i).css('width'));
-        var left =  parseInt($('#box'+i).css('left'));
-        var ves_id = vessel[i-1].ves_id; //ves_id yang ada di planning
-        // var ves_id_master = dermaga[i-1].ves_id //ves_id yang ada di master
-        var berth_to_ori = (width+left)/2;
-        var berth_fr_ori = left/2;
-        var y_awal = top;
-        var y_akhir = top + height;
-        var est_berth_ts = vessel[i-1].est_berth_ts;
-        var occ = vessel[i-1].ocean_interisland;
-        var name = vessel[i-1].ves_name;
-        var code = vessel[i-1].ves_code;
-        var img = vessel[i-1].image;
-        var agent = vessel[i-1].agent;
-        var is_simulation= vessel[i-1].is_simulation;
-        var crane2=vessel[i-1].crane;
-        var bsh = vessel[i-1].bsh;
-        var next_port = vessel[i-1].next_port;
-        var dest_port = vessel[i-1].dest_port;
-        var jum_bongkar = vessel[i-1].est_discharge;
-        var jum_muat = vessel[i-1].est_load;
-        var along_side = vessel[i-1].btoa_side;
-        var windows = vessel[i-1].windows;
+    //     var height =  parseInt($('#box'+i).css('height')) ;
+    //     var top =  parseInt($('#box'+i).css('top')); // Y.Awal
+    //     var width_ori =  parseInt($('#box'+i).css('width'))/2;
+    //     var width =  parseInt($('#box'+i).css('width'));
+    //     var left =  parseInt($('#box'+i).css('left'));
+    //     var ves_id = vessel[i-1].ves_id; //ves_id yang ada di planning
+    //     // var ves_id_master = dermaga[i-1].ves_id //ves_id yang ada di master
+    //     var berth_to_ori = (width+left)/2;
+    //     var berth_fr_ori = left/2;
+    //     var y_awal = top;
+    //     var y_akhir = top + height;
+    //     var est_berth_ts = vessel[i-1].est_berth_ts;
+    //     var occ = vessel[i-1].ocean_interisland;
+    //     var name = vessel[i-1].ves_name;
+    //     var code = vessel[i-1].ves_code;
+    //     var img = vessel[i-1].image;
+    //     var agent = vessel[i-1].agent;
+    //     var is_simulation= vessel[i-1].is_simulation;
+    //     var crane2=vessel[i-1].crane;
+    //     var bsh = vessel[i-1].bsh;
+    //     var next_port = vessel[i-1].next_port;
+    //     var dest_port = vessel[i-1].dest_port;
+    //     var jum_bongkar = vessel[i-1].est_discharge;
+    //     var jum_muat = vessel[i-1].est_load;
+    //     var along_side = vessel[i-1].btoa_side;
+    //     var windows = vessel[i-1].windows;
 
-        var info = vessel[i-1].info;
-        var vess_type = vessel[i-1].ves_type;
+    //     var info = vessel[i-1].info;
+    //     var vess_type = vessel[i-1].ves_type;
         
         
         
-        top_arr.push({ves_type:vess_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,jum_bongkar:jum_bongkar,jum_muat:jum_muat,along_side:along_side,crane:crane2,is_simulation:is_simulation, agent:agent,height:height,y_awal:y_awal,y_akhir:y_akhir, top:top, width:width, left:left, ves_id:ves_id,berth_to_ori:berth_to_ori, berth_fr_ori:berth_fr_ori, est_berth_ts: est_berth_ts, occ:occ, name:name, code:code,windows:windows});
-    }
+    //     top_arr.push({ves_type:vess_type,info:info,bsh:bsh,next_port:next_port,dest_port:dest_port,jum_bongkar:jum_bongkar,jum_muat:jum_muat,along_side:along_side,crane:crane2,is_simulation:is_simulation, agent:agent,height:height,y_awal:y_awal,y_akhir:y_akhir, top:top, width:width, left:left, ves_id:ves_id,berth_to_ori:berth_to_ori, berth_fr_ori:berth_fr_ori, est_berth_ts: est_berth_ts, occ:occ, name:name, code:code,windows:windows});
+    // }
 
     count_note = $('.box_note').length;
     var arr_note = [];
@@ -1772,7 +1863,7 @@ function updatebox() {
             data: {
             "_token": "{{ csrf_token() }}",
             // param_id:ves_id,
-            param_vess:top_arr,
+            param_vess:vessel,
             param_ocean : thisocean,
             param_crane : crane,
             param_note : arr_note
