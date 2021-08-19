@@ -43,15 +43,24 @@
                         <button type="button" class="btn ripple-infinite btn-round btn-3d btn-primary"  data-toggle="modal" data-target="#addVessel" style='margin:10px;'>
                         Add Vessel
                         </button>
-                        <button type="button" class="btn ripple-infinite btn-round btn-3d btn-info"  data-toggle="modal" data-target="#modal_note" style='margin:10px;'>
+                        <button type="button" class="btn ripple-infinite btn-round btn-3d btn-info"  data-toggle="modal" data-target="#vessel_unregistered" style='margin:10px;'>
+                        Add Vessel Unregistered
+                        </button>
+                        <button type="button" class="btn ripple-infinite btn-round btn-3d btn-danger"  data-toggle="modal" data-target="#modal_note" style='margin:10px;'>
                         Add Note
                         </button>
-                        <button type="button"  id="saveupdate" class="btn ripple-infinite btn-round btn-3d btn-success" onclick="setTimeout('updatebox()', 1000)" data-toggle="modal" data-target="#" style='margin:10px;'>
+                        <button type="button"  id="saveupdate" class="btn ripple-infinite btn-round btn-3d btn-success" onclick="setTimeout('saveBox()', 1000)" data-toggle="modal" data-target="#" style='margin:10px;'>
                         Save Berthing Plan
                         </button>
                         <button type="button" class="btn ripple-infinite btn-round btn-3d btn-warning"  data-toggle="modal" data-target="#modal_print" style='margin:10px;'>
                         Print Berthing Plan
                         </button>
+                        <div>
+                            <input type="checkbox" name="cb_collision" id="cb_collision"> Vessel tumpuk diperbolehkan
+                        </div>
+                        <div>
+                            <input type="checkbox" name="cb_distance_vessel" id="cb_distance_vessel"> Tampilkan jarak antar kapal waktu dragging
+                        </div>
                         <br>
                         <br>
 
@@ -234,7 +243,7 @@
                                                     <label class="col-form-label">Along Side : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="optionDry" value="S"> Star Board
+                                                            <input type="radio" class ="sideDry" name="optionDry" value="S" checked=""> Star Board
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="radio" class ="sideDry" name="optionDry" value="P"> Port Side
@@ -245,10 +254,10 @@
                                                     <label class="col-form-label">Window : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="windowDry" value="ON_WINDOW"> ON WINDOW
+                                                            <input type="radio" class ="sideDry" name="windowDry" value="1" checked=""> ON WINDOW
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="windowDry" value="OFF_WINDOW"> OFF WINDOW
+                                                            <input type="radio" class ="sideDry" name="windowDry" value="0"> OFF WINDOW
                                                         </div>
                                                     </div>
                                                 </div>
@@ -256,7 +265,7 @@
                                                     <label class="col-form-label">Tentatif : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="tentatifDry_yes" class ="tentatifDry" name="tentatifDry" value="1"> Yes
+                                                            <input type="radio" id="tentatifDry_yes" class ="tentatifDry" name="tentatifDry" value="1" checked=""> Yes
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="radio" id="tentatifDry_no" class ="tentatifDry" name="tentatifDry" value="0"> No
@@ -301,7 +310,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">BSH :</label>
-                                                    <input id="bsh" type="text" class="form-control" onkeyup="autofillCon()">
+                                                    <input id="bsh" type="number" class="form-control" onkeyup="autofillCon()">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
@@ -343,7 +352,7 @@
                                                     <label class="col-form-label">Along Side : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" class ="side" name="option" value="S"> Star Board
+                                                            <input type="radio" class ="side" name="option" value="S" checked=""> Star Board
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="radio" class ="side" name="option" value="P"> Port Side
@@ -354,10 +363,10 @@
                                                     <label class="col-form-label">Window : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" class ="side" name="window" value="ON_WINDOW"> ON WINDOW
+                                                            <input type="radio" class ="window" name="window" value="1" checked=""> ON WINDOW
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="radio" class ="side" name="window" value="OFF_WINDOW"> OFF WINDOW
+                                                            <input type="radio" class ="window" name="window" value="0"> OFF WINDOW
                                                         </div>
                                                     </div>
                                                 </div>
@@ -365,7 +374,7 @@
                                                     <label class="col-form-label">Tentatif : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="tentatif_yes" class ="tentatif" name="tentatif" value="1"> Yes
+                                                            <input type="radio" id="tentatif_yes" class ="tentatif" name="tentatif" value="1" checked=""> Yes
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <input type="radio" id="tentatif_no" class ="tentatif" name="tentatif" value="0"> No
@@ -398,9 +407,10 @@
                                         <h4 class="modal-title">Edit Vessel</h4>
                                       </div>
                                       <div class="modal-body">
-                                        <label for="ocean_interisland">Pilih Tipe Kapal :  </label>
-                                          <input type="radio" id="con" class="kapal" name="kapal2" value="C" checked > Container</input> 
-                                          <input type="radio" id="dry" class="kapal" name="kapal2" value="D"  > Dry Bulk</input> 
+                                        <label for="ocean_interisland">Pilih Tipe Dermaga :  </label>
+                                          <input type="radio" id="edit_tipe_dermaga_d" class="edit_tipe_dermaga" name="edit_tipe_dermaga" value="D"> Domestik</input> 
+                                          <input type="radio" id="edit_tipe_dermaga_i" class="edit_tipe_dermaga" name="edit_tipe_dermaga" value="I"> Internasional</input>
+                                          <input type="radio" id="edit_tipe_dermaga_c" class="edit_tipe_dermaga" name="edit_tipe_dermaga" value="C"> Dry Bulk</input>
                                         <br>        
                                         <form>
                                             {{csrf_field()}}
@@ -424,7 +434,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETB :</label>
-                                                    <input id="edit_etb" type="datetime-local"  onchange="autofillCon()" class="form-control" required>
+                                                    <input id="edit_etb" type="datetime-local" class="form-control" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
@@ -440,7 +450,7 @@
 
                                                 <div class="form-group">
                                                     <label class="col-form-label">BSH :</label>
-                                                    <input id="edit_bsh" type="text" class="form-control" onkeyup="autofillCon()">
+                                                    <input id="edit_bsh" type="number" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
@@ -458,17 +468,17 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">Jumlah Bongkar : </label>
-                                                    <input id="edit_bongkar" type="number" class="form-control" onkeyup="autofillCon()">
+                                                    <input id="edit_disc" type="number" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">Jumlah Muat : </label>
-                                                    <input id="edit_muat" type="number" class="form-control" onkeyup="autofillCon()">
+                                                    <input id="edit_load" type="number" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">Kade Meter : </label>
                                                     <div class="row">
                                                         <div class= "col-sm-5">
-                                                            <input id="edit_start" placeholder="Start" type="number" class="form-control" onkeyup="autofillCon();" required>  
+                                                            <input id="edit_start" placeholder="Start" type="number" class="form-control" required>  
                                                         </div>
                                                         <div class= "col-sm-2" style = "margin-left: auto; margin-right: auto;" >
                                                             TO
@@ -494,10 +504,10 @@
                                                     <label class="col-form-label">Window : </label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="edit_window_on" class ="edit_window" name="edit_window" value="ON_WINDOW"> ON WINDOW
+                                                            <input type="radio" id="edit_window_on" class ="edit_window" name="edit_window" value="1"> ON WINDOW
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <input type="radio" id="edit_window_off" class ="edit_window" name="edit_window" value="OFF_WINDOW"> OFF WINDOW
+                                                            <input type="radio" id="edit_window_off" class ="edit_window" name="edit_window" value="0"> OFF WINDOW
                                                         </div>
                                                     </div>
                                                 </div>
@@ -529,6 +539,140 @@
                                 </div><!-- /.modal -->
                                 <!-- Modal end Edit Vessel -->
 
+
+                                <div class="modal fade" id="vessel_unregistered" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Add Vessel</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <label for="ocean_interisland">Pilih Tipe Kapal :  </label>
+                                          <input type="radio" id="con" class="kapal" name="kapal2" value="C" checked > Container</input> 
+                                          <input type="radio" id="dry" class="kapal" name="kapal2" value="D"  > Dry Bulk</input>
+                                        <br>
+                                        <form>
+                                            {{csrf_field()}}
+
+                                            <div id="formCon" >
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Vessel Name: </label>
+                                                    <input id="unreg_vessel_name" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Vessel Length : </label>
+                                                    <input id="unreg_loa" type="number" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">ETA : </label>
+                                                    <input id="unreg_eta" type="datetime-local" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">RBT </label>
+                                                    <input id="unreg_rbt" type="datetime-local" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">ETB :</label>
+                                                    <input id="unreg_etb" type="datetime-local" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">ETD :</label>
+                                                    <input id="unreg_etd" type="datetime-local" class="form-control" disabled>
+                                                </div>
+                                                <div class="form-group" >
+                                                    <label class="col-form-label text-right">CRANE :</label><br>
+                                                    <div id="unreg_crane">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-form-label">BSH :</label>
+                                                    <input id="unreg_bsh" type="number" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">NEXT PORT :</label>
+                                                    <select  id="unreg_nextp" class="form-control">
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">DEST PORT : </label>
+                                                    <select  id="unreg_deshp" class="form-control">
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Jumlah Bongkar : </label>
+                                                    <input id="unreg_disc" type="number" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Jumlah Muat : </label>
+                                                    <input id="unreg_load" type="number" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Kade Meter : </label>
+                                                    <div class="row">
+                                                        <div class= "col-sm-5">
+                                                            <input id="unreg_start" placeholder="Start" type="number" class="form-control" required>  
+                                                        </div>
+                                                        <div class= "col-sm-2" style = "margin-left: auto; margin-right: auto;" >
+                                                            TO
+                                                        </div>
+                                                        <div class= "col-sm-5">
+                                                            <input id="unreg_end" placeholder="End" type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Along Side : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="unreg_side_s" class ="unreg_side" name="unreg_option" value="S"> Star Board
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="unreg_side_p" class ="unreg_side" name="unreg_option" value="P"> Port Side
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Window : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="unreg_window_on" class ="unreg_window" name="unreg_window" value="1"> ON WINDOW
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="unreg_window_off" class ="unreg_window" name="unreg_window" value="0"> OFF WINDOW
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Tentatif : </label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="unreg_tentatif_yes" class ="unreg_tentatif" name="unreg_tentatif" value="1"> Yes
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="radio" id="unreg_tentatif_no" class ="unreg_tentatif" name="unreg_tentatif" value="0"> No
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Info : </label>
+                                                    <textarea style="resize: none;" rows="5" class="form-control" id="unreg_info"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                        </form>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="eraseTextModalContainer();">Close</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="unregvessel();" >Add Vessel</button>
+                                      </div>
+                                    </div><!-- /.modal-content -->
+                                  </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                                <!-- Modal end Edit Vessel -->
 
                                 <!-- Modal Edit Customer -->
 

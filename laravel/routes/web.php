@@ -43,31 +43,30 @@ Route::group(['middleware'=> 'CekLogin'],function(){
         return view('content.dashboard');
     });
    
-    Route::get('/Monitoring', function () {
-        return view('content.berthplan2');
-    });
-    Route::post('/Monitoring/proses',  'MonitorController@proses')->name('monitoringproses');
+  
 
-    Route::get('/VesselBerthPlan', 'HomeController@parkingbackup')->name('vessel'); 
-    Route::get('/VesselBerthPlan/getvessel', 'HomeController@getvessel')->name('getvessel');
-    Route::post('/VesselBerthPlan/addvessel', 'HomeController@addvessel')->name('addvessel');
-    Route::get('/VesselBerthPlan/getdermaga', 'HomeController@getdermaga')->name('getdermaga');
-    Route::post('/VesselBerthPlan/updatevessel', 'HomeController@updatevessel')->name('updatevessel');
-    Route::get('/VesselBerthPlan/getcrane', 'HomeController@getcrane')->name('getcrane');
-    Route::get('/VesselBerthPlan/getport', 'HomeController@getport')->name('getport');
-    Route::get('/VesselBerthPlan/getsignature', 'HomeController@getsignature')->name('getsignature');
+    // Route::get('/VesselBerthPlan', 'HomeController@parkingbackup')->name('vessel'); 
+    // Route::get('/VesselBerthPlan/getvessel', 'HomeController@getvessel')->name('getvessel');
+    // Route::post('/VesselBerthPlan/addvessel', 'HomeController@addvessel')->name('addvessel');
+    // Route::get('/VesselBerthPlan/getdermaga', 'HomeController@getdermaga')->name('getdermaga');
+    // Route::post('/VesselBerthPlan/updatevessel', 'HomeController@updatevessel')->name('updatevessel');
+    // Route::get('/VesselBerthPlan/getcrane', 'HomeController@getcrane')->name('getcrane');
+    // Route::get('/VesselBerthPlan/getport', 'HomeController@getport')->name('getport');
+    // Route::get('/VesselBerthPlan/getsignature', 'HomeController@getsignature')->name('getsignature');
+    
     
     Route::get('/VesselBerthPlan_Logo','HomeController@logo')->name('logo');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','HomeController@updatelogo')->name('updatelogo');
 
-    Route::get('/VesselBerthPlan3', 'Home3Controller@parkingbackup')->name('vessel3'); 
-    Route::get('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel3');
-    Route::post('/VesselBerthPlan3/addvessel', 'Home3Controller@addvessel')->name('addvessel3');
-    Route::get('/VesselBerthPlan3/getdermaga', 'Home3Controller@getdermaga')->name('getdermaga3');
-    Route::post('/VesselBerthPlan3/updatevessel', 'Home3Controller@updatevessel')->name('updatevessel3');
-    Route::get('/VesselBerthPlan3/getcrane', 'Home3Controller@getcrane')->name('getcrane3');
-    Route::get('/VesselBerthPlan3/getport', 'Home3Controller@getport')->name('getport3');
-    Route::get('/VesselBerthPlan3/getsignature', 'Home3Controller@getsignature')->name('getsignature3');
+    Route::get('/VesselBerthPlan3', 'Home3Controller@parkingbackup')->name('vessel'); 
+    Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
+    Route::post('/VesselBerthPlan3/addvessel', 'Home3Controller@addvessel')->name('addvessel');
+    Route::get('/VesselBerthPlan3/getdermaga', 'Home3Controller@getdermaga')->name('getdermaga');
+    Route::post('/VesselBerthPlan3/updatevessel', 'Home3Controller@updatevessel')->name('updatevessel');
+    Route::get('/VesselBerthPlan3/getcrane', 'Home3Controller@getcrane')->name('getcrane');
+    Route::get('/VesselBerthPlan3/getport', 'Home3Controller@getport')->name('getport');
+    Route::get('/VesselBerthPlan3/getsignature', 'Home3Controller@getsignature')->name('getsignature');
+    Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     
     Route::get('/VesselBerthPlan_Logo','Home3Controller@logo')->name('logo3');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
@@ -100,10 +99,14 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     
     Route::get('/print','HomeController@print')->name('print');
     Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');
-
     Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
 
+    Route::get('/Monitoring', function () {
+        return view('content.monitoring');
+    });
+    Route::post('/Monitoring/proses',  'MonitorController@proses')->name('monitoringproses');
 
+    
     Route::get('/logout',  'LoginController@logout')->name('logout');
     
 });
