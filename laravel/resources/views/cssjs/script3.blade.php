@@ -785,8 +785,6 @@ function loadAll(ocean) {
         $("#Rdomes").css("display","none");
         $("#Rintern").css("display","none");
     }
-
-    m_note = m_vessel_all.note;
     
     for (i = 1; i < vessel.length+1; ++i) {
         var windo = "";
@@ -2144,14 +2142,15 @@ function eraseTextModalContainer() {
 
 }
 
-function saveBox(argument) {
+function saveBox() {
+
+    console.log(m_vessel_all);
+
     $.ajax({  
             url : "{{ url('VesselBerthPlan3/save') }}",
             data: {
                 "_token": "{{ csrf_token() }}",
                 param_vess : m_vessel_all,
-                param_crane : crane,
-                param_note : arr_note,
                 param_vess_removed : m_vessel_removed
             },
             type : "post",

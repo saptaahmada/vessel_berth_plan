@@ -61,6 +61,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan3', 'Home3Controller@parkingbackup')->name('vessel'); 
     Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
     Route::post('/VesselBerthPlan3/addvessel', 'Home3Controller@addvessel')->name('addvessel');
+    Route::post('/VesselBerthPlan3/save', 'Home3Controller@Save')->name('save');
     Route::get('/VesselBerthPlan3/getdermaga', 'Home3Controller@getdermaga')->name('getdermaga');
     Route::post('/VesselBerthPlan3/updatevessel', 'Home3Controller@updatevessel')->name('updatevessel');
     Route::get('/VesselBerthPlan3/getcrane', 'Home3Controller@getcrane')->name('getcrane');
