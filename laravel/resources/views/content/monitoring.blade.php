@@ -367,7 +367,7 @@
 
 
 
-         // lskjf
+         // sapta
         var vessel=[];
         $("#wrap_sw").empty();
         $.ajax({  
