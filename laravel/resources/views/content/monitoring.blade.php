@@ -319,6 +319,19 @@
     });
 
 
+    function getColor(param) {
+        var green = '#a9d18e';
+        var blue = '#9dc3e6';
+        var yellow = '#ffe699';
+
+        if(param == 0)
+            return green;
+        else if(param == 1)
+            return blue;
+        else if(param == 2)
+            return yellow;
+    }
+
 
     function end_date() {
         var startA= document.getElementById("start").value;
@@ -426,10 +439,17 @@
                     var hours = duration.asHours();
                     var startdate = ((hours*60)/30)*10;
 
-                    var colors = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
-
-                    var rand = colors[Math.floor(Math.random() * colors.length)];
                     var btoa = vessel[v-1].btoa_side;
+
+                    var rand = "";
+
+                    if(vessel[v-1].act_berth_ts != null) {
+                        rand = getColor(0);
+                    } else if(vessel[v-1].tentatif == "1") {
+                        rand = getColor(1);
+                    } else if(vessel[v-1].tentatif == "0") {
+                        rand = getColor(2);
+                    }
 
                     
                         

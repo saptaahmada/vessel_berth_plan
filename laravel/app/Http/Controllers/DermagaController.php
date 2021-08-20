@@ -21,14 +21,14 @@ class DermagaController extends Controller
     {
         $result = DB::table('TOWER.VBP_GEN_REF')
         ->insert([
-        	'PARAM1'	=> 'DERMAGA',
-        	'PARAM2'	=> $request->param2,
-        	'PARAM3'	=> $request->param3,
-        	'PARAM4'	=> $request->param4,
+            'PARAM1'    => 'DERMAGA',
+            'PARAM2'    => $request->param2,
+            'PARAM3'    => $request->param3,
+            'PARAM4'    => $request->param4,
         ]);
         return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+            'success'   => $result,
+            'message'   => ($result?'Success':'Gagal')
         ];
     }
 
@@ -38,13 +38,13 @@ class DermagaController extends Controller
         ->where('PARAM1', 'DERMAGA')
         ->where('PARAM2', $request->curParam2)
         ->update([
-        	'PARAM2'	=> $request->param2,
-        	'PARAM3'	=> $request->param3,
-        	'PARAM4'	=> $request->param4,
+            'PARAM2'    => $request->param2,
+            'PARAM3'    => $request->param3,
+            'PARAM4'    => $request->param4,
         ]);
         return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+            'success'   => $result,
+            'message'   => ($result?'Success':'Gagal')
         ];
     }
 
@@ -55,8 +55,8 @@ class DermagaController extends Controller
         ->where('PARAM2', $request->param2)
         ->delete();
         return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+            'success'   => $result,
+            'message'   => ($result?'Success':'Gagal')
         ];
     }
 

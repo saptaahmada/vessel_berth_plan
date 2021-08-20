@@ -603,84 +603,87 @@ circle2 {
 
 
     Load();  
-    // signature();    
+    signature();    
     function Load() {
-        // $.ajax({
-        //     url : "{{route('blokirkade')}}",
-        //     type : "get",
-        //     dataType : "json",
-        //     async : false,
-        //     success : function(result){
-        //         blokir_intern = result.blokir_intern;
-        //         blokir_domes = result.blokir_domes;
-        //         blokir_curah = result.blokir_curah;
-        //         panjang_curah = result.panjang_curah[0].param4;
+        $.ajax({
+            url : "{{route('blokirkade')}}",
+            type : "get",
+            dataType : "json",
+            async : false,
+            success : function(result){
+                blokir_intern = result.blokir_intern;
+                blokir_domes = result.blokir_domes;
+                blokir_curah = result.blokir_curah;
+                panjang_curah = result.panjang_curah[0].param4;
 
-        //         //INTERNATIONAL
-        //         for (o = 1; o < blokir_intern.length+1; ++o) {
-        //             $("#internarsir").append(
-        //                 '<div class="arsirintern" id="arsirintern'+o+'"></div>'
-        //             )
-        //         }
+                //INTERNATIONAL
+                for (o = 1; o < blokir_intern.length+1; ++o) {
+                    $("#internarsir").append(
+                        '<div class="arsirintern" id="arsirintern'+o+'"></div>'
+                    )
+                }
 
-        //         for (p = 1; p < blokir_intern.length+1; ++p) {
-        //             var realstart= blokir_intern[p-1].param3;
-        //             var start = ((blokir_intern[p-1].param3 /10) * 6.5) + 222;
-        //             var end = ((blokir_intern[p-1].param4 - realstart )/10) *6.5;
-        //             $("#arsirintern"+p).css("left", start+"px");
-        //             $("#arsirintern"+p).css("width", end+"px");
+                for (p = 1; p < blokir_intern.length+1; ++p) {
+                    var realstart= blokir_intern[p-1].param3;
+                    var start = ((blokir_intern[p-1].param3 /10) * 6.5) + 222;
+                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *6.5;
+                    $("#arsirintern"+p).css("left", start+"px");
+                    $("#arsirintern"+p).css("width", end+"px");
 
-        //         }
+                }
 
-        //         // DOMESTIK
-        //         for (g = 1; g < blokir_domes.length+1; ++g) {
-        //             $("#domesarsir").append(
-        //                 '<div class="arsirdomes" id="arsirdomes'+g+'"></div>'
-        //             )
-        //         }
-        //         for (e = 1; e < blokir_domes.length+1; ++e) {
-        //             var realstartdom= blokir_domes[e-1].param3;
-        //             var startdom = 0;
-        //             var enddom = 0;
+                // DOMESTIK
+                for (g = 1; g < blokir_domes.length+1; ++g) {
+                    $("#domesarsir").append(
+                        '<div class="arsirdomes" id="arsirdomes'+g+'"></div>'
+                    )
+                }
+                for (e = 1; e < blokir_domes.length+1; ++e) {
+                    var realstartdom= blokir_domes[e-1].param3;
+                    var startdom = 0;
+                    var enddom = 0;
                    
-        //             if(realstartdom <= 50){
-        //                 startdom =  707.5;
-        //                 enddom = ((blokir_domes[e-1].param4 /10) *6.5)-26;
-        //             } else  {
-        //                 startdom = ((blokir_domes[e-1].param3 /10) * 6.5) + 681.5;
-        //                 enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 6.5;
-        //             }  
+                    if(realstartdom <= 50){
+                        startdom =  707.5;
+                        enddom = ((blokir_domes[e-1].param4 /10) *6.5)-26;
+                    } else  {
+                        startdom = ((blokir_domes[e-1].param3 /10) * 6.5) + 681.5;
+                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 6.5;
+                    }  
 
-        //             $("#arsirdomes"+e).css("left", startdom+"px");
-        //             $("#arsirdomes"+e).css("width", enddom+"px");
+                    $("#arsirdomes"+e).css("left", startdom+"px");
+                    $("#arsirdomes"+e).css("width", enddom+"px");
 
-        //         }
+                }
 
                 
-        //         // //CURAH
-        //         for (d = 1; d < blokir_curah.length+1; ++d) {
-        //             $("#curaharsir").append(
-        //                 '<div class="arsircurah" id="arsircurah'+d+'"></div>'
-        //             )
-        //         }
+                // //CURAH
+                for (d = 1; d < blokir_curah.length+1; ++d) {
+                    $("#curaharsir").append(
+                        '<div class="arsircurah" id="arsircurah'+d+'"></div>'
+                    )
+                }
 
-        //         for (y = 1; y < blokir_curah.length+1; ++y) {
-        //             var realstartcur= blokir_curah[y-1].param3;
-        //             var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 6.5) + 60.5;
-        //             var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 6.5) - (startcur - 60.5) ;
+                for (y = 1; y < blokir_curah.length+1; ++y) {
+                    var realstartcur= blokir_curah[y-1].param3;
+                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 6.5) + 60.5;
+                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 6.5) - (startcur - 60.5) ;
 
-        //             $("#arsircurah"+y).css("left", startcur+"px");
-        //             $("#arsircurah"+y).css("width", endcur+"px");
-        //         }
+                    $("#arsircurah"+y).css("left", startcur+"px");
+                    $("#arsircurah"+y).css("width", endcur+"px");
+                }
                 
 
 
-        //     }
-        // });
+            }
+        });
 
         $.ajax({  
             url : "{{route('getvessel')}}",
-            type : "get",
+            type : "post",
+            data : {
+                "_token": "{{ csrf_token() }}",
+            },
             dataType : "json",
             async : false,
             success : function(result){
@@ -724,7 +727,7 @@ circle2 {
                         '</div>');
                 }
                 for (i = 1; i < vessel.length+1; ++i) {
-                    if(vessel[i-1].act_dep_ts != null) {
+                    if(vessel[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vessel[i-1].tentatif == 1) {
                         rand = getColor(1);
@@ -795,7 +798,7 @@ circle2 {
                 }
                 for (i = 1; i < vesseldom.length+1; ++i) {
 
-                    if(vesseldom[i-1].act_dep_ts != null) {
+                    if(vesseldom[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vesseldom[i-1].tentatif == 1) {
                         rand = getColor(1);
@@ -867,7 +870,7 @@ circle2 {
                         '</div>');
                 }
                 for (i = 1; i < vesselcur.length+1; ++i) {
-                    if(vesselcur[i-1].act_dep_ts != null) {
+                    if(vesselcur[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vesselcur[i-1].tentatif == 1) {
                         rand = getColor(1);
@@ -876,11 +879,14 @@ circle2 {
                     }
                     // var colorscur = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
                     // var rand2cur = colorscur[Math.floor(Math.random() * colorscur.length)];
-                    
+                    var leftcur = - (vesselcur[i-1].berth_fr_metre - panjang_curah)-205;
+                    console.log("left", leftcur);
+
                     var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
-                    var leftcur = (((190 - (vesselcur[i-1].berth_to_metre_ori/1.315789473684211))/10) *7.611111111111111) + 70;
+                    // var leftcur = vesselcur[i-1].berth_fr_metre/2;
+                    // var leftcur = ((190 - (vesselcur[i-1].berth_to_metre_ori/1.315789473684211))/10) *7.611111111111111;
                     // var widthcur = (((190 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur - 70); // done
-                    var widthcur = 152.222;
+                    var widthcur = vesselcur[i-1].width/2.65;
                     var heightcur = vesselcur[i-1].height/20 * 5.1875;
                     var along_sidecur = vesselcur[i-1].btoa_side;
                     
@@ -890,7 +896,7 @@ circle2 {
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", topcur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
-                    $("#cur"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
                     }else if (along_sidecur == "S") {
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
@@ -899,8 +905,7 @@ circle2 {
                     $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
                     $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
                     
-
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
                     }
                 }
 
