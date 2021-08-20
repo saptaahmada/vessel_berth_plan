@@ -36,7 +36,7 @@ class Home3Controller extends Controller
         $blokirkade = Blokirkade::where('PARAM1', 'BLOKIR_KADE')->get();
         // $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
     
-        return view('content.berthplan3', compact("domes", "intern","al","blokirkade","note"));
+        return view('content.berthplan3', compact("domes", "intern","al","blokirkade"));
     }
 
     public function getdermaga() 
