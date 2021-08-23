@@ -597,7 +597,7 @@ function reloadAll() {
                 $("#box"+i).css("height", vessel[i-1].height+"px");
                 $("#box"+i).css("background-color", rand);
                 $("#text_judul"+i).css("padding-left", "24%");
-                $("#text_detail"+i).css("padding-left", "25%");
+                $("#text_detail"+i).css("padding-left", "18%");
                
                 $("#box"+i).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
 
@@ -635,8 +635,12 @@ function getVesselContent(vees, i, craneloopload=null) {
 
     var font_size = "10px";
 
-    if(parseInt(vees.height) > 250) {
+    if(parseInt(vees.height) > 250 && parseInt(vees.width) > 250) {
         font_size = "12px";
+    } else if(parseInt(vees.width) < 180) {
+        font_size = "9px";
+    } else if(parseInt(vees.width) < 170) {
+        font_size = "8px";
     }
 
     var margin_top_crane = parseInt(vees.height)/3;
@@ -647,12 +651,10 @@ function getVesselContent(vees, i, craneloopload=null) {
                     (vees.is_unreg == 0 ? 
                      '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 20%; height: 20%; "/>':'')+
                 '</div>'+
-                '<div id="text_judul'+i+'" class="text_judul">'+
-                    'MV. '+vees.ves_name+' ('+ vees.ves_id + ')'+
-                '</div>'+
                 '<div id="text_detail'+i+'" class="text_detail" style="font-size:'+font_size+'">'+
                     '<div class="row">'+
-                    '<div class="col-sm-7">'+
+                    '<div class="col-sm-8">'+
+                        '<span class="text_title"> MV. '+vees.ves_name+' ('+ vees.ves_id + ')</span><br>'+
                         '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
                         '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button><br>'+
                         (vees.req_berth_ts!=null?'RBT :'+moment(vees.req_berth_ts).format('DD-MM-YY HH:mm')+'<br>':'')+
@@ -664,7 +666,7 @@ function getVesselContent(vees, i, craneloopload=null) {
                         'ETD : '+moment(vees.est_dep_ts).format('DD-MM-YY HH:mm')+'<br>'+
                         'LOA : '+vees.width_ori+' M<br>'+
                         'Moves est: '+vees.est_load+'/'+vees.est_discharge+' '+(vees.ocean_interisland_fake=='C'?'MT':'box')+'<br>'+
-                        'POD : '+vees.dest_port+'<br>'+
+                        (vees.dest_port!=null?'POD :'+vees.dest_port+'<br>':'')+
                         (vees.ocean_interisland_fake != 'C' ? 
                             (vees.load_act != null ? 'LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain + '<br>': '')+
                             (vees.disc_act != null ? 'DISC BOX : '+vees.disc_act+'/'+vees.disc_plan+' => '+vees.disc_remain + '<br>': '')+
@@ -672,12 +674,14 @@ function getVesselContent(vees, i, craneloopload=null) {
                             (vees.time_remain != null ? (parseInt(vees.time_remain)>0? 'Est Done : '+vees.time_remain_label+' left' + '<br>':'') : '')
                         : '')+
                         'WINDOW : '+(vees.windows==1?'ON_WINDOW':'OFF_WINDOW')+'<br>'+
-                    '</div>'+
-                    '<div class="col-sm-4" style="margin-top:'+margin_top_crane+'px">'+
                         (vees.info!=null?'INFO :'+vees.info+'<br>':'')+
                     '</div>'+
-                    ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle><br>'+
-                    craneloopload+
+                    '<div class="col-sm-4" style="margin-top:'+margin_top_crane+'px">'+
+                        '<div style="margin-left:-30px">'+
+                        ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle><br>'+
+                        craneloopload+
+                        '</div>'+
+                    '</div>'+
                 '</div>'+
             '</div>'+
         '</div>';
@@ -804,8 +808,8 @@ function loadAll(ocean) {
                 $("#box"+i).css("top", vessel[i-1].y_awal+"px");
                 $("#box"+i).css("height", vessel[i-1].height+"px");
                 $("#box"+i).css("background-color", rand);
-                $("#text_judul"+i).css("padding-left", "24%");
-                $("#text_detail"+i).css("padding-left", "25%");
+                $("#text_judul"+i).css("padding-left", "20%");
+                $("#text_detail"+i).css("padding-left", "18%");
                
                 $("#box"+i).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
 
@@ -1235,7 +1239,7 @@ function addvessel(){
                                     agent:agent,
                                     agent_name:agent_name,
                                     image:img,
-                                    ves_id: vessdumm,
+                                    ves_id: vessid,
                                     ves_id_old: '',
                                     ves_name:nama,
                                     ocean_interisland:ocean_ori,
@@ -1301,7 +1305,7 @@ function addvessel(){
                                     agent:agent,
                                     agent_name:agent_name,
                                     image:img,
-                                    ves_id: vessdumm,
+                                    ves_id: vessid,
                                     ves_id_old: '',
                                     ves_name:nama,
                                     ocean_interisland:ocean_ori,

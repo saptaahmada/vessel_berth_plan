@@ -118,15 +118,20 @@ border-radius: 2px;
 
 }
 
+.text_title {
+	font-size:13px;
+	font-weight:bold;
+	margin-left: 5px
+}
+
 .text_judul {
 color: #000;
 font-size: 12px;
 font-family: sans-serif;
 font-weight: bold;
-padding-left: 20px;
+/*padding-left: 20px;*/
 padding-top: 2px;
 width: 100%;
-margin-left: 10px;
 /* text-shadow: 1px 1px #313131; */
 z-index: -2;
 
@@ -177,7 +182,7 @@ width: 100%;
 circle {
 /* float:right; */
 background: #000;
-width: 60px;
+width: 50px;
 height: 20px;
 /* border-radius: 50%; */
 display: inline-block;
