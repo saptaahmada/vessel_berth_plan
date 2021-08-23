@@ -9,19 +9,19 @@ class PrintController extends Controller
 {
     public function blokirkade()
     {
-        $blokir_intern = DB::table('TOWER.VBP_GEN_REF')
+        $blokir_intern = DB::table('CBSLAM.VBP_GEN_REF')
         -> where('param1','BLOKIR_KADE')
         -> where('param2','I')
         -> get();
-        $blokir_domes = DB::table('TOWER.VBP_GEN_REF')
+        $blokir_domes = DB::table('CBSLAM.VBP_GEN_REF')
         -> where('param1','BLOKIR_KADE')
         -> where('param2','D')
         -> get();
-        $blokir_curah = DB::table('TOWER.VBP_GEN_REF')
+        $blokir_curah = DB::table('CBSLAM.VBP_GEN_REF')
         -> where('param1','BLOKIR_KADE')
         -> where('param2','C')
         -> get();
-        $panjang_curah = DB::table('TOWER.VBP_GEN_REF')
+        $panjang_curah = DB::table('CBSLAM.VBP_GEN_REF')
         -> where('param1','DERMAGA')
         -> where('param2','C')
         -> get();

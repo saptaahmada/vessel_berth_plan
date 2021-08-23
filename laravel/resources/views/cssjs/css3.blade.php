@@ -120,12 +120,13 @@ border-radius: 2px;
 
 .text_judul {
 color: #000;
-font-size: 14px;
+font-size: 12px;
 font-family: sans-serif;
 font-weight: bold;
 padding-left: 20px;
 padding-top: 2px;
 width: 100%;
+margin-left: 10px;
 /* text-shadow: 1px 1px #313131; */
 z-index: -2;
 
@@ -133,7 +134,7 @@ z-index: -2;
 
 .text_detail {
 color: black;
-font-size: 12px;
+font-size: 10px;
 font-family: sans-serif;
 font-weight: bold;
 padding-left: 20px;
@@ -167,7 +168,7 @@ padding-top: 8px;
 circle span {
 position: absolute;
 color: #fff;
-font-size: 12px;
+font-size: 9px;
 top: 50%;
 transform: translate(-50%, -50%);
 width: 100%;
@@ -176,7 +177,7 @@ width: 100%;
 circle {
 /* float:right; */
 background: #000;
-width: 70px;
+width: 60px;
 height: 20px;
 /* border-radius: 50%; */
 display: inline-block;
@@ -191,7 +192,7 @@ z-index: -1;
 circle2 span {
 position: absolute;
 color: #fff;
-font-size: 12px;
+font-size: 8px;
 top: 50%;
 transform: translate(-50%, -50%);
 width: 100%;
@@ -200,8 +201,8 @@ width: 100%;
 circle2 {
 /* float:right; */
 background: #000;
-width: 23px;
-height: 23px;
+width: 20px;
+height: 20px;
 border-radius: 50%;
 display: inline-block;
 text-align: center;

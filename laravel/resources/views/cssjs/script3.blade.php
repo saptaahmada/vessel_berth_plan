@@ -47,7 +47,7 @@
                         $("#vessel3").append('<option  value="'+result.Dry[p-1].ves_id+'">'+result.Dry[p-1].ves_code+' - '+result.Dry[p-1].ves_name+' ('+result.Dry[p-1].ves_type_name+')</option>');  
                     }
 
-                    m_note = result.note;
+                    // m_note = result.note;
                 }
             });
 //end for vessel pada modal add vessel
@@ -67,18 +67,6 @@
                 success : function(result){
                     getport=result;
 
-                    // $("#nextPDry").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
-                    // $("#nextP").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
-
-                    // $("#deshPDry").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
-                    // $("#deshP").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
-
-                    // $("#edit_nextp").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
-                    // $("#edit_deshp").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
-
-                    // $("#unreg_nextp").append('<option  name="next" value="">-- PILIH NEXT PORT --</option>');  
-                    // $("#unreg_deshp").append('<option  name="next" value="">-- PILIH DEST PORT --</option>');
-
                     for (i = 1; i < getport.length+1; ++i) {
                         $("#nextPDry").append('<option  name="next" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+') </option>');  
                         $("#nextP").append('<option  name="next" value="'+getport[i-1].port+'">'+getport[i-1].port+' ('+getport[i-1].descr+')</option>'); 
@@ -96,10 +84,8 @@
                 
                 } 
             });
-//end for port pada modal add vessel
 
 
-//for crane pada modal add vessel
             $("#craneCon").empty();
             $("#craneDry").empty();
             $("#edit_crane").empty();
@@ -127,9 +113,6 @@
                 }       
             });
 
-//end for crane pada modal add vessel
-
-//for signature pada modal Print
             $("#planing_manager").empty();
             $("#berth_planner").empty();
             $.ajax({  
@@ -150,13 +133,11 @@
                     } 
                 } 
             });
-//end  for signature pada modal Print
-
 
 
             $(".select2-A").select2({
                 placeholder: "Select..",
-                allowClear: false
+                allowClear: true
             });
 
             var imgPath = "{{asset('img/ajax-loader.gif')}}";
@@ -169,90 +150,24 @@
 
             $("#cekbox1").click(function () {
   
-                // Default blockUI code
-                // $.blockUI({ 
-                //     message: img,
-                //     css: {
-                //     padding:    0,
-                //     margin:     0,
-                //     width:      '30%',
-                //     top:        '40%',
-                //     left:       '35%',
-                //     textAlign:  'center',
-                //     border:     '3px transparent #aaa',
-                //     backgroundColor:'transparent',
-                //     cursor:     'wait'
-                //         }
-                //     });
-                // setTimeout(function () {
                 m_dermaga_last = m_dermaga_current;
                 changeDermaga('D');
                 loadAll('D');
                 kade('D');
-                // }, 1000);
-                // setTimeout(function () {
-                //     // Timer to unblock    
-                //     $.unblockUI();
-                // }, 1000);
             });
             
             $("#cekbox2").click(function () {
-  
-                // Default blockUI code
-                // $.blockUI({ 
-                //     message: img,
-                //     css: {
-                //     padding:    0,
-                //     margin:     0,
-                //     width:      '30%',
-                //     top:        '40%',
-                //     left:       '35%',
-                //     textAlign:  'center',
-                //     border:     '3px transparent #aaa',
-                //     backgroundColor:'transparent',
-                //     cursor:     'wait'
-                //         }
-                //     });
-                //     setTimeout(function () {
                 m_dermaga_last = m_dermaga_current;
                 changeDermaga('I');
                 loadAll('I');
                 kade('I');
-                    // }, 1000);
-
-                    // setTimeout(function () {
-                    //     $.unblockUI();
-                    // }, 1000);
-
             });
 
             $("#cekbox3").click(function () {
-  
-                // Default blockUI code
-                // $.blockUI({ 
-                //     message: img,
-                //     css: {
-                //     padding:    0,
-                //     margin:     0,
-                //     width:      '30%',
-                //     top:        '40%',
-                //     left:       '35%',
-                //     textAlign:  'center',
-                //     border:     '3px transparent #aaa',
-                //     backgroundColor:'transparent',
-                //     cursor:     'wait'
-                //         }
-                //     });
-                // setTimeout(function () {
                 m_dermaga_last = m_dermaga_current;
                 changeDermaga('C');
                 loadAll('C');
                 kade('C');
-                // }, 1000);
-                // setTimeout(function () {
-                //     // Timer to unblock    
-                //     $.unblockUI();
-                // }, 1000);
 
             });
             $("#saveupdate").click(function () {
@@ -345,7 +260,7 @@
         }
 
         m_dermaga_current = der;
-        m_vessel_removed = [];
+        // m_vessel_removed = [];
 
         
     }
@@ -670,9 +585,9 @@ function reloadAll() {
         if(vessel[i-1].act_berth_ts != null) {
             rand = getColor(0);
         } else if(vessel[i-1].tentatif == "1") {
-            rand = getColor(1);
-        } else if(vessel[i-1].tentatif == "0") {
             rand = getColor(2);
+        } else if(vessel[i-1].tentatif == "0") {
+            rand = getColor(1);
         }
             
             if(btoa == "P"){ //kiri star
@@ -718,6 +633,14 @@ function getVesselContent(vees, i, craneloopload=null) {
         }
     }
 
+    var font_size = "10px";
+
+    if(parseInt(vees.height) > 250) {
+        font_size = "12px";
+    }
+
+    var margin_top_crane = parseInt(vees.height)/3;
+
     var content = '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
             '<div class="widget-inner">'+
                 '<div id="img'+i+'">'+
@@ -727,27 +650,70 @@ function getVesselContent(vees, i, craneloopload=null) {
                 '<div id="text_judul'+i+'" class="text_judul">'+
                     'MV. '+vees.ves_name+' ('+ vees.ves_id + ')'+
                 '</div>'+
-                '<div id="text_detail'+i+'" class="text_detail">'+
-                    '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
-                    '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button>'+
-                    '<div class="ETA_'+i+'" style="margin:1px;">ETA :'+(vees.est_pilot_ts!=null?vees.est_pilot_ts:'')+'</div>'+
-                    (vees.req_berth_ts!=null?'<div class="RBT_'+i+'" style="margin:1px;">RBT :'+vees.req_berth_ts+'</div>':'')+
-                    '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vees.est_berth_ts+'</div>'+
-                    '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vees.est_dep_ts+'</div>'+
-                    '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vees.est_load+'/'+vees.est_discharge+' '+(vees.ocean_interisland_fake=='C'?'MT':'BOX')+'</div>'+
-                    (vees.load_act != null ? '<div style="margin:1px;">LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain+'</div>' : '')+
-                    (vees.disc_act != null ? '<div style="margin:1px;">DISC BOX : '+vees.disc_act+'/'+vees.disc_plan+' => '+vees.disc_remain+'</div>' : '')+
-                    (vees.time_remain != null ? (parseInt(vees.time_remain)>0? '<div style="margin:1px;">Est End Work : '+vees.est_end_date+'</div>':'') : '')+
-                    (vees.time_remain != null ? (parseInt(vees.time_remain)>0? '<div style="margin:1px;">Est Done : '+vees.time_remain_label+' left</div>':'') : '')+
-                    '<div style="margin:1px;">WINDOW : '+(vees.windows==1?'ON_WINDOW':'OFF_WINDOW')+'</div>'+
-                    '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
-                    '<div style="margin:1px;">POD : '+vees.dest_port+'</div>'+
-                    (vees.info!=null?'<div class="INFO_'+(i-1)+'">INFO :'+vees.info+'</div>':'')+
-                    ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
+                '<div id="text_detail'+i+'" class="text_detail" style="font-size:'+font_size+'">'+
+                    '<div class="row">'+
+                    '<div class="col-sm-7">'+
+                        '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
+                        '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button><br>'+
+                        (vees.req_berth_ts!=null?'RBT :'+moment(vees.req_berth_ts).format('DD-MM-YY HH:mm')+'<br>':'')+
+                        (vees.act_berth_ts!=null ? 
+                            'ATB : '+moment(vees.act_berth_ts).format('DD-MM-YY HH:mm') + '<br>' : 
+                            (vees.est_pilot_ts!=null?'ETA : '+moment(vees.est_pilot_ts).format('DD-MM-YY HH:mm')+'<br>':'')
+                        )+
+                        'ETB : '+moment(vees.est_berth_ts).format('DD-MM-YY HH:mm')+'<br>'+
+                        'ETD : '+moment(vees.est_dep_ts).format('DD-MM-YY HH:mm')+'<br>'+
+                        'LOA : '+vees.width_ori+' M<br>'+
+                        'Moves est: '+vees.est_load+'/'+vees.est_discharge+' '+(vees.ocean_interisland_fake=='C'?'MT':'box')+'<br>'+
+                        'POD : '+vees.dest_port+'<br>'+
+                        (vees.ocean_interisland_fake != 'C' ? 
+                            (vees.load_act != null ? 'LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain + '<br>': '')+
+                            (vees.disc_act != null ? 'DISC BOX : '+vees.disc_act+'/'+vees.disc_plan+' => '+vees.disc_remain + '<br>': '')+
+                            (vees.time_remain != null ? (parseInt(vees.time_remain)>0? 'Est End Work : '+vees.est_end_date + '<br>':'') : '')+
+                            (vees.time_remain != null ? (parseInt(vees.time_remain)>0? 'Est Done : '+vees.time_remain_label+' left' + '<br>':'') : '')
+                        : '')+
+                        'WINDOW : '+(vees.windows==1?'ON_WINDOW':'OFF_WINDOW')+'<br>'+
+                    '</div>'+
+                    '<div class="col-sm-4" style="margin-top:'+margin_top_crane+'px">'+
+                        (vees.info!=null?'INFO :'+vees.info+'<br>':'')+
+                    '</div>'+
+                    ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle><br>'+
                     craneloopload+
                 '</div>'+
             '</div>'+
         '</div>';
+
+    // var content = '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
+    //         '<div class="widget-inner">'+
+    //             '<div id="img'+i+'">'+
+    //                 (vees.is_unreg == 0 ? 
+    //                  '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 20%; height: 20%; "/>':'')+
+    //             '</div>'+
+    //             '<div id="text_judul'+i+'" class="text_judul">'+
+    //                 'MV. '+vees.ves_name+' ('+ vees.ves_id + ')'+
+    //             '</div>'+
+    //             '<div id="text_detail'+i+'" class="text_detail">'+
+    //                 '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
+    //                 '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button>'+
+    //                 '<div class="ETA_'+i+'" style="margin:1px;">ETA :'+(vees.est_pilot_ts!=null?vees.est_pilot_ts.substring(0,16):'')+'</div>'+
+    //                 (vees.req_berth_ts!=null?'<div class="RBT_'+i+'" style="margin:1px;">RBT :'+vees.req_berth_ts.substring(0,16)+'</div>':'')+
+    //                 '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vees.est_berth_ts.substring(0,16)+'</div>'+
+    //                 '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vees.est_dep_ts.substring(0,16)+'</div>'+
+    //                 '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vees.est_load+'/'+vees.est_discharge+' '+(vees.ocean_interisland_fake=='C'?'MT':'BOX')+'</div>'+
+    //                 '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
+    //                 '<div style="margin:1px;">POD : '+vees.dest_port+'</div>'+
+    //                 (vees.ocean_interisland_fake != 'C' ? 
+    //                     (vees.load_act != null ? '<div style="margin:1px;">LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain+'</div>' : '')+
+    //                     (vees.disc_act != null ? '<div style="margin:1px;">DISC BOX : '+vees.disc_act+'/'+vees.disc_plan+' => '+vees.disc_remain+'</div>' : '')+
+    //                     (vees.time_remain != null ? (parseInt(vees.time_remain)>0? '<div style="margin:1px;">Est End Work : '+vees.est_end_date+'</div>':'') : '')+
+    //                     (vees.time_remain != null ? (parseInt(vees.time_remain)>0? '<div style="margin:1px;">Est Done : '+vees.time_remain_label+' left</div>':'') : '')
+    //                 : '')+
+    //                 '<div style="margin:1px;">WINDOW : '+(vees.windows==1?'ON_WINDOW':'OFF_WINDOW')+'</div>'+
+    //                 (vees.info!=null?'<div class="INFO_'+(i-1)+'">INFO :'+vees.info+'</div>':'')+
+    //                 ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
+    //                 craneloopload+
+    //             '</div>'+
+    //         '</div>'+
+    //     '</div>';
     return content;
 }
 
@@ -825,9 +791,9 @@ function loadAll(ocean) {
         if(vessel[i-1].act_berth_ts != null) {
             rand = getColor(0);
         } else if(vessel[i-1].tentatif == "1") {
-            rand = getColor(1);
-        } else if(vessel[i-1].tentatif == "0") {
             rand = getColor(2);
+        } else if(vessel[i-1].tentatif == "0") {
+            rand = getColor(1);
         }
 
         
@@ -903,27 +869,29 @@ function toEdit(index) {
     $('#edit_end').val(vees.berth_to_metre_ori);
     $('.edit_window').val(vees.windows);
 
-    if(vees.ves_type == 'GC')
-        $('#edit_tipe_dermaga_c').attr('checked', 'checked');
+    if(vees.ocean_interisland_fake == 'C')
+        $('#edit_tipe_dermaga_c').prop("checked", true);
     else if(vees.ocean_interisland_fake == 'D')
-        $('#edit_tipe_dermaga_d').attr('checked', 'checked');
+        $('#edit_tipe_dermaga_d').prop("checked", true);
     else if(vees.ocean_interisland_fake == 'I')
-        $('#edit_tipe_dermaga_i').attr('checked', 'checked');
+        $('#edit_tipe_dermaga_i').prop("checked", true);
 
     if(vees.windows == "1")
-        $('#edit_window_on').attr('checked', 'checked');
+        $('#edit_window_on').prop("checked", true);
     if(vees.windows == "0")
-        $('#edit_window_off').attr('checked', 'checked');
+        $('#edit_window_off').prop("checked", true);
+
+    console.log("tentatif", vees.tentatif);
 
     if(vees.tentatif == "1")
-        $('#edit_tentatif_yes').attr('checked', 'checked');
+        $('#edit_tentatif_yes').prop("checked", true);
     if(vees.tentatif == "0")
-        $('#edit_tentatif_no').attr('checked', 'checked');
+        $('#edit_tentatif_no').prop("checked", true);
     
     if(vees.btoa_side == 'S')
-        $("#edit_side_s").attr('checked', 'checked');
+        $("#edit_side_s").prop("checked", true);
     if(vees.btoa_side == 'P')
-        $("#edit_side_p").attr('checked', 'checked');
+        $("#edit_side_p").prop("checked", true);
 
     $('#edit_info').val(vees.info);
 
@@ -1187,9 +1155,9 @@ function addvessel(){
                     if(!isStack) {
 
                         if(tentatif == "1")
-                            rand = getColor(1);
+                            rand = getColor(2);
                         else if(tentatif == "0")
-                            rand = getColor(2); 
+                            rand = getColor(1); 
                        
                         if (cok.includes(id_vess)){
                             crane = [];
@@ -1268,11 +1236,14 @@ function addvessel(){
                                     agent_name:agent_name,
                                     image:img,
                                     ves_id: vessdumm,
+                                    ves_id_old: '',
                                     ves_name:nama,
                                     ocean_interisland:ocean_ori,
+                                    ocean_interisland_fake:m_dermaga_current,
                                     ves_code:vess_code,
                                     is_simulation:"1",
                                     is_unreg:"0",
+                                    is_inserted: 0,
                                     windows:windows,
                                     tentatif:tentatif,
                                     load_act:null,
@@ -1331,11 +1302,14 @@ function addvessel(){
                                     agent_name:agent_name,
                                     image:img,
                                     ves_id: vessdumm,
+                                    ves_id_old: '',
                                     ves_name:nama,
                                     ocean_interisland:ocean_ori,
+                                    ocean_interisland_fake:m_dermaga_current,
                                     ves_code:vess_code,
                                     is_simulation:"1",
                                     is_unreg:"0",
+                                    is_inserted: 0,
                                     windows:windows,
                                     tentatif:tentatif,
                                     load_act:null,
@@ -1506,9 +1480,15 @@ function editvessel() {
 
 
     if(!isStack) {
-        if(ocean_interisland_fake == m_dermaga_current)
+        console.log("masuk1");
+        if(ocean_interisland_fake == m_dermaga_current) {
+        console.log("masuk2");
+
             vessel.splice(m_index_edit, 0, vees);
+        }
         else {
+        console.log("masuk3", ocean_interisland_fake);
+
             if (ocean_interisland_fake == "I")
                 m_vessel_all.Intern.push(vees);
             else if (ocean_interisland_fake == "D")
@@ -1517,6 +1497,7 @@ function editvessel() {
                 m_vessel_all.Curah.push(vees);
         }
     } else {
+        console.log("masuk4");
         swal({
             title: "Vessel",
             text: "Kapal Tumpuk",
@@ -1580,6 +1561,7 @@ function unregvessel() {
 
     var vees = {
         ves_id         : moment(new Date()).format("YYYYMMDDHHmmss"),
+        ves_id_old     : '',
         ves_name       : $('#unreg_vessel_name').val(),
         ves_type       : m_dermaga_current == 'C' ? 'GC' : 'CT',
         ves_code       : $('#unreg_vessel_name').val().substring(0,3),
@@ -1587,6 +1569,7 @@ function unregvessel() {
         ocean_interisland_fake : m_dermaga_current,
         agent          : '',
         is_simulation  : 1,
+        is_inserted    : 0,
         info           : $('#unreg_info').val(),
         ves_len        : parseInt($('#unreg_loa').val()),
         crane          : arr_crane,
@@ -1790,8 +1773,12 @@ function convertToDrag() {
                     }
                 });
 
+                var left = $(this).position().left;
+
                 var x1 = left;
                 var x2 = left + $(this).width(); 
+
+                console.log()
 
                 for (var i = 0; i < m_blokirkade.length; i++) {
 
@@ -2158,13 +2145,14 @@ function saveBox() {
             async : false,
             success : function(result){
                 if(result["sukses"] == true) {
-                   
                     swal({
                         title: "Data Berhasil Diubah!",
                         text: "You clicked the button!",
                         icon: "success",
                         button: "Oke",
                         });
+
+                    saveDone();
                     
                 } else {
                     alert ("Data Gagal Diubah !!");
@@ -2172,6 +2160,23 @@ function saveBox() {
 
             } 
     });
+}
+
+function saveDone() {
+    for (var i = 0; i < m_vessel_all.Intern.length; i++) {
+        m_vessel_all.Intern[i].is_inserted = 1;
+        m_vessel_all.Intern[i].ves_id_old = m_vessel_all.Intern[i].ves_id;
+    }
+    for (var i = 0; i < m_vessel_all.Domes.length; i++) {
+        m_vessel_all.Domes[i].is_inserted = 1;
+        m_vessel_all.Domes[i].ves_id_old = m_vessel_all.Domes[i].ves_id;
+    }
+    for (var i = 0; i < m_vessel_all.Curah.length; i++) {
+        m_vessel_all.Curah[i].is_inserted = 1;
+        m_vessel_all.Curah[i].ves_id_old = m_vessel_all.Curah[i].ves_id;
+    }
+
+    m_vessel_removed = [];
 }
 
 function updatebox() {

@@ -11,7 +11,7 @@ class ArusController extends Controller
 {
     public function index()
     {
-        // $dermaga = DB::table('TOWER.VBP_GEN_REF')
+        // $dermaga = DB::table('CBSLAM.VBP_GEN_REF')
         // ->where('PARAM1', 'DERMAGA')
         // ->get();
         return view('content.arus.arus');
@@ -24,7 +24,7 @@ class ArusController extends Controller
     public function add(Request $request)
     {
         // dump($request->param4);
-        $result = DB::table('TOWER.MASTER_ARUS')
+        $result = DB::table('CBSLAM.MASTER_ARUS')
         ->insert([
         	'ARUS_ID'	=> $request->param2,
         	'TANGGAL'	=> $request->param3,
@@ -39,7 +39,7 @@ class ArusController extends Controller
 
     public function update(Request $request)
     {
-        $result = DB::table('TOWER.MASTER_ARUS')
+        $result = DB::table('CBSLAM.MASTER_ARUS')
         ->where('ARUS_ID', $request->curParam2)
         ->update([
             'ARUS_ID'	=> $request->param2,
@@ -55,7 +55,7 @@ class ArusController extends Controller
 
     public function remove(Request $request)
     {
-        $result = DB::table('TOWER.MASTER_ARUS')
+        $result = DB::table('CBSLAM.MASTER_ARUS')
         ->where('ARUS_ID', $request->param2)
         ->delete();
         return [

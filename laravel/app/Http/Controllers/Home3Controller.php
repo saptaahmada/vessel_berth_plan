@@ -25,46 +25,39 @@ class Home3Controller extends Controller
 
     public function parkingbackup()
     {
-        $domes = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> where('ocean_interisland','D')
-            -> get();
-        $intern = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> where('ocean_interisland','I')
-            -> get();
-        $al = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> get();
+        // $domes = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
+        //     -> where('ocean_interisland','D')
+        //     -> get();
+        // $intern = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
+        //     -> where('ocean_interisland','I')
+        //     -> get();
+        // $al = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
+        //     -> get();
+        set_time_limit(60000);
         $blokirkade = Blokirkade::where('PARAM1', 'BLOKIR_KADE')->get();
         // $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
     
-        return view('content.berthplan3', compact("domes", "intern","al","blokirkade"));
+        return view('content.berthplan3', compact("blokirkade"));
     }
 
     public function getdermaga() 
     {
-        $all = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> get();
-        $dermagaInt = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> where('ocean_interisland',"I")
-            -> get();
-        $dermagaDom = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> where('ocean_interisland',"D")
-            -> get();
-        $dry = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> where('ves_type',"GC")
-            -> get();
-        $con = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
-            -> where('ves_type',"CT")
-             -> get();
+        set_time_limit(60000);
+        $vessel = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')-> get();
+        $dry = [];
+        $con = [];
 
-        $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
+        foreach ($vessel as $key => $val) {
+            if($val->ves_type == 'GC') {
+                $dry[] = $val;
+            } else if($val->ves_type == 'CT') {
+                $con[] = $val;
+            }
+        }
 
         $dermaga = [
-            'all' => $all,
-            'Intern' => $dermagaInt,
-            'Domes' => $dermagaDom,
             'Dry' => $dry,
             'Con'=> $con,
-            'note'=>$note
         ];
 
         echo json_encode($dermaga);
@@ -73,18 +66,24 @@ class Home3Controller extends Controller
 
     public function getvessel(Request $request)
     {
-        $dataIntern = DB::table('TOWER.CBS_VESSEL_PLANNING')
-        -> where('ocean_interisland_fake','I')
-        -> get();
-        $dataDomes = DB::table('TOWER.CBS_VESSEL_PLANNING')
-        -> where('ocean_interisland_fake','D')
-        -> get();
-        $dataCurah= DB::table('TOWER.CBS_VESSEL_PLANNING')
-        -> where('ocean_interisland_fake','C')
-        -> get();
-        $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))
-        // ->where('ocean_interisland', isset($request->ocean_interisland)?$request->ocean_interisland:'')
-        ->get();
+        set_time_limit(60000);
+        $vessel = DB::table('CBSLAM.CBS_VESSEL_PLANNING')-> get();
+
+        $dataIntern = [];
+        $dataDomes = [];
+        $dataCurah = [];
+
+        foreach ($vessel as $key => $val) {
+            if($val->ocean_interisland_fake == 'I') {
+                $dataIntern[] = $val;
+            } else if($val->ocean_interisland_fake == 'D') {
+                $dataDomes[] = $val;
+            } else if($val->ocean_interisland_fake == 'C') {
+                $dataCurah[] = $val;
+            }
+        }
+
+        $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
 
         $note_d = [];
         $note_i = [];
@@ -114,7 +113,7 @@ class Home3Controller extends Controller
 
     public function addvessel(Request $request)
     {
-        $dataIntern = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $dataIntern = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
         -> where('ves_id',$request->param_data)
         -> get();
 
@@ -125,7 +124,12 @@ class Home3Controller extends Controller
 
     public function save(Request $request)
     {
+        set_time_limit(60000);
         $arr_vess = $request->param_vess;
+
+        if($request->param_vess_removed != null)
+            foreach ($request->param_vess_removed as $i => $val)
+                DB::table('CBSLAM.VESSEL_DETAILS_SIM')->where('ves_id', $val['ves_id_old'])->delete();
 
         $this->saveProcess($arr_vess, 'Domes', 'note_d', 'D');
         $this->saveProcess($arr_vess, 'Intern', 'note_i', 'I');
@@ -133,7 +137,7 @@ class Home3Controller extends Controller
 
         // if(isset($arr_vess)) {
         //     if(isset($arr_vess['Intern'])) {
-        //         DB::table('TOWER.VESSEL_DETAILS_SIM')
+        //         DB::table('CBSLAM.VESSEL_DETAILS_SIM')
         //             ->where('IS_SIMULATION', '1')
         //             ->where('OCEAN_INTERISLAND_FAKE', 'I')
         //             ->delete();
@@ -222,7 +226,7 @@ class Home3Controller extends Controller
         //                 'IS_UNREG'              => $param_vess[$i]['is_unreg'],
         //             ];
 
-        //             DB::table('TOWER.VESSEL_DETAILS_CRANE')
+        //             DB::table('CBSLAM.VESSEL_DETAILS_CRANE')
         //             ->where('ves_id', $param_vess[$i]['ves_id'])
         //             ->delete();
 
@@ -231,13 +235,13 @@ class Home3Controller extends Controller
         //                     'ves_id' =>  $param_vess[$i]['ves_id'],
         //                     'che_id' => $savecrane[$a]
         //                 ];
-        //                 DB::table('TOWER.VESSEL_DETAILS_CRANE')->insert($data_crane);
+        //                 DB::table('CBSLAM.VESSEL_DETAILS_CRANE')->insert($data_crane);
         //             }
         //             if($param_vess[$i]['is_simulation'] == '1' ) {
-        //                 DB::table('TOWER.VESSEL_DETAILS_SIM')
+        //                 DB::table('CBSLAM.VESSEL_DETAILS_SIM')
         //                 ->insert($data_push);
         //             } else {
-        //                 DB::table('TOWER.VESSEL_DETAILS_SIM')
+        //                 DB::table('CBSLAM.VESSEL_DETAILS_SIM')
         //                 ->where('ves_id', $param_vess[$i]['ves_id_old'])
         //                 ->update($data_update);
         //             }
@@ -265,7 +269,7 @@ class Home3Controller extends Controller
 
         // $null_date = '1900-12-21 23:00:00';
 
-        // DB::table('TOWER.VESSEL_DETAILS_SIM')
+        // DB::table('CBSLAM.VESSEL_DETAILS_SIM')
         //     ->where('IS_SIMULATION', '1')
         //     ->where('OCEAN_INTERISLAND_FAKE', $request->param_ocean)
         //     ->delete();
@@ -273,7 +277,7 @@ class Home3Controller extends Controller
 
         // if($request->param_vess_removed != null)
         //     foreach ($request->param_vess_removed as $i => $val)
-        //         DB::table('TOWER.VESSEL_DETAILS_SIM')->where('ves_id', $val['ves_id'])->delete();
+        //         DB::table('CBSLAM.VESSEL_DETAILS_SIM')->where('ves_id', $val['ves_id'])->delete();
 
 
         // for ($i=0 ; $i < $count; $i++){
@@ -358,20 +362,20 @@ class Home3Controller extends Controller
         //         'IS_UNREG'              => $param_vess[$i]['is_unreg'],
         //     ];
 
-        //     DB::table('TOWER.VESSEL_DETAILS_CRANE')->where('ves_id', $param_vess[$i]['ves_id'])->delete();
+        //     DB::table('CBSLAM.VESSEL_DETAILS_CRANE')->where('ves_id', $param_vess[$i]['ves_id'])->delete();
 
         //     for ($a=0 ; $a < count($savecrane); $a++){
         //         $data_crane=[
         //             'ves_id' =>  $param_vess[$i]['ves_id'],
         //             'che_id' => $savecrane[$a]
         //         ];
-        //         DB::table('TOWER.VESSEL_DETAILS_CRANE')->insert($data_crane);
+        //         DB::table('CBSLAM.VESSEL_DETAILS_CRANE')->insert($data_crane);
         //     }
         //     if($param_vess[$i]['is_simulation'] == '1' ) {
-        //         DB::table('TOWER.VESSEL_DETAILS_SIM')
+        //         DB::table('CBSLAM.VESSEL_DETAILS_SIM')
         //         ->insert($data_push);
         //     } else {
-        //         DB::table('TOWER.VESSEL_DETAILS_SIM')
+        //         DB::table('CBSLAM.VESSEL_DETAILS_SIM')
         //         ->where('ves_id', $param_vess[$i]['ves_id_old'])
         //         ->update($data_update);
         //     }
@@ -393,17 +397,8 @@ class Home3Controller extends Controller
     {
         $null_date = '1900-12-21 23:00:00';
 
-        // echo json_encode($arr_vess[$var]);
-        // echo json_encode($ocean_interisland);
-        // die();
-
         if(isset($arr_vess[$var])) {
 
-            DB::table('TOWER.VESSEL_DETAILS_SIM')
-                ->where('IS_SIMULATION', '1')
-                ->where('OCEAN_INTERISLAND_FAKE', $ocean_interisland)
-                ->delete();
-            
             $param_vess = $arr_vess[$var];
 
             foreach ($param_vess as $i => $val) {
@@ -431,7 +426,6 @@ class Home3Controller extends Controller
                                                 $param_vess[$i]['est_pilot_ts'] : $null_date,
                     'REQ_BERTH_TS'          => $param_vess[$i]['req_berth_ts'] != null ? 
                                                 $param_vess[$i]['req_berth_ts'] : $null_date,
-                    'est_berth_ts'          => $param_vess[$i]['est_berth_ts'],
                     'est_dep_ts'            => $param_vess[$i]['est_dep_ts'],
                     'CRANE'                 => $crane_string,
                     'BCH'                   => $param_vess[$i]['bsh'],
@@ -445,6 +439,12 @@ class Home3Controller extends Controller
                     'INFO'                  => $param_vess[$i]['info'],
                     'TENTATIF'              => $param_vess[$i]['tentatif'],
                 ];
+
+                if(isset($param_vess[$i]['is_prev_day'])) {
+                    if($param_vess[$i]['is_prev_day'] == 0) {
+                        $data_update['est_berth_ts'] = $param_vess[$i]['est_berth_ts'];
+                    }
+                }
 
                 $data_push = [
                     'berth_fr_metre'        => $param_vess[$i]['berth_fr_metre_ori'],
@@ -488,7 +488,7 @@ class Home3Controller extends Controller
                     'IS_UNREG'              => $param_vess[$i]['is_unreg'],
                 ];
 
-                DB::table('TOWER.VESSEL_DETAILS_CRANE')
+                DB::table('CBSLAM.VESSEL_DETAILS_CRANE')
                 ->where('ves_id', $param_vess[$i]['ves_id'])
                 ->delete();
 
@@ -497,30 +497,35 @@ class Home3Controller extends Controller
                         'ves_id' =>  $param_vess[$i]['ves_id'],
                         'che_id' => $savecrane[$a]
                     ];
-                    DB::table('TOWER.VESSEL_DETAILS_CRANE')->insert($data_crane);
+                    DB::table('CBSLAM.VESSEL_DETAILS_CRANE')->insert($data_crane);
                 }
-                if($param_vess[$i]['is_simulation'] == '1' ) {
-                    DB::table('TOWER.VESSEL_DETAILS_SIM')
-                    ->insert($data_push);
-                } else {
-                    DB::table('TOWER.VESSEL_DETAILS_SIM')
-                    ->where('ves_id', $param_vess[$i]['ves_id_old'])
-                    ->update($data_update);
-                }
-
-            }
-
-            Note::whereDate('START_DATE', '>=', date('Y-m-d'))
-            ->where('OCEAN_INTERISLAND', $ocean_interisland)->delete();
-
-            if(isset($arr_vess[$var_note])) {
-                if($arr_vess[$var_note] != null) {
-                    foreach ($arr_vess[$var_note] as $i => $val) {
-                        Note::insert($val);
+                if(isset($param_vess[$i]['is_inserted'])) {
+                    if($param_vess[$i]['is_inserted'] == 1) {
+                        DB::table('CBSLAM.VESSEL_DETAILS_SIM')
+                        ->where('ves_id', $param_vess[$i]['ves_id_old'])
+                        ->update($data_update);
+                    } else {
+                        DB::table('CBSLAM.VESSEL_DETAILS_SIM')
+                        ->insert($data_push);
                     }
+                } else {
+                    DB::table('CBSLAM.VESSEL_DETAILS_SIM')
+                    ->insert($data_push);
                 }
+
             }
 
+        }
+        
+        Note::whereDate('START_DATE', '>=', date('Y-m-d'))
+        ->where('OCEAN_INTERISLAND', $ocean_interisland)->delete();
+
+        if(isset($arr_vess[$var_note])) {
+            if($arr_vess[$var_note] != null) {
+                foreach ($arr_vess[$var_note] as $i => $val) {
+                    Note::insert($val);
+                }
+            }
         }
     }
 
@@ -535,7 +540,7 @@ class Home3Controller extends Controller
 
         $null_date = '1900-12-21 23:00:00';
 
-        DB::table('TOWER.VESSEL_DETAILS_SIM')
+        DB::table('CBSLAM.VESSEL_DETAILS_SIM')
             ->where('IS_SIMULATION', '1')
             ->where('OCEAN_INTERISLAND_FAKE', $request->param_ocean)
             ->delete();
@@ -543,7 +548,7 @@ class Home3Controller extends Controller
 
         if($request->param_vess_removed != null)
             foreach ($request->param_vess_removed as $i => $val)
-                DB::table('TOWER.VESSEL_DETAILS_SIM')->where('ves_id', $val['ves_id'])->delete();
+                DB::table('CBSLAM.VESSEL_DETAILS_SIM')->where('ves_id', $val['ves_id'])->delete();
 
 
         for ($i=0 ; $i < $count; $i++){
@@ -560,19 +565,6 @@ class Home3Controller extends Controller
 
             $savecrane = explode(",", $crane_string);
 
-            // if(!isset($param_vess[$i]['berth_fr_metre_ori'])) {
-            //     echo $param_vess[$i]['ves_id'];
-            //     die();
-            // }
-
-            // $data_update = [
-            //     'CRANE'             => $crane_string,
-            //     'ves_id'            => $param_vess[$i]['ves_id'],
-            //     'berth_fr_metre'    => $param_vess[$i]['berth_fr_metre_ori'],
-            //     'berth_to_metre'    => $param_vess[$i]['berth_to_metre_ori'],
-            //     'est_berth_ts'      => $param_vess[$i]['est_berth_ts'],
-            //     'est_dep_ts'        => $param_vess[$i]['est_dep_ts']
-            // ];
 
             $data_update = [
                 'berth_fr_metre'        => $param_vess[$i]['berth_fr_metre_ori'],
@@ -642,20 +634,20 @@ class Home3Controller extends Controller
                 'IS_UNREG'              => $param_vess[$i]['is_unreg'],
             ];
 
-            DB::table('TOWER.VESSEL_DETAILS_CRANE')->where('ves_id', $param_vess[$i]['ves_id'])->delete();
+            DB::table('CBSLAM.VESSEL_DETAILS_CRANE')->where('ves_id', $param_vess[$i]['ves_id'])->delete();
 
             for ($a=0 ; $a < count($savecrane); $a++){
                 $data_crane=[
                     'ves_id' =>  $param_vess[$i]['ves_id'],
                     'che_id' => $savecrane[$a]
                 ];
-                DB::table('TOWER.VESSEL_DETAILS_CRANE')->insert($data_crane);
+                DB::table('CBSLAM.VESSEL_DETAILS_CRANE')->insert($data_crane);
             }
             if($param_vess[$i]['is_simulation'] == '1' ) {
-                DB::table('TOWER.VESSEL_DETAILS_SIM')
+                DB::table('CBSLAM.VESSEL_DETAILS_SIM')
                 ->insert($data_push);
             } else {
-                DB::table('TOWER.VESSEL_DETAILS_SIM')
+                DB::table('CBSLAM.VESSEL_DETAILS_SIM')
                 ->where('ves_id', $param_vess[$i]['ves_id_old'])
                 ->update($data_update);
             }
@@ -676,7 +668,7 @@ class Home3Controller extends Controller
 
     public function logo()
     {   
-        $customer = DB::table('TOWER.CBS_CUSTOMER')
+        $customer = DB::table('CBSLAM.CBS_CUSTOMER')
             ->get();
         return view('content.tablecustomer',compact("customer"));
     }
@@ -690,7 +682,7 @@ class Home3Controller extends Controller
             }
            
             $id_cus = $customer.' '; 
-            $cus= DB::table('TOWER.CUSTOMER')
+            $cus= DB::table('CBSLAM.CUSTOMER')
                 ->where("CUSTOMER",$id_cus)
                 ->update(['image' => $img_name]);
 
@@ -707,10 +699,11 @@ class Home3Controller extends Controller
 
     public function getcrane()
     {
-        $craneCon = DB::table('TOWER.CBS_CHE_MASTER')
+        set_time_limit(60000);
+        $craneCon = DB::table('CBSLAM.CBS_CHE_MASTER')
         ->where ('CHE_TYPE', 'PTR')
         ->get();
-        $craneDry= DB::table('TOWER.CBS_CHE_MASTER')
+        $craneDry= DB::table('CBSLAM.CBS_CHE_MASTER')
         ->where ('CHE_TYPE', 'GSU')
         ->get();
         $crane = [
@@ -723,17 +716,17 @@ class Home3Controller extends Controller
 
     public function getport()
     {
-        $getport = DB::table('TOWER.CBS_PORT_MASTER')
+        $getport = DB::table('CBSLAM.CBS_PORT_MASTER')
         ->get();
 
         return response()->json($getport);
     }
     public function getsignature()
     {
-        $manager =  DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $manager =  DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->where('jabatan', "PLANNING MANAGER")
         ->get();
-        $planner =  DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $planner =  DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->where('jabatan', "BERTH PLANNER")
         ->get();
 
