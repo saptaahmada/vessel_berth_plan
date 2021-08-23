@@ -105,7 +105,11 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/Monitoring', function () {
         return view('content.monitoring');
     });
-    Route::post('/Monitoring/proses',  'MonitorController@proses')->name('monitoringproses');
+    Route::get('/Monitoring/print', function () {
+        return view('content.printmonitoring');
+    });
+    Route::post('/Monitoring/print','MonitorController@proses2')->name('monitorprint');
+    Route::post('/Monitoring/proses', 'MonitorController@proses')->name('monitoringproses');
 
     
     Route::get('/logout',  'LoginController@logout')->name('logout');

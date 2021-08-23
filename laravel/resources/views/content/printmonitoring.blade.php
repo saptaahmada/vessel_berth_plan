@@ -3,7 +3,7 @@
 <head>
 <style>
     
-.hari1{
+    .hari1{
     text-align:center;
     font-size: 8px;
     font-weight: bold;
@@ -21,13 +21,13 @@
     writing-mode: vertical-lr;
     transform: rotate(180deg);
 
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #342345;    */
     
     position: absolute;
     left: 0px;
-    top: 1px;
+    top: 26px;
 }
 .tanggal2
 {
@@ -36,13 +36,13 @@
     align-items:center;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #123422;    */
     
     position: absolute;
     left: 0px;
-    top: 107.5px;
+    top: 150.5px;
 }
 .tanggal3
 {
@@ -51,13 +51,13 @@
     align-items:center;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #887567;    */
     
     position: absolute;
     left: 0px;
-    top: 214px;
+    top: 275px;
 }
 .tanggal4
 {
@@ -66,13 +66,13 @@
     align-items:center;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #342356;    */
     
     position: absolute;
     left: 0px;
-    top: 321px;
+    top: 400px;
 }
 .tanggal5
 {
@@ -81,13 +81,13 @@
     align-items:center;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #435324;    */
     
     position: absolute;
     left: 0px;
-    top: 428px;
+    top: 524.5px;
 }
 .tanggal6
 {
@@ -96,13 +96,13 @@
     align-items:center;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #952;    */
     
     position: absolute;
     left: 0px;
-    top: 535px;
+    top: 649px;
 }
 .tanggal7
 {
@@ -111,90 +111,161 @@
     align-items:center;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
-    width: 23.5px;
-    height: 105.5px;
+    width: 28px;
+    height: 124px;
     /* background: #95c8d8;    */
     
     position: absolute;
     left: 0px;
-    top: 641.3px;
+    top: 774px;
+}
+#start{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1018px;
+    top: 13px;
+    position: absolute;
+    /* background: #95c8d8;    */
+}
+#starttgl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1018px;
+    top: 28px;
+    position: absolute;
+    /* background: #95c8d8;    */
+
+}
+#end{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1109.5px;
+    top: 13px;
+    position: absolute;
+    /* background: #95c8d8;    */
+}
+#endtgl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1109.5px;
+    top: 28px;
+    position: absolute;
+    /* background: #95c8d8;    */
+
+}
+.startend{
+    text-align:center;
+    font-size: 6px;
+    font-weight: bold;
+    margin:auto;
+    color: black !important;
+    position: absolute;
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+     /* background: #ca3433;    */
+}
+.startendtgl{
+    text-align:center;
+    font-size: 6px;
+    font-weight: bold;
+    margin:auto;
+    color: white !important;
+    position: absolute;
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+     /* background: #ca3433;    */
 }
 
 #intern{
-    width: 362px;
-    height: 747px;
+    width: 503px;
+    height: 871.5px;
     /* background: #95c8d8;    */
     /* border:1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 222px;
-    top: 133px;
+    left: 261px;
+    top: 159px;
     /* filter: border:1px solid #ca3433; */ 
     /* filter: drop-shadow(3px 3px 5px black); */
 }
 
 .arsirintern{
     width: 65px;
-    height: 747px;
+    height: 871.5px;
     position: absolute;
-    left: 319.5px;
-    top: 133px;
+    left: 261px;
+    top: 159px;
     background: #877F7D;   
     opacity: 0.5;
     z-index:0;
 }
 
 #domes{
-    width: 356.5px;
-    height: 747px;
+    width: 503px;
+    height: 871.5px;
     /* background: #95c8d8;    */
     /* background: #877F7D;    */
     /* opacity: 0.2; */
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 681.5px;
-    top: 133px;
+    left: 880.5px;
+    top: 159px;
 
 }
 .arsirdomes{
     width: 97.5px;
-    height: 747px;
+    height: 871.5px;
     background: #877F7D;   
     opacity: 0.5;
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 675px;
-    top: 133px;
+    left: 910.9px;
+    top: 159px;
     z-index:0;
 
 }
 
 #curah{
-    width: 161.5px;
-    height: 747px;
+    width: 190px;
+    height: 871.5px;
     /* background: #95c8d8;    */
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 60.5px;
-    top: 133px;
+    left: 70px;
+    top: 159px;
 }
 .arsircurah{
     width: 65px;
-    height: 747px;
+    height: 871.5px;
     background: #877F7D;
     /* background: #ca3433; */
     opacity: 0.5; 
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 157.5px; */
-    left :  93px; 
+    left: 70px;
     /* right: 100px; */
     /* right: 0px; */
-
-    top: 133px;
+    top: 159px;
     z-index:0;
 }
 .box{
@@ -208,14 +279,14 @@
     /* box-sizing: border-box; */
     /* overflow: auto; */
     position: absolute !important;
-    box-shadow: 4px 4px 5px  #313131;
+    /* box-shadow: 4px 4px 5px  #313131; */
     /* border-radius: 5%; */
     width : 65px;
     height :27px;
 
     /* height :66.5px; */
 
-    left :65px; /*6.5*/
+    left :0px; /*6.5*/
     top: 4.5px;
 }
 .text_judul{
@@ -369,7 +440,7 @@ circle {
 }
 
 circle2 span {
-position: absolute;
+    position: absolute;
   color:#fff;
   font-size:4px;
   top: 50%;
@@ -391,14 +462,14 @@ circle2 {
   z-index:-1;
 }
 #ttd1 {
-    width: 100px;
-    height: 60px;
+    width: 46px;
+    height: 70px;
     /* background: #95c8d8;    */
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 656px;
-    top: 970px;
+    left: 950px;
+    top: 1134px;
 }
 
 #ttd2 {
@@ -408,8 +479,8 @@ circle2 {
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 850px;
-    top: 970px;
+    left: 1110px;
+    top: 1134px;
 }
 
 
@@ -472,62 +543,75 @@ circle2 {
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
 <!-- <script src="{{asset('asset/js/jquery.ui.min.js')}}"></script> -->
 
-<title>PRINT | VESSEL INFORMATION BERTHING PLAN</title>
+<title>PRINT MONITORING | VESSEL INFORMATION BERTHING PLAN</title>
 
 </head>
 <body>
     <?php
         setlocale(LC_TIME, 'id_ID.utf8');
 
-        $hari1prin = new DateTime();
+        $datenow = $_GET['datestart'];
+        
+        $hari1prin = new DateTime($datenow);
         $day1 = $hari1prin->format('l');
         $hari1= strftime('%A', $hari1prin->getTimestamp());
         $tgl1 = strftime('%d %B %Y', $hari1prin->getTimestamp());
 
-        $hari2prin = new DateTime('now +1 day');
+        $hari2prin = new DateTime($datenow);
+        $hari2prin->add(new DateInterval('P1D'));
         $day2 = $hari2prin->format('l');
         $hari2 =strftime('%A', $hari2prin->getTimestamp());
         $tgl2 = strftime('%d %B %Y', $hari2prin->getTimestamp());
 
-        $hari3prin = new DateTime('now +2 day');
+        $hari3prin = new DateTime($datenow);
+        $hari3prin->add(new DateInterval('P2D'));
         $day3 = $hari3prin->format('l');
         $hari3 =strftime('%A', $hari3prin->getTimestamp());
         $tgl3 = strftime('%d %B %Y', $hari3prin->getTimestamp());
 
-        $hari4prin = new DateTime('now +3 day');
+        $hari4prin = new DateTime($datenow);
+        $hari4prin->add(new DateInterval('P3D'));
         $day4 = $hari4prin->format('l');
         $hari4 =strftime('%A', $hari4prin->getTimestamp());
         $tgl4 = strftime('%d %B %Y', $hari4prin->getTimestamp());
 
-        $hari5prin = new DateTime('now +4 day');
+        $hari5prin = new DateTime($datenow);
+        $hari5prin->add(new DateInterval('P4D'));
         $day5 = $hari5prin->format('l');
         $hari5 =strftime('%A', $hari5prin->getTimestamp());
         $tgl5 = strftime('%d %B %Y', $hari5prin->getTimestamp());
 
-        $hari6prin = new DateTime('now +5 day');
+        $hari6prin = new DateTime($datenow);
+        $hari6prin->add(new DateInterval('P5D'));
         $day6 = $hari6prin->format('l');
         $hari6 =strftime('%A', $hari6prin->getTimestamp());
         $tgl6 = strftime('%d %B %Y', $hari6prin->getTimestamp());
 
-        $hari7prin = new DateTime('now +6 day');
+        $hari7prin = new DateTime($datenow);
+        $hari7prin->add(new DateInterval('P6D'));
         $day7 = $hari7prin->format('l');
         $tgl7 = strftime('%d %B %Y', $hari7prin->getTimestamp());
         $hari7 =strftime('%A', $hari7prin->getTimestamp());
 
     ?>
    
-    <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" >
-  <!-- <p class=hari>RABU / WEDNESDAY</p> -->
+   <img src="{{asset('/img/vessel_print_650.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
+    <!-- <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" > -->
+    
+    <div id="start">
+    </div>
+    <div id="starttgl">
+    </div>
+    <div id="endtgl">
+    </div>
+    <div id="end">
+    </div>
+   
+
     <div id="internarsir">
          <!-- <div class="arsirintern" id="arsirintern"></div> -->
     </div>
         <div id="intern">
-    
-    
-        
-    
-
-
             <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
         </div>
 
@@ -535,6 +619,7 @@ circle2 {
          <!-- <div class="arsirdomes" id="arsirdomes"></div> -->
     </div>
         <div id="domes">
+            <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
         </div>
 
     <div id="curaharsir">
@@ -542,7 +627,7 @@ circle2 {
 
     </div>
         <div id="curah">
-            <!-- sas -->
+            <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
         </div>
 
 
@@ -553,13 +638,13 @@ circle2 {
         <div style="position: absolute;  z-index: 5; color:black; font-size:4px; font-family:arial; font-weight:bold;"> Dibuat Oleh,</div>
         <div  style="position: absolute; color:black; z-index: 5; font-size:5px; font-family:arial; font-weight:bold; margin-top: 5px;"> BERTH PLANNER</div>
         <img id="link1" style=" margin-top: 2px; margin-left: -10px; position:initial;  width:65px;height:65px" src="https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=data->link1&choe=UTF-8">
-        <div id="berth_planner" style="position: absolute;margin-top: -10px;color:black;text-decoration: underline; font-size:5px; font-family:arial; font-weight:bold;">NANANG HIDAYAT </div>
+        <div id="berth_planner" style="position: absolute;margin-top: -10px;color:black;text-decoration: underline; font-size:5px; font-family:arial; font-weight:bold; text-transform:uppercase;">NANANG HIDAYAT </div>
     </div>
     <div id="ttd2">
         <div style="position: absolute;  z-index: 5;color:black; font-size:5px; font-family:arial; font-weight:bold;">Mengetahui</div>
         <div style="position: absolute; color:black; z-index: 5; font-size:5px; font-family:arial; font-weight:bold; margin-top: 5px;"> PLANNING MANAGER</div>
         <img id="link2" style=" margin-top: 2px; margin-left: -10px; position:initial;  width:65px;height:65px" src="https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=data->link2&choe=UTF-8">
-        <div id="planning_manager" style="position: absolute;margin-top: -10px; color:black;text-decoration: underline; font-size:5px; font-family:arial; font-weight:bold;">PIERRE ROCHEL </div>
+        <div id="planning_manager" style="position: absolute;margin-top: -10px; color:black;text-decoration: underline; font-size:5px; font-family:arial; font-weight:bold; text-transform:uppercase;">PIERRE ROCHEL </div>
     </div>
 
 
@@ -567,20 +652,19 @@ circle2 {
 </body>
 </html>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     window.onload = function () {
     window.print();
     setTimeout(function(){window.close();}, 1);
   }
-</script> -->
+</script>
 
 
 
 
 <script type="text/javascript">
-
-
     for (i = 1; i < 3; ++i) {
+
         // console.log(i);
         $("#tanggal").append('<div class= "tanggal1 box'+i+'"><p class=hari1><?php echo $tgl1 ?><br><?php echo $hari1 ?> / <?php echo $day1 ?></p></div>');
         $("#tanggal").append('<div class= "tanggal2 box'+i+'"><p class=hari1><?php echo $tgl2 ?><br><?php echo $hari2 ?> / <?php echo $day2 ?></p></div>');
@@ -592,13 +676,15 @@ circle2 {
 
     }
     $(".box1").css("left","0px");
-    $(".box2").css("left", "648.5px");
-
+    $(".box2").css("left", "842px");
+    $("#start").append('<p class="startend"><?php echo $hari1 ?></p>');
+    $("#starttgl").append('<p class="startendtgl"><?php echo $tgl1 ?></p>');
+    $("#end").append('<p class="startend"><?php echo $hari7 ?></p>');
+    $("#endtgl").append('<p class="startendtgl"><?php echo $tgl7 ?></p>');
 
 </script>
 
-
-
+<script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
 <script type="text/javascript">
 
     var vessel=[];
@@ -608,85 +694,37 @@ circle2 {
     Load();  
     signature();    
     function Load() {
-        $.ajax({
-            url : "{{route('blokirkade')}}",
-            type : "get",
-            dataType : "json",
-            async : false,
-            success : function(result){
-                blokir_intern = result.blokir_intern;
-                blokir_domes = result.blokir_domes;
-                blokir_curah = result.blokir_curah;
-                panjang_curah = result.panjang_curah[0].param4;
+        var vessel=[];
+        var vesseldom = [];
+        var vesselcur = [];
 
-                //INTERNATIONAL
-                for (o = 1; o < blokir_intern.length+1; ++o) {
-                    $("#internarsir").append(
-                        '<div class="arsirintern" id="arsirintern'+o+'"></div>'
-                    )
-                }
+        var url_angkut      = window.location.href;
+        var pacul = new URL(url_angkut);
+        var datestart = pacul.searchParams.get("datestart");
+        // console.log("JAncok",datestart)
+        var dateend =pacul.searchParams.get('dateend');
+        var y_awal = moment(datestart).set({h: 00, m: 00});
+        // console.log(y_awal);
 
-                for (p = 1; p < blokir_intern.length+1; ++p) {
-                    var realstart= blokir_intern[p-1].param3;
-                    var start = ((blokir_intern[p-1].param3 /10) * 6.5) + 222;
-                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *6.5;
-                    $("#arsirintern"+p).css("left", start+"px");
-                    $("#arsirintern"+p).css("width", end+"px");
 
-                }
+    //   console.log(datestart);
 
-                // DOMESTIK
-                for (g = 1; g < blokir_domes.length+1; ++g) {
-                    $("#domesarsir").append(
-                        '<div class="arsirdomes" id="arsirdomes'+g+'"></div>'
-                    )
-                }
-                for (e = 1; e < blokir_domes.length+1; ++e) {
-                    var realstartdom= blokir_domes[e-1].param3;
-                    var startdom = 0;
-                    var enddom = 0;
-                   
-                    if(realstartdom <= 50){
-                        startdom =  707.5;
-                        enddom = ((blokir_domes[e-1].param4 /10) *6.5)-26;
-                    } else  {
-                        startdom = ((blokir_domes[e-1].param3 /10) * 6.5) + 681.5;
-                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 6.5;
-                    }  
-
-                    $("#arsirdomes"+e).css("left", startdom+"px");
-                    $("#arsirdomes"+e).css("width", enddom+"px");
-
-                }
-                
-                // //CURAH
-                for (d = 1; d < blokir_curah.length+1; ++d) {
-                    $("#curaharsir").append(
-                        '<div class="arsircurah" id="arsircurah'+d+'"></div>'
-                    )
-                }
-
-                for (y = 1; y < blokir_curah.length+1; ++y) {
-                    var realstartcur= blokir_curah[y-1].param3;
-                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 6.5) + 60.5;
-                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 6.5) - (startcur - 60.5) ;
-
-                    $("#arsircurah"+y).css("left", startcur+"px");
-                    $("#arsircurah"+y).css("width", endcur+"px");
-                }
-            }
-        });
 
         $.ajax({  
-            url : "{{route('getvessel')}}",
-            type : "get",
+            url : "{{ route('monitorprint') }}",
+            type : "post",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                date2_start:datestart,
+                date2_end:dateend
+                },
             dataType : "json",
             async : false,
             success : function(result){
                 vessel = result.Intern;
                 vesseldom = result.Domes;
                 vesselcur = result.Curah;
-                // console.log(vesselcur);
+                // console.log(vessel);
 
                 for (i = 1; i < vessel.length+1; ++i) {
                     var crane =  vessel[i-1].crane;
@@ -696,7 +734,6 @@ circle2 {
                     else
                     uncrane = crane.split(',');
 
-                    // console.log(uncrane);
                     var craneloop = "";
                     for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
                         craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
@@ -723,25 +760,38 @@ circle2 {
                         '</div>');
                 }
                 for (i = 1; i < vessel.length+1; ++i) {
-                    var colors = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
-                    var rand = colors[Math.floor(Math.random() * colors.length)];
-                    var left = vessel[i-1].berth_fr_metre /3.076923076923077;
-                    var top = vessel[i-1].y_awal/4.444444444444444;
-                    var width = vessel[i-1].width/3.076923076923077;
-                    var height = vessel[i-1].height/4.395604395604396;
+                    if(vessel[i-1].act_berth_ts != null) {
+                        rand = getColor(0);
+                    } else if(vessel[i-1].tentatif == 1) {
+                        rand = getColor(1);
+                    } else if(vessel[i-1].tentatif == 0) {
+                        rand = getColor(2);
+                    }
+
+                    var est_berth = vessel[i-1].est_berth_ts;
+                    var end= moment(est_berth);
+                    var duration = moment.duration(end.diff(y_awal));
+                    var hours = duration.asHours();
+                    // console.log(vessel[i-1].ves_name,hours);
+                    var startdate = hours * 5.1875;
+                   
+                    var left = vessel[i-1].berth_fr_metre_ori/10 *7.611111111111111;
+                    var top = vessel[i-1].y_awal/20 * 5.1875;
+                    var width = vessel[i-1].width_ori/10 *7.611111111111111;
+                    var height = vessel[i-1].height/20 * 5.1875 ;
                     var along_sidein = vessel[i-1].btoa_side;
                     var name = vessel[i-1].ves_name;
                 
                     if(along_sidein == "P"){
                     $("#zone"+i).css("left", left+"px");
                     $("#zone"+i).css("width", width+"px");
-                    $("#zone"+i).css("top", top +"px");
+                    $("#zone"+i).css("top", startdate +"px");
                     $("#zone"+i).css("height", height+"px");
                     $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
                     } else if (along_sidein == "S") {
                     $("#zone"+i).css("left", left+"px");
                     $("#zone"+i).css("width", width+"px");
-                    $("#zone"+i).css("top", top +"px");
+                    $("#zone"+i).css("top", startdate +"px");
                     $("#zone"+i).css("height", height+"px");
                     $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
                     $("#text_judul"+i+".text_judul").css("padding-left", "5px");
@@ -749,15 +799,6 @@ circle2 {
                     $("#text_detail"+i+".text_detail").css("padding-left", "5px");
                     }
 
-                    // $(".zone").pseudo(":before","background", rand);
-                    // // $("#text_judul"+i).css("padding-left", "24%");
-                    // // $("#text_detail"+i).css("padding-left", "25%");
-                    // // $("#img"+i).css("text-align", "right");
-                    // // $("#img"+i).css("padding-right", "20px");
-                    // // $("#img"+i).css("padding-top", "5px");
-                    // $(".zone span").css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-                    // $('.zone div').css("-webkit-clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-                    // $(".zone::before").css("-webkit-clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
 
                 }
 
@@ -796,36 +837,47 @@ circle2 {
                         '</div>');
                 }
                 for (i = 1; i < vesseldom.length+1; ++i) {
-                    var colorsdom = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
-                    var rand2dom = colorsdom[Math.floor(Math.random() * colorsdom.length)];
+
+                    if(vesseldom[i-1].act_berth_ts != null) {
+                        rand = getColor(0);
+                    } else if(vesseldom[i-1].tentatif == 1) {
+                        rand = getColor(1);
+                    } else if(vesseldom[i-1].tentatif == 0) {
+                        rand = getColor(2);
+                    }
                     
-                    var leftdom = vesseldom[i-1].berth_fr_metre /3.076923076923077; // done
-                    var topdom = vesseldom[i-1].y_awal/4.444444444444444; // done
-                    var widthdom = vesseldom[i-1].width/3.076923076923077;
-                    var heightdom = vesseldom[i-1].height/4.395604395604396;
+                    var est_berth = vesseldom[i-1].est_berth_ts;
+                    var end= moment(est_berth);
+                    var duration = moment.duration(end.diff(y_awal));
+                    var hours = duration.asHours();
+                    // console.log(vessel[i-1].ves_name,hours);
+                    var startdatedom = hours * 5.1875;
+
+                    var leftdom = vesseldom[i-1].berth_fr_metre_ori/10 *7.611111111111111; // done
+                    var topdom = vesseldom[i-1].y_awal/20 * 5.1875; // done
+                    var widthdom = vesseldom[i-1].width_ori/10 *7.611111111111111;
+                    var heightdom = vesseldom[i-1].height/20 * 5.1875;
                     var along_sidedom = vesseldom[i-1].btoa_side;
                     
                     // console.log(height);
                     if(along_sidedom == "P"){ //kiri star
                     $("#dom"+i).css("left", leftdom+"px");
                     $("#dom"+i).css("width", widthdom+"px");
-                    $("#dom"+i).css("top", topdom +"px");
+                    $("#dom"+i).css("top", startdatedom +"px");
                     $("#dom"+i).css("height", heightdom+"px");
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand2dom+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
                     }else if (along_sidedom == "S") {
                     $("#dom"+i).css("left", leftdom+"px");
                     $("#dom"+i).css("width", widthdom+"px");
-                    $("#dom"+i).css("top", topdom +"px");
+                    $("#dom"+i).css("top", startdatedom +"px");
                     $("#dom"+i).css("height", heightdom+"px");
                     $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
                     $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
                     
 
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand2dom+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
                     }
                 }
-
-
 
                 for (a = 1; a < vesselcur.length+1; ++a) {
                     var cranecur =   vesselcur[a-1].crane;
@@ -862,36 +914,49 @@ circle2 {
                         '</div>');
                 }
                 for (i = 1; i < vesselcur.length+1; ++i) {
-                    var colorscur = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
-                    var rand2cur = colorscur[Math.floor(Math.random() * colorscur.length)];
-                    
-                    var leftcur = vesselcur[i-1].berth_fr_metre /3.076923076923077; // done
-                    var topcur= vesselcur[i-1].y_awal/4.444444444444444; // done
-                    var widthcur = vesselcur[i-1].width/3.076923076923077;
-                    var heightcur = vesselcur[i-1].height/4.395604395604396;
+                    if(vesselcur[i-1].act_berth_ts != null) {
+                        rand = getColor(0);
+                    } else if(vesselcur[i-1].tentatif == 1) {
+                        rand = getColor(1);
+                    } else if(vesselcur[i-1].tentatif == 0) {
+                        rand = getColor(2);
+                    }
+                   
+                    var est_berth = vesselcur[i-1].est_berth_ts;
+                    var end= moment(est_berth);
+                    var duration = moment.duration(end.diff(y_awal));
+                    var hours = duration.asHours();
+                    // console.log(vessel[i-1].ves_name,hours);
+                    var startdatecur = hours * 5.1875;
+
+                    var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);
+                    var widthcur = (((250 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
+
+                    // console.log("left", leftcur);
+
+                    var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
+                    var heightcur = vesselcur[i-1].height/20 * 5.1875;
                     var along_sidecur = vesselcur[i-1].btoa_side;
                     
                     // console.log(height);
-                    if(along_sidecur == "P"){ //kiri star
+                    if(along_sidecur == "S"){ //kiri star
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
-                    $("#cur"+i).css("top", topcur +"px");
+                    $("#cur"+i).css("top", startdatecur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
-                    $("#cur"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand2cur+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidecur == "S") {
+                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                    }else if (along_sidecur == "P") {
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
-                    $("#cur"+i).css("top", topcur +"px");
+                    $("#cur"+i).css("top", startdatecur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
                     $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
                     $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
                     
-
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand2cur+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
                     }
                 }
 
-            
             }
         });
 
@@ -914,6 +979,19 @@ circle2 {
         $('#link1').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link1up+"&choe=UTF-8");
         $('#link2').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link2up+"&choe=UTF-8");
       
+    }
+
+    function getColor(param) {
+        var green = '#a9d18e';
+        var blue = '#9dc3e6';
+        var yellow = '#ffe699';
+
+        if(param == 0)
+            return green;
+        else if(param == 1)
+            return blue;
+        else if(param == 2)
+            return yellow 
     }
     
 

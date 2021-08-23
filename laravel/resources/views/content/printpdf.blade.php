@@ -119,6 +119,78 @@
     left: 0px;
     top: 774px;
 }
+#start{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1018px;
+    top: 13px;
+    position: absolute;
+    /* background: #95c8d8;    */
+}
+#starttgl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1018px;
+    top: 28px;
+    position: absolute;
+    /* background: #95c8d8;    */
+
+}
+#end{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1109.5px;
+    top: 13px;
+    position: absolute;
+    /* background: #95c8d8;    */
+}
+#endtgl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1109.5px;
+    top: 28px;
+    position: absolute;
+    /* background: #95c8d8;    */
+
+}
+.startend{
+    text-align:center;
+    font-size: 6px;
+    font-weight: bold;
+    margin:auto;
+    color: black !important;
+    position: absolute;
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+     /* background: #ca3433;    */
+}
+.startendtgl{
+    text-align:center;
+    font-size: 6px;
+    font-weight: bold;
+    margin:auto;
+    color: white !important;
+    position: absolute;
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+     /* background: #ca3433;    */
+}
 
 #intern{
     width: 503px;
@@ -135,10 +207,10 @@
 
 .arsirintern{
     width: 65px;
-    height: 747px;
+    height: 871.5px;
     position: absolute;
-    left: 319.5px;
-    top: 133px;
+    left: 261px;
+    top: 159px;
     background: #877F7D;   
     opacity: 0.5;
     z-index:0;
@@ -159,14 +231,14 @@
 }
 .arsirdomes{
     width: 97.5px;
-    height: 747px;
+    height: 871.5px;
     background: #877F7D;   
     opacity: 0.5;
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 675px;
-    top: 133px;
+    left: 910.9px;
+    top: 159px;
     z-index:0;
 
 }
@@ -183,18 +255,17 @@
 }
 .arsircurah{
     width: 65px;
-    height: 747px;
-    /* background: #877F7D; */
+    height: 871.5px;
+    background: #877F7D;
     /* background: #ca3433; */
     opacity: 0.5; 
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 157.5px; */
-    left :  93px; 
+    left: 70px;
     /* right: 100px; */
     /* right: 0px; */
-
-    top: 133px;
+    top: 159px;
     z-index:0;
 }
 .box{
@@ -369,7 +440,7 @@ circle {
 }
 
 circle2 span {
-position: absolute;
+    position: absolute;
   color:#fff;
   font-size:4px;
   top: 50%;
@@ -518,8 +589,17 @@ circle2 {
    
     <img src="{{asset('/img/vessel_print_650.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
     <!-- <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" > -->
+    
+    <div id="start">
+    </div>
+    <div id="starttgl">
+    </div>
+    <div id="endtgl">
+    </div>
+    <div id="end">
+    </div>
+   
 
-  <!-- <p class=hari>RABU / WEDNESDAY</p> -->
     <div id="internarsir">
          <!-- <div class="arsirintern" id="arsirintern"></div> -->
     </div>
@@ -539,7 +619,7 @@ circle2 {
 
     </div>
         <div id="curah">
-            <!-- sas -->
+            <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
         </div>
 
 
@@ -564,12 +644,12 @@ circle2 {
 </body>
 </html>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     window.onload = function () {
     window.print();
     setTimeout(function(){window.close();}, 1);
   }
-</script> -->
+</script>
 
 
 
@@ -592,6 +672,15 @@ circle2 {
     $(".box2").css("left", "842px");
 
 
+</script>
+
+<script type="text/javascript">
+    $("#start").append('<p class="startend"><?php echo $hari1 ?></p>');
+    $("#starttgl").append('<p class="startendtgl"><?php echo $tgl1 ?></p>');
+    $("#end").append('<p class="startend"><?php echo $hari7 ?></p>');
+    $("#endtgl").append('<p class="startendtgl"><?php echo $tgl7 ?></p>');
+
+    
 </script>
 
 
@@ -625,11 +714,10 @@ circle2 {
 
                 for (p = 1; p < blokir_intern.length+1; ++p) {
                     var realstart= blokir_intern[p-1].param3;
-                    var start = ((blokir_intern[p-1].param3 /10) * 6.5) + 222;
-                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *6.5;
+                    var start = ((blokir_intern[p-1].param3 /10) * 7.61111) + 261;
+                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *7.61111;
                     $("#arsirintern"+p).css("left", start+"px");
                     $("#arsirintern"+p).css("width", end+"px");
-
                 }
 
                 // DOMESTIK
@@ -644,11 +732,11 @@ circle2 {
                     var enddom = 0;
                    
                     if(realstartdom <= 50){
-                        startdom =  707.5;
-                        enddom = ((blokir_domes[e-1].param4 /10) *6.5)-26;
+                        startdom =  910.9;
+                        enddom = ((blokir_domes[e-1].param4 /10) *7.6111)-30.4;
                     } else  {
-                        startdom = ((blokir_domes[e-1].param3 /10) * 6.5) + 681.5;
-                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 6.5;
+                        startdom = ((blokir_domes[e-1].param3 /10) * 7.6111) + 880.5;
+                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 7.6111;
                     }  
 
                     $("#arsirdomes"+e).css("left", startdom+"px");
@@ -665,9 +753,10 @@ circle2 {
                 }
 
                 for (y = 1; y < blokir_curah.length+1; ++y) {
+                        //250 - 50
                     var realstartcur= blokir_curah[y-1].param3;
-                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 6.5) + 60.5;
-                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 6.5) - (startcur - 60.5) ;
+                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 7.6111) + 70;
+                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 7.6111) - (startcur - 70) ;
 
                     $("#arsircurah"+y).css("left", startcur+"px");
                     $("#arsircurah"+y).css("width", endcur+"px");
@@ -734,11 +823,11 @@ circle2 {
                     } else if(vessel[i-1].tentatif == 0) {
                         rand = getColor(2);
                     }
-                   
-                    var left = vessel[i-1].berth_fr_metre_ori/10 *7.611111111111111;
-                    var top = vessel[i-1].y_awal/20 * 5.1875;
-                    var width = vessel[i-1].width_ori/10 *7.611111111111111;
-                    var height = vessel[i-1].height/20 * 5.1875 ;
+                    
+                    var left = vessel[i-1].berth_fr_metre /10 *7.611111111111111;;
+                    var top = vessel[i-1].y_awal/20 * 5.1875;;
+                    var width = vessel[i-1].width/10 *7.611111111111111;;
+                    var height = vessel[i-1].height/20 * 5.1875;;
                     var along_sidein = vessel[i-1].btoa_side;
                     var name = vessel[i-1].ves_name;
                 
@@ -759,6 +848,15 @@ circle2 {
                     $("#text_detail"+i+".text_detail").css("padding-left", "5px");
                     }
 
+                    // $(".zone").pseudo(":before","background", rand);
+                    // // $("#text_judul"+i).css("padding-left", "24%");
+                    // // $("#text_detail"+i).css("padding-left", "25%");
+                    // // $("#img"+i).css("text-align", "right");
+                    // // $("#img"+i).css("padding-right", "20px");
+                    // // $("#img"+i).css("padding-top", "5px");
+                    // $(".zone span").css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
+                    // $('.zone div').css("-webkit-clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
+                    // $(".zone::before").css("-webkit-clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
 
                 }
 
@@ -877,27 +975,24 @@ circle2 {
                     } else if(vesselcur[i-1].tentatif == 0) {
                         rand = getColor(2);
                     }
-                    // var colorscur = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
-                    // var rand2cur = colorscur[Math.floor(Math.random() * colorscur.length)];
-                    var leftcur = - (vesselcur[i-1].berth_fr_metre - panjang_curah)-205;
-                    console.log("left", leftcur);
+                   
+                    var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);
+                    var widthcur = (((250 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
+
+                    // console.log("left", leftcur);
 
                     var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
-                    // var leftcur = vesselcur[i-1].berth_fr_metre/2;
-                    // var leftcur = ((190 - (vesselcur[i-1].berth_to_metre_ori/1.315789473684211))/10) *7.611111111111111;
-                    // var widthcur = (((190 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur - 70); // done
-                    var widthcur = vesselcur[i-1].width/2.65;
                     var heightcur = vesselcur[i-1].height/20 * 5.1875;
                     var along_sidecur = vesselcur[i-1].btoa_side;
                     
                     // console.log(height);
-                    if(along_sidecur == "P"){ //kiri star
+                    if(along_sidecur == "S"){ //kiri star
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", topcur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
                     $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidecur == "S") {
+                    }else if (along_sidecur == "P") {
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", topcur +"px");
