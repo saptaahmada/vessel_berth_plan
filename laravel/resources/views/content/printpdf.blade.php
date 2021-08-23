@@ -358,7 +358,7 @@
   height:60px;  /* ini juga*/
   top : 20px;  /* ini iya */
   left :0px; /* ini juga ternyata */
-  /* box-shadow: 10px 10px 5px grey; */
+  /* box-shadow: px 10px 5px grey; */
 } 
 .dom {
   /* padding: 90px 0; */
@@ -644,12 +644,12 @@ circle2 {
 </body>
 </html>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     window.onload = function () {
     window.print();
     setTimeout(function(){window.close();}, 1);
   }
-</script>
+</script> -->
 
 
 
@@ -779,7 +779,7 @@ circle2 {
                 vessel = result.Intern;
                 vesseldom = result.Domes;
                 vesselcur = result.Curah;
-                // console.log(vesselcur);
+                
 
                 for (i = 1; i < vessel.length+1; ++i) {
                     var crane =  vessel[i-1].crane;
@@ -788,6 +788,12 @@ circle2 {
                     uncrane=[];
                     else
                     uncrane = crane.split(',');
+
+                    var pot= vessel[i-1].dest_port;
+                    if (pot == null)
+                        pod = "-";
+                    else 
+                        pod = pot;
 
                     // console.log(uncrane);
                     var craneloop = "";
@@ -809,7 +815,7 @@ circle2 {
                                 '<div style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
                                 '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
                                 '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
+                                '<div style="margin:1px;">POD : '+pod+'</div>'+
                                 ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
                                 craneloop+
                             '</div>'+
@@ -819,17 +825,16 @@ circle2 {
                     if(vessel[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vessel[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vessel[i-1].tentatif == 0) {
                         rand = getColor(2);
+                    } else if(vessel[i-1].tentatif == 0) {
+                        rand = getColor(1);
                     }
                     
-                    var left = vessel[i-1].berth_fr_metre /10 *7.611111111111111;;
+                    var left = vessel[i-1].berth_fr_metre_ori /10 *7.611111111111111;;
                     var top = vessel[i-1].y_awal/20 * 5.1875;;
-                    var width = vessel[i-1].width/10 *7.611111111111111;;
+                    var width = vessel[i-1].width_ori/10 *7.611111111111111;;
                     var height = vessel[i-1].height/20 * 5.1875;;
                     var along_sidein = vessel[i-1].btoa_side;
-                    var name = vessel[i-1].ves_name;
                 
                     if(along_sidein == "P"){
                     $("#zone"+i).css("left", left+"px");
@@ -847,18 +852,8 @@ circle2 {
                     $("#text_judul"+i+".text_judul").css("padding-top", "5px");
                     $("#text_detail"+i+".text_detail").css("padding-left", "5px");
                     }
-
-                    // $(".zone").pseudo(":before","background", rand);
-                    // // $("#text_judul"+i).css("padding-left", "24%");
-                    // // $("#text_detail"+i).css("padding-left", "25%");
-                    // // $("#img"+i).css("text-align", "right");
-                    // // $("#img"+i).css("padding-right", "20px");
-                    // // $("#img"+i).css("padding-top", "5px");
-                    // $(".zone span").css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-                    // $('.zone div').css("-webkit-clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-                    // $(".zone::before").css("-webkit-clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-
                 }
+                
 
                 for (i = 1; i < vesseldom.length+1; ++i) {
                     var cranedom =  vesseldom[i-1].crane;
@@ -867,6 +862,12 @@ circle2 {
                     uncranedom=[];
                     else
                     uncranedom = cranedom.split(',');
+
+                    var pot= vesseldom[i-1].dest_port;
+                    if (pot == null)
+                        pod = "-";
+                    else 
+                        pod = pot;
 
                     // console.log(uncrane);
                     var craneloopdom = "";
@@ -888,7 +889,7 @@ circle2 {
                                 '<div style="margin:1px;">ETD : '+vesseldom[i-1].est_dep_ts+'</div>'+
                                 '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].real_load+'/'+vesseldom[i-1].real_disch+' BOX</div>'+
                                 '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+vesseldom[i-1].dest_port+'</div>'+
+                                '<div style="margin:1px;">POD : '+pod+'</div>'+
                                 ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
                                 craneloopdom+
                             '</div>'+
@@ -899,9 +900,9 @@ circle2 {
                     if(vesseldom[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vesseldom[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vesseldom[i-1].tentatif == 0) {
                         rand = getColor(2);
+                    } else if(vesseldom[i-1].tentatif == 0) {
+                        rand = getColor(1);
                     }
                     
                     
@@ -941,6 +942,13 @@ circle2 {
                     else
                     uncranecur = cranecur.split(',');
 
+
+                    var pot= vesselcur[i-1].dest_port;
+                    if (pot == null)
+                        pod = "-";
+                    else 
+                        pod = pot;
+
                     // console.log(uncrane);
                     var craneloopcur = "";
                     for (var x = 0; x < uncranecur.length; x++) { //Move the for loop from here
@@ -961,7 +969,7 @@ circle2 {
                                 '<div style="margin:1px;">ETD : '+vesselcur[a-1].est_dep_ts+'</div>'+
                                 '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].real_load+'/'+vesselcur[a-1].real_disch+' BOX</div>'+
                                 '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+vesselcur[a-1].dest_port+'</div>'+
+                                '<div style="margin:1px;">POD : '+pod+'</div>'+
                                 ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
                                 craneloopcur+
                             '</div>'+
@@ -971,9 +979,9 @@ circle2 {
                     if(vesselcur[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vesselcur[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vesselcur[i-1].tentatif == 0) {
                         rand = getColor(2);
+                    } else if(vesselcur[i-1].tentatif == 0) {
+                        rand = getColor(1);
                     }
                    
                     var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);

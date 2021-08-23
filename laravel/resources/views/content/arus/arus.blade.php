@@ -29,10 +29,8 @@
                       <table id="table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                             
                                 <thead>
-                                  <th>ID</th>
-                                  <th>Tanggal</th>
-                                  <th>Start Time</th>
-                                  <th>End Time</th>
+                                  <th>Start Date</th>
+                                  <th>End Date</th>
                                   <th>Edit</th>
                                 </thead>
                                 
@@ -59,21 +57,13 @@
         <!-- <form role="form" action="{{ route('addvessel') }}" method="POST"> -->
         <!-- <form role="form" enctype="multipart/form-data"> -->
         <!-- {{csrf_field()}} -->
-         <div class="form-group">
-            <label class="col-form-label">ID </label>
-            <input type="text" class="form-control" id="param2" name="param2">
+          <div class="form-group">
+            <label class="col-form-label">Start Date </label>
+            <input type="datetime-local" class="form-control" id="param4" name="param4">
           </div>
           <div class="form-group">
-            <label class="col-form-label">Tanggal </label>
-            <input type="date" class="form-control" id="param3" name="param3">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">Start Time </label>
-            <input type="time" class="form-control" id="param4" name="param4">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">End Time </label>
-            <input type="time" class="form-control" id="param5" name="param5">
+            <label class="col-form-label">End Date </label>
+            <input type="datetime-local" class="form-control" id="param5" name="param5">
           </div>
     
           <div class="modal-footer">
@@ -91,7 +81,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $(document).ready(function(){
     refreshTable();
   });
@@ -147,7 +137,15 @@
       $('#param4').val('');
       $('#param5').val('');
   })
+  
+  var list_arus = [];
 
+  $('#submit_plus').on('click', function() {
+    // list_arus.push({
+    //   ksortks
+    // })
+  })
+  
   $('#submit_add').on('click', function() {
     $.ajax({  
       url : (!mIsUpdate?"{{ url('Arus/add') }}":"{{ url('Arus/update') }}"),
@@ -211,5 +209,5 @@
     $('#param5').val(end_time);
   }
 
-</script>
+</script> -->
 @endsection

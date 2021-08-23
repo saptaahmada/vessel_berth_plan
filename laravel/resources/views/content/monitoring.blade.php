@@ -378,6 +378,7 @@
             success : function(result){
                 if($('#cekbox1').is(':checked')) {
                     vessel = result.Domes;
+                    console.log(vessel);
                     $("#Rdomes").css("display","block");
                     $("#Rintern").css("display","none");
                     $("#Rcur").css("display","none");
@@ -446,9 +447,9 @@
                     if(vessel[v-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vessel[v-1].tentatif == "1") {
-                        rand = getColor(1);
-                    } else if(vessel[v-1].tentatif == "0") {
                         rand = getColor(2);
+                    } else if(vessel[v-1].tentatif == "0") {
+                        rand = getColor(1);
                     }
 
                     
