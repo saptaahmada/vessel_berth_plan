@@ -23,40 +23,34 @@ class ArusController extends Controller
 
     public function add(Request $request)
     {
-        // dump($request->param4);
-        $result = DB::table('CBSLAM.MASTER_ARUS')
-        ->insert([
-        	'ARUS_ID'	=> $request->param2,
-        	'TANGGAL'	=> $request->param3,
-        	'START_TIME'	=> $request->param4,
-        	'END_TIME'	=> $request->param5
-        ]);
+        $start = $request->start_date;
+        $end   = $request->end_date;
+
+        // dump(count($start));
+        for ($s=0 ; $s < count($start); $s++){
+            $data_arus = [
+                'start_date'    => $start[$s],
+                'end_date'      => $end[$s]
+            ];
+
+            $result = DB::table('CBSLAM.MASTER_ARUS')->insert($data_arus);
+           
+                // dump($data_arus);
+        }
         return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+            'success'	=> $result,
+            'message'	=> ($result?'Success':'Gagal')
         ];
+
+        
     }
 
-    public function update(Request $request)
-    {
-        $result = DB::table('CBSLAM.MASTER_ARUS')
-        ->where('ARUS_ID', $request->curParam2)
-        ->update([
-            'ARUS_ID'	=> $request->param2,
-        	'TANGGAL'	=> $request->param3,
-        	'START_TIME'=> $request->param4,
-        	'END_TIME'	=> $request->param5
-        ]);
-        return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
-        ];
-    }
+   
 
     public function remove(Request $request)
     {
         $result = DB::table('CBSLAM.MASTER_ARUS')
-        ->where('ARUS_ID', $request->param2)
+        ->where('ARUS_ID', $request->arus_id)
         ->delete();
         return [
         	'success'	=> $result,

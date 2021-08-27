@@ -339,7 +339,7 @@
 #tanggal{
     width: 672px;
     height: 747px;
-    /* background: #95c8d8;    */
+     /*background: #95c8d8;    */
     /* border:1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
@@ -347,119 +347,106 @@
     top: 133px;
 }
 .zone {
-  /* padding: 90px 0; */
-  margin: 0 auto;
-  text-align: left;
-  /* background-blend-mode: darken; */
-  transition: 0.5s;
-  position:absolute;
-  z-index:0;
- width:90px;   /* ini iya */
-  height:60px;  /* ini juga*/
-  top : 20px;  /* ini iya */
-  left :0px; /* ini juga ternyata */
-  /* box-shadow: px 10px 5px grey; */
+    /* padding: 90px 0; */
+    margin: 0 auto;
+    text-align: left;
+    /* background-blend-mode: darken; */
+    transition: 0.5s;
+    position:absolute;
+    z-index:0;
+    width:90px;   /* ini iya */
+    height:60px;  /* ini juga*/
+    top : 20px;  /* ini iya */
+    left :0px; /* ini juga ternyata */
+    /* box-shadow: px 10px 5px grey; */
 } 
 .dom {
-  /* padding: 90px 0; */
-  margin: 0 auto;
-  text-align: left;
-  /* background-blend-mode: darken; */
-  transition: 0.5s;
-  position:absolute;
-  z-index:0;
- width:90px;   /* ini iya */
-  height:60px;  /* ini juga*/
-  top : 20px;  /* ini iya */
-  left :0px; /* ini juga ternyata */
+    /* padding: 90px 0; */
+    margin: 0 auto;
+    text-align: left;
+    /* background-blend-mode: darken; */
+    transition: 0.5s;
+    position:absolute;
+    z-index:0;
+    width:90px;   /* ini iya */
+    height:60px;  /* ini juga*/
+    top : 20px;  /* ini iya */
+    left :0px; /* ini juga ternyata */
 } 
 
-/* .zone::before {
-  content:"";
-  position:absolute;
-  
-  clip-path: border-box;
-  top:0;
-  left:0px;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  background: #ffe699 ;
-  clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);
-  -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);
-} */
+
 .zone::before {
-  content:"";
-  position:absolute;
-  
-  clip-path: border-box;
-  top:0;
-  left:0px;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  background: #ffe699 ;
-  clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
-  -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    content:"";
+    position:absolute;
+
+    clip-path: border-box;
+    top:0;
+    left:0px;
+    right:0;
+    bottom:0;
+    z-index:-1;
+    background: #ffe699 ;
+    clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
 }
 .dom::before {
-  content:"";
-  position:absolute;
-  
-  clip-path: border-box;
-  top:0;
-  left:0px;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  background: #ffe699 ;
-  clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
-  -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    content:"";
+    position:absolute;
+
+    clip-path: border-box;
+    top:0;
+    left:0px;
+    right:0;
+    bottom:0;
+    z-index:-1;
+    background: #ffe699 ;
+    clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
 }
 circle span {
-  position: absolute;
-  color:#fff;
-  font-size:4px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+    position: absolute;
+    color:#fff;
+    font-size:4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 circle {
     /* float:right; */
-  background: #000;
-  width: 25px;
-  height: 9px;
-  /* border-radius: 50%; */
-  display: inline-block;
-  text-align: center;
-  /* margin-top: 10%; */
-  margin-right: 5px;
-  
-  position: relative;
-  z-index:-1;
+    background: #000;
+    width: 25px;
+    height: 9px;
+    /* border-radius: 50%; */
+    display: inline-block;
+    text-align: center;
+    /* margin-top: 10%; */
+    margin-right: 5px;
+
+    position: relative;
+    z-index:-1;
 }
 
 circle2 span {
     position: absolute;
-  color:#fff;
-  font-size:4px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+    color:#fff;
+    font-size:4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 circle2 {
-   /* float:right; */
-   background: #000;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-  text-align: center;
-  /* margin-top: 10%; */
-  margin-right: 5px;
-  
-  position: relative;
-  z-index:-1;
+    /* float:right; */
+    background: #000;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    /* margin-top: 10%; */
+    margin-right: 5px;
+
+    position: relative;
+    z-index:-1;
 }
 #ttd1 {
     width: 46px;
@@ -482,6 +469,108 @@ circle2 {
     left: 1110px;
     top: 1134px;
 }
+
+#arusminus{
+    width: 41px;
+    height: 871.5px;
+     /*background: #95c8d8;    */
+     /*border:1px solid #ca3433; */
+    position: absolute;
+    /* left: 66.5px; */
+    left: 808px;
+    top: 158.2px;
+}
+.arustext {
+    text-align:center;
+    font-size: 4px;
+    /*font-weight: bold;*/
+    margin:1px;
+    color: white !important;
+    /*position: absolute; */
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+}
+
+#arusminus1{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /*writing-mode: vertical-lr;*/
+    /*transform: rotate(180deg);*/
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 1px;
+}
+#arusminus2{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 125.2px;
+}
+#arusminus3{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 249.8px;
+}
+#arusminus4{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 374.5px;
+}
+#arusminus5{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+   left: 1px;
+    top: 499px;
+}
+#arusminus6{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 623.5px;
+}
+#arusminus7{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+   left: 1px;
+    top: 748.5px;
+}
+
 
 
 
@@ -626,6 +715,28 @@ circle2 {
     <div id="tanggal">
     </div>
 
+     <div id="arusminus">
+        <div id="arusminus1">
+          <!--   <p class="arustext">ARUS MINUS<br>
+                (15:00-16:00)<br>
+                (15:00-16:00)
+            </p> -->
+        </div>
+        <div id="arusminus2">
+           
+        </div>
+        <div id="arusminus3">
+        </div>
+        <div id="arusminus4">
+        </div>
+        <div id="arusminus5">
+        </div>
+        <div id="arusminus6">
+        </div>
+        <div id="arusminus7">
+        </div>
+    </div>
+
     <div id="ttd1">
         <div style="position: absolute;  z-index: 5; color:black; font-size:4px; font-family:arial; font-weight:bold;"> Dibuat Oleh,</div>
         <div  style="position: absolute; color:black; z-index: 5; font-size:5px; font-family:arial; font-weight:bold; margin-top: 5px;"> BERTH PLANNER</div>
@@ -653,6 +764,7 @@ circle2 {
 
 
 
+<script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
 
 <script type="text/javascript">
 
@@ -690,9 +802,9 @@ circle2 {
     var vessel=[];
     var vesseldom = [];
 
-
-    Load();  
-    signature();    
+    arusminus();
+    // Load();  
+    // signature();    
     function Load() {
         $.ajax({
             url : "{{route('blokirkade')}}",
@@ -711,7 +823,6 @@ circle2 {
                         '<div class="arsirintern" id="arsirintern'+o+'"></div>'
                     )
                 }
-
                 for (p = 1; p < blokir_intern.length+1; ++p) {
                     var realstart= blokir_intern[p-1].param3;
                     var start = ((blokir_intern[p-1].param3 /10) * 7.61111) + 261;
@@ -741,7 +852,6 @@ circle2 {
 
                     $("#arsirdomes"+e).css("left", startdom+"px");
                     $("#arsirdomes"+e).css("width", enddom+"px");
-
                 }
 
                 
@@ -751,7 +861,6 @@ circle2 {
                         '<div class="arsircurah" id="arsircurah'+d+'"></div>'
                     )
                 }
-
                 for (y = 1; y < blokir_curah.length+1; ++y) {
                         //250 - 50
                     var realstartcur= blokir_curah[y-1].param3;
@@ -761,9 +870,6 @@ circle2 {
                     $("#arsircurah"+y).css("left", startcur+"px");
                     $("#arsircurah"+y).css("width", endcur+"px");
                 }
-                
-
-
             }
         });
 
@@ -779,7 +885,6 @@ circle2 {
                 vessel = result.Intern;
                 vesseldom = result.Domes;
                 vesselcur = result.Curah;
-                
 
                 for (i = 1; i < vessel.length+1; ++i) {
                     var crane =  vessel[i-1].crane;
@@ -853,7 +958,6 @@ circle2 {
                     $("#text_detail"+i+".text_detail").css("padding-left", "5px");
                     }
                 }
-                
 
                 for (i = 1; i < vesseldom.length+1; ++i) {
                     var cranedom =  vesseldom[i-1].crane;
@@ -887,7 +991,7 @@ circle2 {
                                 '<div style="margin:1px; color:red;">ETA :'+vesseldom[i-1].est_berth_ts+'</div>'+
                                 '<div style="margin:1px;">ETB :'+vesseldom[i-1].est_berth_ts+'</div>'+
                                 '<div style="margin:1px;">ETD : '+vesseldom[i-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].real_load+'/'+vesseldom[i-1].real_disch+' BOX</div>'+
+                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].est_load+'/'+vesseldom[i-1].est_discharge+' BOX</div>'+
                                 '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
                                 '<div style="margin:1px;">POD : '+pod+'</div>'+
                                 ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
@@ -932,8 +1036,6 @@ circle2 {
                     }
                 }
 
-
-
                 for (a = 1; a < vesselcur.length+1; ++a) {
                     var cranecur =   vesselcur[a-1].crane;
                     var uncranecur=[];
@@ -943,7 +1045,7 @@ circle2 {
                     uncranecur = cranecur.split(',');
 
 
-                    var pot= vesselcur[i-1].dest_port;
+                    var pot= vesselcur[a-1].dest_port;
                     if (pot == null)
                         pod = "-";
                     else 
@@ -967,7 +1069,7 @@ circle2 {
                                 '<div style="margin:1px; color:red;">ETA :'+vesselcur[a-1].est_berth_ts+'</div>'+
                                 '<div style="margin:1px;">ETB :'+vesselcur[a-1].est_berth_ts+'</div>'+
                                 '<div style="margin:1px;">ETD : '+vesselcur[a-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].real_load+'/'+vesselcur[a-1].real_disch+' BOX</div>'+
+                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].est_load+'/'+vesselcur[a-1].est_discharge+' MT</div>'+
                                 '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
                                 '<div style="margin:1px;">POD : '+pod+'</div>'+
                                 ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
@@ -1015,9 +1117,7 @@ circle2 {
             
             }
         });
-
     }
-
     function getColor(param) {
         var green = '#a9d18e';
         var blue = '#9dc3e6';
@@ -1030,7 +1130,6 @@ circle2 {
         else if(param == 2)
             return yellow 
     }
-
     function signature() {
         
         // const urlParams = new URLSearchParams(window.location.search);
@@ -1049,9 +1148,45 @@ circle2 {
         $('#planning_manager').text(planning_manager);
         $('#link1').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link1up+"&choe=UTF-8");
         $('#link2').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link2up+"&choe=UTF-8");
-      
     }
-    
+    function arusminus(){
+
+        var newdate = new Date();
+        var start_date = moment(newdate).format("YYYY-MM-DD");
+        var end_date = moment(newdate).add(6,'d').format('YYYY-MM-DD');
+
+
+        $.ajax({  
+        url : "{{ url('/print/arus') }}",
+        type : "post",
+        data: {
+            "_token": "{{ csrf_token() }}",
+            start_date:start_date,
+            end_date:end_date
+            },
+        dataType : "json",
+        async : false,
+        success : function(result){
+            for (d = 1; d < result.length+1; ++d) {
+                var arus = result[d-1].arus;
+                // console.log(arus);
+
+                if (arus.length !== 0){
+                $("#arusminus"+d).append('<p class="arustext" id ="rus'+d+'">ARUS MINUS<br></p>');
+                }
+
+                for (s=0;s<arus.length; s++){
+                    var start_time = arus[s].start_time;
+                    var end_time = arus[s].end_time;
+                    $("#rus"+d).append('<p class="arustext">('+start_time+'-'+end_time+')</p>');
+
+                }
+
+            }
+
+        }
+    });
+    }
 
 </script>
 
