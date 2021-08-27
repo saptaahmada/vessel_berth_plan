@@ -28,6 +28,9 @@
 
         $(document).ready(function () {
 
+            $('#unreg_crane_dry').hide();
+            $('#unreg_div_tgh').hide();
+
 //for vessel pada modal add vessel
             $("#vessel2").empty();
             $("#vessel3").empty();
@@ -109,7 +112,10 @@
                     for (u = 1; u < result.Dry.length+1; ++u){
                         $("#craneDry").append('<input type="checkbox" name="craneDry" id="checkbox'+result.Dry[u-1].che_name+'" value="'+result.Dry[u-1].che_name+'" class="crane" />'+
                                                             '<label>'+result.Dry[u-1].che_name+'</label><span> </span><span> </span>');
-                        }
+
+                        $("#unreg_crane_dry").append('<input type="checkbox" name="crane" id="checkbox'+result.Dry[u-1].che_name+'" value="'+result.Dry[u-1].che_name+'" class="crane" />'+
+                                                            '<label>'+result.Dry[u-1].che_name+'</label><span> </span><span> </span>');
+                    }
                 }       
             });
 
@@ -398,7 +404,7 @@ function autofillCon() {
     var vess_len = vesselCurrent.ves_len;
     var kde_end =parseInt(kde_start) + parseInt(vess_len);
     var newdate =new Date(etB);
-        newdate.setMinutes(newdate.getMinutes() + estimasimenit);
+        newdate.setMinutes(newdate.getMinutes() + estimasimenit + 2*60);
     const format90 = "YYYY-MM-DD HH:mm:ss"
     var etBout= moment(etB).format(format90);
     var newdateoutCon = moment(newdate).format(format90);
@@ -433,6 +439,9 @@ $('#unreg_etb').on('change', function () {
 $('#unreg_bsh').on('change', function () {
     changeUnregETD();
 })
+$('#unreg_tgh').on('change', function () {
+    changeUnregETD();
+})
 $('#unreg_disc').on('change', function () {
     changeUnregETD();
 })
@@ -445,11 +454,12 @@ $('#unreg_start').on('change', function () {
 })
 $('#edit_etb').on('change', function () {
     changeEditETD();
-    // console.log("masuk etb");
 })
 $('#edit_bsh').on('change', function () {
     changeEditETD();
-    // console.log("masuk etb");
+})
+$('#edit_tgh').on('change', function () {
+    changeEditETD();
 })
 $('#edit_disc').on('change', function () {
     changeEditETD();
@@ -470,15 +480,165 @@ $('#edit_start').on('change', function () {
     $('#unreg_end').val(end);
 })
 
+$('.unreg_type').on('change', function () {
+    if($('input[class=unreg_type]:checked').val() == 'DRY_BULK') {
+        $('#unreg_div_bsh').hide();
+        $('#unreg_div_tgh').show();
+        $('#unreg_div_load').hide();
+        $('#unreg_crane_dry').show();
+        $('#unreg_crane').hide();
+    } else if($('input[class=unreg_type]:checked').val() == 'CONTAINER') {
+        $('#unreg_div_bsh').show();
+        $('#unreg_div_tgh').hide();
+        $('#unreg_div_load').show();
+        $('#unreg_crane_dry').hide();
+        $('#unreg_crane').show();
+    }
+})
+
+
+$(document).keypress(function(e) {
+    if(!$('#vessel_unregistered').hasClass('in') &&
+        !$('#addVessel').hasClass('in') &&
+        !$('#editVessel').hasClass('in') &&
+        !$('#modal_note').hasClass('in') && 
+        !$('#modal_print').hasClass('in')) {
+
+        if(e.which == 97) {
+            runMovement('left');
+            console.log('You pressed left!');
+        } else if(e.which == 119) {
+            runMovement('up');
+            console.log('You pressed up!');
+        } else if(e.which == 100) {
+            runMovement('right');
+            console.log('You pressed right!');
+        } else if(e.which == 115) {
+            runMovement('down');
+            console.log('You pressed down!');
+        }
+    }
+});
+
+m_index_box_keypress = null;
+
+function prepare(i) {
+    m_index_box_keypress = i;
+    console.log(m_index_box_keypress);
+}
+
+function runMovement(action) {
+    console.log("action", action);
+    otop =  $('#box'+m_index_box_keypress).position().top;
+    left =  $('#box'+m_index_box_keypress).position().left;
+    height =  $('#box'+m_index_box_keypress).height();
+    width =  $('#box'+m_index_box_keypress).width();
+
+    if(action == 'left')
+        $('#box'+m_index_box_keypress).css({left: left-4});
+    else if(action == 'right')
+        $('#box'+m_index_box_keypress).css({left: left+4});
+    else if(action == 'up')
+        $('#box'+m_index_box_keypress).css({top: otop-10});
+    else if(action == 'down')
+        $('#box'+m_index_box_keypress).css({top: otop+10});
+
+    var area = {
+        X1:left,
+        X2:left+width,
+        Y1:otop,
+        Y2:otop+height
+    }
+
+    var urutan = $('#box'+m_index_box_keypress).attr('urutan')-1;
+    var isBreak = false;
+
+
+    for (i = 0; i < vessel.length; i++) {
+
+        if(i!=urutan) {
+
+            var rect = {
+                X1:$('#box'+(i+1)).position().left, 
+                Y1:$('#box'+(i+1)).position().top,
+                X2:$('#box'+(i+1)).position().left+$('#box'+(i+1)).width(),
+                Y2:$('#box'+(i+1)).position().top+$('#box'+(i+1)).height()
+            }
+
+            var selisihKanan = rect.X1 - area.X2;
+            var selisihKiri = area.X1 - rect.X2;
+
+            selisihKanan    = selisihKanan<0?0:selisihKanan;
+            selisihKiri     = selisihKiri<0?0:selisihKiri;
+            
+            if((rect.Y2 >= area.Y1 && rect.Y2<= area.Y2) || 
+                (rect.Y2 >= area.Y2 && rect.Y1<= area.Y2) || 
+                (rect.Y2 >= area.Y2 && rect.Y1<= area.Y1) || 
+                (rect.Y1 >= area.Y1 && rect.Y2<= area.Y2)) {
+
+                $( "#selisihKanan" ).remove();
+                $( "#selisihKiri" ).remove();
+
+                if(selisihKanan < 40 && selisihKanan > 0) {
+                    $("#wrap_sw").append("<div id='selisihKanan' "+
+                        "style='position:absolute; left:"+(area.X2+5)+"px; top:"+(area.Y1+width/2)+"px; color:#000; background-color:#fff'>"+
+                        parseInt(selisihKanan/2)+"m"+
+                        "</div>");
+                    isBreak = true;
+                }
+                if(selisihKiri < 40 && selisihKiri > 0) {
+                    $("#wrap_sw").append("<div id='selisihKiri' "+
+                        "style='position:absolute; left:"+(area.X1-20)+"px; top:"+(area.Y1+width/2)+"px; color:#000; background-color:#fff'>"+
+                        parseInt(selisihKiri/2)+"m"+
+                        "</div>");
+                    isBreak = true;
+                }
+            }
+        }
+
+        if(isBreak) 
+            break;
+
+    }
+
+    topp = $('#box'+m_index_box_keypress).position().top;
+    startW = $('#box'+m_index_box_keypress).outerWidth()/2;
+    kiri =  $('#box'+m_index_box_keypress).position().left/2;
+    bto = kiri+startW;
+    
+    var etb= getDateByPosition(topp);
+    var etd= getDateByPosition($('#box'+m_index_box_keypress).outerHeight()+topp, false);
+
+    var urutan = $('#box'+m_index_box_keypress).attr('urutan');
+    var math_kiri = Math.round(kiri);
+    var math_bto = Math.round(bto);
+    $('.kade_box_'+urutan).text(math_kiri+' On '+ math_bto);
+    $('.ETB_'+urutan).text('ETB :'+moment(etb).format('DD-MM-YY HH:mm'));
+    $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD-MM-YY HH:mm'));
+
+    urutan = urutan-1;
+
+    vessel[urutan].y_awal               = parseInt(topp).toString();
+    vessel[urutan].height               =  parseInt($('#box'+m_index_box_keypress).height()).toString();
+    vessel[urutan].berth_fr_metre       =  parseInt($('#box'+m_index_box_keypress).position().left).toString();
+    vessel[urutan].berth_to_metre       =  parseInt(($('#box'+m_index_box_keypress).position().left+$('#box'+m_index_box_keypress).width())).toString();
+    vessel[urutan].berth_fr_metre_ori   =  vessel[urutan].berth_fr_metre/2;
+    vessel[urutan].berth_to_metre_ori   =  vessel[urutan].berth_to_metre/2;
+    vessel[urutan].est_berth_ts         =  etb;
+    vessel[urutan].est_dep_ts           =  etd;
+}
+
 function changeUnregETD() {
+    var unreg_type = $('input[class=unreg_type]:checked').val();
+
     var etB     = $('#unreg_etb').val();
     var disc    = $('#unreg_disc').val();
-    var load    = $('#unreg_load').val();
-    var bsh     = $('#unreg_bsh').val();
-    var est_time= ((parseInt(disc)+parseInt(load))/parseInt(bsh))*60;
+    var load    = unreg_type == 'DRY_BULK' ? 0 : $('#unreg_load').val();
+    var bch     = unreg_type == 'DRY_BULK' ? $('#unreg_tgh').val() : $('#unreg_bsh').val();
+    var est_time= ((parseInt(disc)+parseInt(load))/parseInt(bch))*60;
 
     var newdate =new Date(etB);
-    newdate.setMinutes(newdate.getMinutes() + est_time);
+    newdate.setMinutes(newdate.getMinutes() + est_time + 2*60);
     const format90 = "YYYY-MM-DD HH:mm"
     var etBout= moment(etB).format(format90);
     var newdateoutCon = moment(newdate).format(format90);
@@ -486,14 +646,22 @@ function changeUnregETD() {
 }
 
 function changeEditETD() {
+
     var etB     = $('#edit_etb').val();
     var disc    = $('#edit_disc').val();
-    var load    = $('#edit_load').val();
-    var bsh     = $('#edit_bsh').val();
-    var est_time= ((parseInt(disc)+parseInt(load))/parseInt(bsh))*60;
+    var load    = m_dermaga_current == 'C' ? 0 : $('#edit_load').val();
+    var bch     = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
+    var est_time= ((parseInt(disc)+parseInt(load))/parseInt(bch))*60;
+
+    // console.log("unreg_type", unreg_type);
+    console.log("etb", etB);
+    console.log("disc", disc);
+    console.log("load", load);
+    console.log("bch", bch);
+    console.log("est_time", est_time);
 
     var newdate = new Date(etB);
-    newdate.setMinutes(newdate.getMinutes() + est_time);
+    newdate.setMinutes(newdate.getMinutes() + est_time + 2*60);
     const format90 = "YYYY-MM-DD HH:mm"
     var etBout= moment(etB).format(format90);
     var newdateoutCon = moment(newdate).format(format90);
@@ -573,52 +741,48 @@ function reloadAll() {
     
     for (i = 1; i < vessel.length+1; ++i) {
         $("#wrap_sw").append(getVesselContent(vessel[i-1], i));
-
         convertToDrag();
-        
     }
+    setVesselBox();
 
-    for (i = 1; i < vessel.length+1; ++i) {
-
-        var btoa = vessel[i-1].btoa_side;
-
-        if(vessel[i-1].act_berth_ts != null) {
-            rand = getColor(0);
-        } else if(vessel[i-1].tentatif == "1") {
-            rand = getColor(2);
-        } else if(vessel[i-1].tentatif == "0") {
-            rand = getColor(1);
-        }
-            
-            if(btoa == "P"){ //kiri star
-                $("#box"+i).css("left", vessel[i-1].berth_fr_metre+"px");
-                $("#box"+i).css("width", vessel[i-1].width+"px");
-                $("#box"+i).css("top", vessel[i-1].y_awal+"px");
-                $("#box"+i).css("height", vessel[i-1].height+"px");
-                $("#box"+i).css("background-color", rand);
-                $("#text_judul"+i).css("padding-left", "24%");
-                $("#text_detail"+i).css("padding-left", "18%");
-               
-                $("#box"+i).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
-
-            
-            }else if (btoa == "S") { //kanan port
-                $("#box"+i).css("left", vessel[i-1].berth_fr_metre+"px");
-                $("#box"+i).css("width", vessel[i-1].width+"px");
-                $("#box"+i).css("top", vessel[i-1].y_awal+"px");
-                $("#box"+i).css("height", vessel[i-1].height+"px");
-                $("#box"+i).css("background-color", rand);
-                $("#text_judul"+i).css("padding-left", "12px");
-                $("#text_detail"+i).css("padding-left", "12px");
-                // $("#img"+i).css("text-align", "left");
-                // $("#img"+i).css("padding-left", "20px");
-                // $("#img"+i).css("padding-top", "5px");
-                $("#box"+i).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-
-            }
-    }
     reloadShadow();
     reloadNote();
+}
+
+function setVesselBox() {
+    for (i = 1; i < vessel.length+1; ++i) {
+        setVesselBoxPosition(vessel[i-1], i);
+    }
+}
+
+function setVesselBoxPosition(vees, i) {
+    var btoa = vees.btoa_side;
+    var rand = "";
+
+    if(vees.act_berth_ts != null)
+        rand = getColor(0);
+    else if(vees.tentatif == "1")
+        rand = getColor(2);
+    else if(vees.tentatif == "0")
+        rand = getColor(1);
+
+    var left = getLeft(vees.berth_fr_metre, vees.width);
+
+    $("#box"+i).css("left", left +"px");
+    $("#box"+i).css("width", vees.width+"px");
+    $("#box"+i).css("top", vees.y_awal+"px");
+    $("#box"+i).css("height", vees.height+"px");
+    $("#box"+i).css("background-color", rand);
+
+    if(btoa == "P"){
+        $("#text_judul"+i).css("padding-left", "20%");
+        $("#text_detail"+i).css("padding-left", "18%");
+        $("#box"+i).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
+    } else {
+        $("#text_judul"+i).css("padding-left", "12px");
+        $("#text_detail"+i).css("padding-left", "12px");
+        $("#box"+i).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
+    }
 }
 
 function getVesselContent(vees, i, craneloopload=null) {
@@ -646,26 +810,25 @@ function getVesselContent(vees, i, craneloopload=null) {
     var margin_top_crane = parseInt(vees.height)/3;
 
     var content = '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
-            '<div class="widget-inner">'+
-                '<div id="img'+i+'">'+
-                    (vees.is_unreg == 0 ? 
-                     '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 20%; height: 20%; "/>':'')+
-                '</div>'+
+            '<div class="widget-inner" onclick="prepare('+i+')">'+
                 '<div id="text_detail'+i+'" class="text_detail" style="font-size:'+font_size+'">'+
+
+                        (vees.is_unreg == 0 ? 
+                         '<img id="ims'+i+'" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 50px; height: 50px; position:absolute; right: 25px;"/>':'')+
                     '<div class="row">'+
                     '<div class="col-sm-8">'+
                         '<span class="text_title"> MV. '+vees.ves_name+' ('+ vees.ves_id + ')</span><br>'+
                         '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
                         '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button><br>'+
                         (vees.req_berth_ts!=null?'RBT :'+moment(vees.req_berth_ts).format('DD-MM-YY HH:mm')+'<br>':'')+
+                        (vees.est_pilot_ts!=null?'ETA : '+moment(vees.est_pilot_ts).format('DD-MM-YY HH:mm')+'<br>':'')+
                         (vees.act_berth_ts!=null ? 
                             'ATB : '+moment(vees.act_berth_ts).format('DD-MM-YY HH:mm') + '<br>' : 
-                            (vees.est_pilot_ts!=null?'ETA : '+moment(vees.est_pilot_ts).format('DD-MM-YY HH:mm')+'<br>':'')
+                            '<span class="ETB_'+i+'">ETB : '+moment(vees.est_berth_ts).format('DD-MM-YY HH:mm')+'</span><br>'
                         )+
-                        'ETB : '+moment(vees.est_berth_ts).format('DD-MM-YY HH:mm')+'<br>'+
-                        'ETD : '+moment(vees.est_dep_ts).format('DD-MM-YY HH:mm')+'<br>'+
+                        '<span class="ETD_'+i+'">ETD : '+moment(vees.est_dep_ts).format('DD-MM-YY HH:mm')+'</span><br>'+
                         'LOA : '+vees.width_ori+' M<br>'+
-                        'Moves est: '+vees.est_load+'/'+vees.est_discharge+' '+(vees.ocean_interisland_fake=='C'?'MT':'box')+'<br>'+
+                        (vees.ocean_interisland_fake=='C'?'MOVES EST: '+vees.est_discharge+' MT':'MOVES EST: '+vees.est_load+'/'+vees.est_discharge+' BOX')+'<br>'+
                         (vees.dest_port!=null?'POD :'+vees.dest_port+'<br>':'')+
                         (vees.ocean_interisland_fake != 'C' ? 
                             (vees.load_act != null ? 'LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain + '<br>': '')+
@@ -734,8 +897,6 @@ function loadAll(ocean) {
 
     $("#wrap_sw").empty();
 
-    // switchDermaga();
-
     if (ocean == "I"){
         vessel = m_vessel_all.Intern;
         m_note = m_vessel_all.note_i;
@@ -760,9 +921,9 @@ function loadAll(ocean) {
         var windo = "";
         
         if (vessel[i-1].window == null)
-        windo = "-";
+            windo = "-";
         else 
-        windo = vessel[i-1].window;
+            windo = vessel[i-1].window;
 
         var crane_vess =  vessel[i-1].crane;
         var uncrane=[];
@@ -788,49 +949,7 @@ function loadAll(ocean) {
         convertToDrag();
         
     }
-    for (i = 1; i < vessel.length+1; ++i) {
-
-        var btoa = vessel[i-1].btoa_side;
-
-        if(vessel[i-1].act_berth_ts != null) {
-            rand = getColor(0);
-        } else if(vessel[i-1].tentatif == "1") {
-            rand = getColor(2);
-        } else if(vessel[i-1].tentatif == "0") {
-            rand = getColor(1);
-        }
-
-        
-            
-            if(btoa == "P"){ //kiri star
-                $("#box"+i).css("left", vessel[i-1].berth_fr_metre+"px");
-                $("#box"+i).css("width", vessel[i-1].width+"px");
-                $("#box"+i).css("top", vessel[i-1].y_awal+"px");
-                $("#box"+i).css("height", vessel[i-1].height+"px");
-                $("#box"+i).css("background-color", rand);
-                $("#text_judul"+i).css("padding-left", "20%");
-                $("#text_detail"+i).css("padding-left", "18%");
-               
-                $("#box"+i).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
-
-            
-            }else if (btoa == "S") { //kanan port
-                $("#box"+i).css("left", vessel[i-1].berth_fr_metre+"px");
-                $("#box"+i).css("width", vessel[i-1].width+"px");
-                $("#box"+i).css("top", vessel[i-1].y_awal+"px");
-                $("#box"+i).css("height", vessel[i-1].height+"px");
-                $("#box"+i).css("background-color", rand);
-                $("#text_judul"+i).css("padding-left", "12px");
-                $("#text_detail"+i).css("padding-left", "12px");
-                // $("#img"+i).css("text-align", "left");
-                // $("#img"+i).css("padding-left", "20px");
-                // $("#img"+i).css("padding-top", "5px");
-                $("#box"+i).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-
-            }
-    
-    }
-
+    setVesselBox();
 
     reloadShadow();
     reloadNote();
@@ -846,7 +965,6 @@ var cek = [];
 var cok =[];
 crane = [];
 var crane_select=[];
-// console.log(crane);
 
 $('#edit_start').on('change', function(){
     var vees = vessel[m_index_edit];
@@ -856,7 +974,7 @@ $('#edit_start').on('change', function(){
 function toEdit(index) {
     m_index_edit = index;
     var vees = vessel[index];
-    console.log(vees);
+
     $('#editVessel').modal('show');
     $('#edit_vessel').val(vees.ves_id);
     $('#edit_vessel_name').val(vees.ves_name);
@@ -864,14 +982,27 @@ function toEdit(index) {
     $('#edit_rbt').val((vees.req_berth_ts != null ? vees.req_berth_ts.substring(0,16).replace(" ", "T") : ''));
     $('#edit_etb').val((vees.est_berth_ts != null ? vees.est_berth_ts.substring(0,16).replace(" ", "T") : ''));
     $('#edit_etd').val((vees.est_dep_ts != null ? vees.est_dep_ts.substring(0,16).replace(" ", "T") : ''));
-    $('#edit_bsh').val(vees.bsh);
-    $('#edit_nextp').val(vees.next_port);
-    $('#edit_deshp').val(vees.dest_port);
+    $(m_dermaga_current == 'C' ? '#edit_tgh' : '#edit_bsh').val(m_dermaga_current == 'C' ? vees.bch : vees.bsh);
+    $('#edit_nextp').val(vees.next_port).trigger('change');
+    $('#edit_deshp').val(vees.dest_port).trigger('change');
     $('#edit_disc').val(vees.est_discharge);
     $('#edit_load').val(vees.est_load);
     $('#edit_start').val(vees.berth_fr_metre_ori);
     $('#edit_end').val(vees.berth_to_metre_ori);
-    $('.edit_window').val(vees.windows);
+
+    if(m_dermaga_current == 'C') {
+        $('#edit_div_bsh').hide();
+        $('#edit_div_tgh').show();
+        $('#edit_crane').hide();
+        $('#edit_crane_dry').show();
+        $('#edit_div_load').hide();
+    } else {
+        $('#edit_div_bsh').show();
+        $('#edit_div_tgh').hide();
+        $('#edit_crane').show();
+        $('#edit_crane_dry').hide();
+        $('#edit_div_load').show();
+    }
 
     if(vees.ocean_interisland_fake == 'C')
         $('#edit_tipe_dermaga_c').prop("checked", true);
@@ -884,8 +1015,6 @@ function toEdit(index) {
         $('#edit_window_on').prop("checked", true);
     if(vees.windows == "0")
         $('#edit_window_off').prop("checked", true);
-
-    console.log("tentatif", vees.tentatif);
 
     if(vees.tentatif == "1")
         $('#edit_tentatif_yes').prop("checked", true);
@@ -902,6 +1031,7 @@ function toEdit(index) {
     var arr_crane = (vees.crane != null ? vees.crane : []);
 
     $("#edit_crane").empty();
+    $("#edit_crane_dry").empty();
 
     for (s= 1; s < m_crane_con.length+1; ++s){
         var checked = false;
@@ -913,6 +1043,18 @@ function toEdit(index) {
         }
         $("#edit_crane").append('<input type="checkbox" name="edit_crane" id="checkbox'+m_crane_con[s-1].che_name+'" value="'+m_crane_con[s-1].che_name+'" class="edit_crane" '+(checked?"checked":"")+' />'+
                                         '<label>STS '+m_crane_con[s-1].che_name+'</label><span> </span><span> </span>');
+    }
+
+    for (s= 1; s < m_crane_dry.length+1; ++s){
+        var checked = false;
+        for(a=0; a<arr_crane.length; a++) {
+            if(m_crane_dry[s-1].che_name==arr_crane[a]) {
+                checked = true;
+                break;
+            }
+        }
+        $("#edit_crane_dry").append('<input type="checkbox" name="edit_crane_dry" id="checkbox'+m_crane_dry[s-1].che_name+'" value="'+m_crane_dry[s-1].che_name+'" class="edit_crane_dry" '+(checked?"checked":"")+' />'+
+                                        '<label>'+m_crane_dry[s-1].che_name+'</label><span> </span><span> </span>');
     }
 }
 
@@ -937,13 +1079,10 @@ function toDelete(index) {
 
     function CheckStack(area, rectangle)
     {
-
         var a1 = rectangle.X;
         var a2 = rectangle.X + rectangle.Width;
         var b1 = rectangle.Y;
         var b2 = rectangle.Y + rectangle.Height;
-
-
 
         //if the node is inside click field
         if (area.X1 <= a1 && area.X2 >= a2 && area.Y1 <= b1 && area.Y2 >= b2)
@@ -997,7 +1136,6 @@ function checkField() {
             return true
         }
     } else if (m_dermaga_current == 'C') {
-    console.log("masukk4");
         if($('#vessel3').val() != '' && 
             $('#etBDry').val() != '' && 
             $('#etDDry').val() != '' && 
@@ -1008,7 +1146,6 @@ function checkField() {
             return true
         }
     }
-    console.log("masukk6");
     return false;
 }
 
@@ -1037,7 +1174,7 @@ function addvessel(){
         crane_select = [];
 
         var today1 = new Date();
-        // var vessdumm = Math.floor((Math.random() * 9999998) + 1);
+
         const format00 = "YYYYMMDDHHmmss";
         var vessdumm= moment(today1).format(format00);
 
@@ -1088,278 +1225,201 @@ function addvessel(){
      
         }
 
-            var date_now = new Date();
-                date_now.setHours(00);
-                date_now.setMinutes(00);
-                date_now.setSeconds(00);
+        var date_now = new Date();
+            date_now.setHours(00);
+            date_now.setMinutes(00);
+            date_now.setSeconds(00);
 
-            const format9 = "YYYY-MM-DD HH:mm"
-                var etAout= est_pilot_ts!=null && est_pilot_ts!=''?moment(est_pilot_ts).format(format9):null;
-                var rbTout= req_berth_ts!=null && req_berth_ts!=''?moment(req_berth_ts).format(format9):null;
-                var etBout= moment(etB).format(format9);
-                var etDout= moment(etD).format(format9);
-                date_now = moment(date_now).format(format9);
+        const format9 = "YYYY-MM-DD HH:mm"
+            var etAout= est_pilot_ts!=null && est_pilot_ts!=''?moment(est_pilot_ts).format(format9):null;
+            var rbTout= req_berth_ts!=null && req_berth_ts!=''?moment(req_berth_ts).format(format9):null;
+            var etBout= moment(etB).format(format9);
+            var etDout= moment(etD).format(format9);
+            date_now = moment(date_now).format(format9);
 
-            var tglPertama = Date.parse(etBout);
-            var tglKedua = Date.parse(date_now);
-            var miliday = 60 * 1000;
+        var tglPertama = Date.parse(etBout);
+        var tglKedua = Date.parse(date_now);
+        var miliday = 60 * 1000;
 
-            var second =(tglPertama-tglKedua)/miliday;
-            var y_awal_etb = (second/30)*10;
+        var second =(tglPertama-tglKedua)/miliday;
+        var y_awal_etb = (second/30)*10;
 
-            var tglPertamaEtd = Date.parse(etDout);
-            var tglKeduaEtd = Date.parse(etBout);
-            var secondEtd =(tglPertamaEtd-tglKeduaEtd)/miliday;
-            var y_akhir_etd = (secondEtd/30)*10;
+        var tglPertamaEtd = Date.parse(etDout);
+        var tglKeduaEtd = Date.parse(etBout);
+        var secondEtd =(tglPertamaEtd-tglKeduaEtd)/miliday;
+        var y_akhir_etd = (secondEtd/30)*10;
 
-            $.ajax({  
-                url : "{{ url('VesselBerthPlan3/addvessel') }}",
-                data: {
-                "_token": "{{ csrf_token() }}",
-                param_data:vessid
-                },
-                type : "post",
-                dataType : "json",
-                async : false,
-                success : function(result){
-                    console.log(result);
-                    nama = result[0].ves_name;
-                    width = result[0].width;
-                    height = result[0].height;
-                    id_vess = result[0].ves_id;
-                    
-                    ocean_ori = result[0].ocean_interisland;
-                    var ves_type = result[0].ves_type;
+        $.ajax({  
+            url : "{{ url('VesselBerthPlan3/addvessel') }}",
+            data: {
+            "_token": "{{ csrf_token() }}",
+            param_data:vessid
+            },
+            type : "post",
+            dataType : "json",
+            async : false,
+            success : function(result){
+                nama = result[0].ves_name;
+                width = result[0].width;
+                height = result[0].height;
+                id_vess = result[0].ves_id;
+                
+                ocean_ori = result[0].ocean_interisland;
+                var ves_type = result[0].ves_type;
 
 
-                    vess_code = result[0].ves_code;
-                    agent = result[0].agent;
-                    agent_name = result[0].agent_name;
-                    img = result[0].image;
+                vess_code = result[0].ves_code;
+                agent = result[0].agent;
+                agent_name = result[0].agent_name;
+                img = result[0].image;
 
-                    var width_ves = result[0].ves_len;
-                    var crane2=crane_select;
-                    var kd_start = kade_start*2;
-                    var kd_end = parseInt(kade_start)+parseInt(width_ves);
+                var width_ves = result[0].ves_len;
+                var crane2=crane_select;
+                var kd_start = kade_start*2;
+                var kd_end = parseInt(kade_start)+parseInt(width_ves);
 
-                    var isStack = false;
+                var isStack = false;
 
-                    if(!m_allowed_collision) {
-                        var area = {
-                            X1:parseInt(kd_start),
-                            X2:parseInt(kd_start)+parseInt(width),
-                            Y1:parseInt(y_awal_etb),
-                            Y2:parseInt(y_awal_etb)+parseInt(y_akhir_etd)
-                        }
-
-                        var isStack = isVesselStack(area);
+                if(!m_allowed_collision) {
+                    var area = {
+                        X1:parseInt(kd_start),
+                        X2:parseInt(kd_start)+parseInt(width),
+                        Y1:parseInt(y_awal_etb),
+                        Y2:parseInt(y_awal_etb)+parseInt(y_akhir_etd)
                     }
 
-                    
-                    if(!isStack) {
-
-                        if(tentatif == "1")
-                            rand = getColor(2);
-                        else if(tentatif == "0")
-                            rand = getColor(1); 
-                       
-                        if (cok.includes(id_vess)){
-                            crane = [];
-                            swal({
-                                title: "Kapal Sudah Ditambahkan !! Simpan Terlebih Dahulu !!",
-                                text: "You clicked the button!",
-                                icon: "warning",
-                                });                   
-                        } else {
-                            var craneloop2 = "";
-
-                            for (var x = 0; x < crane_select.length; x++) { //Move the for loop from here
-                                craneloop2 += '<circle2><span>'+crane_select[x]+'</span></circle2>';
-                            };
-
-                            var vees = {
-                                is_unreg : 0,
-                                image : '',
-                                ves_name : nama,
-                                ves_id: vessid,
-                                est_pilot_ts: etAout,
-                                req_berth_ts: rbTout,
-                                est_berth_ts: etBout,
-                                est_dep_ts: etDout,
-                                est_load: jum_muat,
-                                est_disch: jum_bongkar,
-                                est_discharge: jum_bongkar,
-                                load_act: null,
-                                load_plan: null,
-                                load_remain: null,
-                                disc_act: null,
-                                disc_plan: null,
-                                disc_remain: null,
-                                time_remain: null,
-                                windows: windows,
-                                width_ori: width_ves,
-                                dest_port: dest_port,
-                                info: info,
-                                berth_fr_metre_ori: kade_start,
-                                berth_to_metre_ori: kd_end
-                            };
-
-                            $("#wrap_sw").append(getVesselContent(vees, vessel.length+1, craneloop2));
-
-                            convertToDrag();
-
-                            etAout = etAout!=null && etAout!=''?etAout+":00":null;
-                            rbTout = rbTout!=null && rbTout!=''?rbTout+":00":null;
-                            etBout = etBout!=null && etBout!=''?etBout+":00":null;
-                            etDout = etDout!=null && etDout!=''?etDout+":00":null;
-
-                            if (along_side == "P") { //kiri
-                                $("#box"+(vessel.length+1)).css("width",width+"px");
-                                $("#box"+(vessel.length+1)).css("left",kd_start+"px");
-                                $("#box"+(vessel.length+1)).css("height",y_akhir_etd+"px");
-                                $("#box"+(vessel.length+1)).css("top",y_awal_etb+"px");
-                                $("#box"+(vessel.length+1)).css("background-color", rand);
-
-                                $("#text_judul"+(vessel.length+1)).css("padding-left", "24%");
-                                $("#text_detail"+(vessel.length+1)).css("padding-left", "25%");
-                                $("#img"+(vessel.length+1)).css("text-align", "right");
-                                $("#img"+(vessel.length+1)).css("padding-right", "20px");
-                                $("#img"+(vessel.length+1)).css("padding-top", "5px");
-                                $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%)");
-                                vessel.push({
-                                    ves_type:ves_type,
-                                    info:info,
-                                    bsh:bsh,
-                                    next_port:next_port,
-                                    dest_port:dest_port,
-                                    est_discharge:jum_bongkar,
-                                    est_load:jum_muat,
-                                    btoa_side:along_side,
-                                    crane:crane2,
-                                    agent:agent,
-                                    agent_name:agent_name,
-                                    image:img,
-                                    ves_id: vessid,
-                                    ves_id_old: '',
-                                    ves_name:nama,
-                                    ocean_interisland:ocean_ori,
-                                    ocean_interisland_fake:m_dermaga_current,
-                                    ves_code:vess_code,
-                                    is_simulation:"1",
-                                    is_unreg:"0",
-                                    is_inserted: 0,
-                                    windows:windows,
-                                    tentatif:tentatif,
-                                    load_act:null,
-                                    load_plan:null,
-                                    load_remain:null,
-                                    disc_act:null,
-                                    disc_plan:null,
-                                    disc_remain:null,
-                                    time_remain:null,
-                                    time_remain_label:null,
-                                    est_end_date:null,
-                                    berth_fr_metre:kade_start*2,
-                                    berth_to_metre:kade_to*2,
-                                    berth_fr_metre_ori:kade_start,
-                                    berth_to_metre_ori:kade_to,
-                                    width:width,
-                                    width_ori:width_ves,
-                                    y_awal:y_awal_etb,
-                                    y_akhir:y_awal_etb+y_akhir_etd,
-                                    height:y_akhir_etd,
-                                    est_berth_ts:etBout,
-                                    est_dep_ts:etDout,
-                                    req_berth_ts:rbTout,
-                                    est_pilot_ts:etAout 
-                                });
-                                cok.push(id_vess);
-                                crane = [];
-
-                                   
-                            } else if (along_side == "S") { //kanan
-                                $("#box"+(vessel.length+1)).css("width",width+"px");
-                                $("#box"+(vessel.length+1)).css("left",kd_start+"px");
-                                $("#box"+(vessel.length+1)).css("height",y_akhir_etd+"px");
-                                $("#box"+(vessel.length+1)).css("top",y_awal_etb+"px");
-                                $("#box"+(vessel.length+1)).css("background-color", rand);
-
-                                $("#text_judul"+(vessel.length+1)).css("padding-left", "12px");
-                                $("#text_detail"+(vessel.length+1)).css("padding-left", "12px");
-                                $("#img"+(vessel.length+1)).css("text-align", "left");
-                                $("#img"+(vessel.length+1)).css("padding-left", "20px");
-                                $("#img"+(vessel.length+1)).css("padding-top", "5px");
-
-                                $("#box"+(vessel.length+1)).css("clip-path", "polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%)");
-
-                                vessel.push({
-                                    ves_type:ves_type,
-                                    info:info,
-                                    bsh:bsh,
-                                    next_port:next_port,
-                                    dest_port:dest_port,
-                                    est_discharge:jum_bongkar,
-                                    est_load:jum_muat,
-                                    btoa_side:along_side,
-                                    crane:crane2,
-                                    agent:agent,
-                                    agent_name:agent_name,
-                                    image:img,
-                                    ves_id: vessid,
-                                    ves_id_old: '',
-                                    ves_name:nama,
-                                    ocean_interisland:ocean_ori,
-                                    ocean_interisland_fake:m_dermaga_current,
-                                    ves_code:vess_code,
-                                    is_simulation:"1",
-                                    is_unreg:"0",
-                                    is_inserted: 0,
-                                    windows:windows,
-                                    tentatif:tentatif,
-                                    load_act:null,
-                                    load_plan:null,
-                                    load_remain:null,
-                                    disc_act:null,
-                                    disc_plan:null,
-                                    disc_remain:null,
-                                    time_remain:null,
-                                    time_remain_label:null,
-                                    est_end_date:null,
-                                    berth_fr_metre:kade_start*2,
-                                    berth_to_metre:kade_to*2,
-                                    berth_fr_metre_ori:kade_start,
-                                    berth_to_metre_ori:kade_to,
-                                    width:width,
-                                    width_ori:width_ves,
-                                    y_awal:y_awal_etb,
-                                    y_akhir:y_awal_etb+y_akhir_etd,
-                                    height:y_akhir_etd,
-                                    est_berth_ts:etBout,
-                                    est_dep_ts:etDout,
-                                    req_berth_ts:rbTout,
-                                    est_pilot_ts:etAout
-                                });
-                                cok.push(id_vess);
-                                crane = [];
-
-                            }
-                        }
-
-                        eraseTextModalContainer();
-
-                        reloadShadow();
-
-                        
-                    } else {
-                        swal({
-                            title: "Vessel",
-                            text: "Kapal Tumpuk",
-                            icon: "warning",
-                        });
-                    }
-                    
+                    var isStack = isVesselStack(area);
                 }
-            });
+
+                
+                if(!isStack) {
+
+                    if(tentatif == "1")
+                        rand = getColor(2);
+                    else if(tentatif == "0")
+                        rand = getColor(1); 
+                   
+                    if (cok.includes(id_vess)){
+                        crane = [];
+                        swal({
+                            title: "Kapal Sudah Ditambahkan !! Simpan Terlebih Dahulu !!",
+                            text: "You clicked the button!",
+                            icon: "warning",
+                            });                   
+                    } else {
+                        var craneloop2 = "";
+
+                        for (var x = 0; x < crane_select.length; x++) { //Move the for loop from here
+                            craneloop2 += '<circle2><span>'+crane_select[x]+'</span></circle2>';
+                        };
+
+                        var vees = {
+                            is_unreg : 0,
+                            image : '',
+                            ves_name : nama,
+                            ves_id: vessid,
+                            est_pilot_ts: etAout,
+                            req_berth_ts: rbTout,
+                            est_berth_ts: etBout,
+                            est_dep_ts: etDout,
+                            est_load: jum_muat,
+                            est_disch: jum_bongkar,
+                            est_discharge: jum_bongkar,
+                            load_act: null,
+                            load_plan: null,
+                            load_remain: null,
+                            disc_act: null,
+                            disc_plan: null,
+                            disc_remain: null,
+                            time_remain: null,
+                            windows: windows,
+                            width_ori: width_ves,
+                            dest_port: dest_port,
+                            info: info,
+                            berth_fr_metre_ori: kade_start,
+                            berth_to_metre_ori: kd_end
+                        };
+
+                        $("#wrap_sw").append(getVesselContent(vees, vessel.length+1, craneloop2));
+
+                        convertToDrag();
+
+                        etAout = etAout!=null && etAout!=''?etAout+":00":null;
+                        rbTout = rbTout!=null && rbTout!=''?rbTout+":00":null;
+                        etBout = etBout!=null && etBout!=''?etBout+":00":null;
+                        etDout = etDout!=null && etDout!=''?etDout+":00":null;
+                        
+                        vees = {
+                            ves_type:ves_type,
+                            info:info,
+                            bsh:bsh,
+                            next_port:next_port,
+                            dest_port:dest_port,
+                            est_discharge:jum_bongkar,
+                            est_load:jum_muat,
+                            btoa_side:along_side,
+                            crane:crane2,
+                            agent:agent,
+                            agent_name:agent_name,
+                            image:img,
+                            ves_id: vessid,
+                            ves_id_old: '',
+                            ves_name:nama,
+                            ocean_interisland:ocean_ori,
+                            ocean_interisland_fake:m_dermaga_current,
+                            ves_code:vess_code,
+                            is_simulation:"1",
+                            is_unreg:"0",
+                            is_inserted: 0,
+                            windows:windows,
+                            tentatif:tentatif,
+                            load_act:null,
+                            load_plan:null,
+                            load_remain:null,
+                            disc_act:null,
+                            disc_plan:null,
+                            disc_remain:null,
+                            time_remain:null,
+                            time_remain_label:null,
+                            est_end_date:null,
+                            berth_fr_metre:kade_start*2,
+                            berth_to_metre:kade_to*2,
+                            berth_fr_metre_ori:kade_start,
+                            berth_to_metre_ori:kade_to,
+                            width:width,
+                            width_ori:width_ves,
+                            y_awal:y_awal_etb,
+                            y_akhir:y_awal_etb+y_akhir_etd,
+                            height:y_akhir_etd,
+                            est_berth_ts:etBout,
+                            est_dep_ts:etDout,
+                            req_berth_ts:rbTout,
+                            est_pilot_ts:etAout 
+                        };
+
+                        vessel.push(vees);
+                        cok.push(id_vess);
+                        crane = [];
+
+                        setVesselBoxPosition(vees, vessel.length);
+
+                    }
+
+                    eraseTextModalContainer();
+
+                    reloadShadow();
+
+                    
+                } else {
+                    swal({
+                        title: "Vessel",
+                        text: "Kapal Tumpuk",
+                        icon: "warning",
+                    });
+                }
+                
+            }
+        });
         
     } else {
         swal({
@@ -1376,34 +1436,39 @@ function editvessel() {
     var vees_tmp = JSON.parse(JSON.stringify(vessel[m_index_edit]));
 
     var arr_crane = [];
+    var arr_crane_dry = [];
 
     $('.edit_crane:checked').each(function(){
         arr_crane.push($(this).val());
     });
 
+    $('.edit_crane_dry:checked').each(function(){
+        arr_crane_dry.push($(this).val());
+    });
+
     var ocean_interisland_fake = $('input[class=edit_tipe_dermaga]:checked').val();
 
-    vees.crane          = arr_crane;
+    vees.crane          = m_dermaga_current == 'C' ? arr_crane_dry : arr_crane;
     vees.ocean_interisland_fake = ocean_interisland_fake;
     vees.est_pilot_ts   = $('#edit_eta').val() != null && $('#edit_eta').val() != '' ? 
-                            $('#edit_eta').val().replace('T', ' ')+":00" : '';
+                            $('#edit_eta').val().replace('T', ' ')+":00" : null;
     vees.req_berth_ts   = $('#edit_rbt').val() != null && $('#edit_rbt').val() != '' ? 
-                            $('#edit_rbt').val().replace('T', ' ')+":00" : '';
+                            $('#edit_rbt').val().replace('T', ' ')+":00" : null;
     vees.est_berth_ts   = $('#edit_etb').val().replace('T', ' ')+":00";
     vees.est_dep_ts     = $('#edit_etd').val().replace('T', ' ')+":00";
     vees.ves_id         = $('#edit_vessel').val();
     vees.btoa_side      = $('input[class=edit_side]:checked').val();
-    vees.bsh            = $('#edit_bsh').val();
+    vees.bsh            = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
     vees.next_port      = $('#edit_nextp').val();
     vees.dest_port      = $('#edit_deshp').val();
     vees.est_disch      = $('#edit_disc').val();
     vees.est_discharge  = $('#edit_disc').val();
-    vees.est_load       = $('#edit_load').val();
+    vees.est_load       = m_dermaga_current == 'C' ? 0 : $('#edit_load').val();
     vees.berth_fr_metre = (parseInt($('#edit_start').val())*2).toString();
     vees.berth_to_metre = (parseInt($('#edit_end').val())*2).toString();
     vees.berth_fr_metre_ori = (parseInt($('#edit_start').val())).toString();
     vees.berth_to_metre_ori = (parseInt($('#edit_end').val())).toString();
-    vees.windows        = $('input[class=edit_window]:checked').val();
+    vees.windows        = $('input[name=edit_window]:checked').val();
     vees.tentatif       = $('input[class=edit_tentatif]:checked').val();
     vees.info           = $('#edit_info').val();
 
@@ -1516,9 +1581,14 @@ function editvessel() {
 
 function unregvessel() {
     var arr_crane = [];
+    var arr_crane_dry = [];
 
     $('.unreg_crane:checked').each(function(){
         arr_crane.push($(this).val());
+    });
+
+    $('.unreg_crane_dry:checked').each(function(){
+        arr_crane_dry.push($(this).val());
     });
 
     etA = document.getElementById("unreg_eta").value; 
@@ -1563,11 +1633,13 @@ function unregvessel() {
     var secondEtd =(tglPertamaEtd-tglKeduaEtd)/miliday;
     var height = (secondEtd/30)*10;
 
+    var unreg_type = $('input[class=unreg_type]:checked').val();
+
     var vees = {
-        ves_id         : moment(new Date()).format("YYYYMMDDHHmmss"),
+        ves_id         : $('#unreg_vessel_id').val(),
         ves_id_old     : '',
         ves_name       : $('#unreg_vessel_name').val(),
-        ves_type       : m_dermaga_current == 'C' ? 'GC' : 'CT',
+        ves_type       : unreg_type == 'DRY_BULK' ? 'GC' : 'CT',
         ves_code       : $('#unreg_vessel_name').val().substring(0,3),
         ocean_interisland : m_dermaga_current,
         ocean_interisland_fake : m_dermaga_current,
@@ -1576,7 +1648,7 @@ function unregvessel() {
         is_inserted    : 0,
         info           : $('#unreg_info').val(),
         ves_len        : parseInt($('#unreg_loa').val()),
-        crane          : arr_crane,
+        crane          : unreg_type == 'DRY_BULK' ? arr_crane_dry : arr_crane,
         est_pilot_ts   : $('#unreg_eta').val() != null && $('#unreg_eta').val() != '' ? 
                                 $('#unreg_eta').val().replace('T', ' ')+":00" : null,
         req_berth_ts   : $('#unreg_rbt').val() != null && $('#unreg_rbt').val() != '' ? 
@@ -1584,12 +1656,13 @@ function unregvessel() {
         est_berth_ts   : $('#unreg_etb').val().replace('T', ' ')+":00",
         est_dep_ts     : $('#unreg_etd').val().replace('T', ' ')+":00",
         btoa_side      :  $('input[class=unreg_side]:checked').val(),
-        bsh            : $('#unreg_bsh').val(),
+        bsh            : unreg_type == 'DRY_BULK' ? $('#unreg_tgh').val() : $('#unreg_bsh').val(),
+        bch            : unreg_type == 'DRY_BULK' ? $('#unreg_tgh').val() : $('#unreg_bsh').val(),
         next_port      : $('#unreg_nextp').val(),
         dest_port      : $('#unreg_deshp').val(),
         est_disch      : $('#unreg_disc').val(),
         est_discharge  : $('#unreg_disc').val(),
-        est_load       : $('#unreg_load').val(),
+        est_load       : unreg_type == 'DRY_BULK' ? 0 : $('#unreg_load').val(),
         berth_fr_metre : (parseInt($('#unreg_start').val())*2).toString(),
         berth_to_metre : (parseInt($('#unreg_end').val())*2).toString(),
         berth_fr_metre_ori : (parseInt($('#unreg_start').val())).toString(),
@@ -1609,19 +1682,25 @@ function unregvessel() {
     reloadAll();
 }
 
-function getDateByPosition(topp) {
+function getDateByPosition(topp, isDeparture = false) {
     var date = new Date();
     date.setHours(00);
     date.setMinutes(00);
     date.setSeconds(00);
 
     var jum         = (topp/10)*30;
-    var tanggaletb  =  date.setMinutes(date.getMinutes() + jum);
+    var tanggaletb  =  date.setMinutes(date.getMinutes() + jum +(isDeparture?2*60:0));
     
-    const format    = "YYYY-MM-DD HH:mm:ss"
+    const format    = "YYYY-MM-DD HH:mm:ss";
     var date        = moment(tanggaletb).format(format);
 
     return date;
+}
+
+function getLeft(left, width) {
+    var cuker_len =  m_kade_all.cur[0].param4*2;
+    var left = m_dermaga_current=='C'? cuker_len - left - width : left;
+    return left;
 }
 
 function convertToDrag() {   
@@ -1742,14 +1821,13 @@ function convertToDrag() {
             bto = kiri+startW;
             
             var etb= getDateByPosition(topp);
-            var etd= getDateByPosition($(this).outerHeight()+topp);
+            var etd= getDateByPosition($(this).outerHeight()+topp, false);
 
             var urutan = $(this).attr('urutan');
             var math_kiri = Math.round(kiri);
             var math_bto = Math.round(bto);
-            $('.kade_box_'+urutan).text(math_kiri+' On '+ math_bto);
-            $('.ETB_'+urutan).text('ETB :'+etb);
-            $('.ETD_'+urutan).text('ETD :'+etd);
+            $('.ETB_'+urutan).text('ETB :'+moment(etb).format('DD-MM-YY HH:mm'));
+            $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD-MM-YY HH:mm'));
 
 
             var isCollision = false;
@@ -1812,13 +1890,20 @@ function convertToDrag() {
             else
                 vessel[urutan].y_awal = ySave;
 
+            var cuker_len =  m_kade_all.cur[0].param4*2;
+
             vessel[urutan].height               =  parseInt($(this).height()).toString();
-            vessel[urutan].berth_fr_metre       =  parseInt($(this).position().left).toString();
-            vessel[urutan].berth_to_metre       =  parseInt(($(this).position().left+$(this).width())).toString();
+            vessel[urutan].berth_fr_metre       =  getLeft($(this).position().left, vessel[urutan].width);
+            vessel[urutan].berth_to_metre       =  cuker_len-$(this).position().left;
             vessel[urutan].berth_fr_metre_ori   =  vessel[urutan].berth_fr_metre/2;
             vessel[urutan].berth_to_metre_ori   =  vessel[urutan].berth_to_metre/2;
             vessel[urutan].est_berth_ts         =  etb;
             vessel[urutan].est_dep_ts           =  etd;
+
+            console.log(vessel[urutan].berth_fr_metre);
+
+            $('.kade_box_'+(urutan+1)).text(vessel[urutan].berth_fr_metre_ori+' On '+ vessel[urutan].berth_to_metre_ori);
+
             reloadShadow();
 
         }
@@ -1862,7 +1947,7 @@ function convertToDrag() {
             var urutan = $(this).attr('urutan');
             var etd= getDateByPosition($(this).outerHeight()+topp);
 
-            $('.ETD_'+urutan).text('ETD :'+etd);
+            $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD-MM-YY HH:mm'));
 
             var isCollision = false;
 
@@ -2058,20 +2143,20 @@ function kade(param) {
 
         for (y=0; y<c;y++){
             $("#Rcur").append(
-                '<div class="cm">'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
-                    '<div class="mm"></div>'+
+                '<div class="cm_cur">'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
+                    '<div class="mm_cur"></div>'+
                 '</div>');
         }
         $("#Rcur").append(
-            '<div class="cm"></div>');
+            '<div class="cm_cur"></div>');
     }
 }
 

@@ -184,9 +184,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="etDDry" type="datetime-local" class="form-control" disabled>
+                                                    <input id="etDDry" type="datetime-local" class="form-control">
                                                 </div>
-                                                
 
                                                 <div class="form-group" >
                                                     <label class="col-form-label text-right">CRANE :</label><br>
@@ -300,7 +299,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="etD" type="datetime-local" class="form-control" disabled>
+                                                    <input id="etD" type="datetime-local" class="form-control">
                                                 </div>
                                                 <div class="form-group" >
                                                     <label class="col-form-label text-right">CRANE :</label><br>
@@ -407,7 +406,11 @@
                                         <h4 class="modal-title">Edit Vessel</h4>
                                       </div>
                                       <div class="modal-body">
-                                        <label for="ocean_interisland">Pilih Tipe Dermaga :  </label>
+                                        <!-- <label>Tipe Kapal : </label>
+                                          <input type="radio" class="edit_type" value="CONTAINER" value="CONTAINER" readonly=""> Container 
+                                          <input type="radio" class="edit_type" value="DRY_BULK" value="DRY_BULK" readonly=""> Dry Bulk
+                                        <br> -->
+                                        <label>Tipe Dermaga : </label>
                                           <input type="radio" id="edit_tipe_dermaga_d" class="edit_tipe_dermaga" name="edit_tipe_dermaga" value="D"> Domestik</input> 
                                           <input type="radio" id="edit_tipe_dermaga_i" class="edit_tipe_dermaga" name="edit_tipe_dermaga" value="I"> Internasional</input>
                                           <input type="radio" id="edit_tipe_dermaga_c" class="edit_tipe_dermaga" name="edit_tipe_dermaga" value="C"> Dry Bulk</input>
@@ -438,7 +441,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="edit_etd" type="datetime-local" class="form-control" disabled>
+                                                    <input id="edit_etd" type="datetime-local" class="form-control">
                                                 </div>
 
                                                 <div class="form-group" >
@@ -446,15 +449,22 @@
                                                     <div id="edit_crane">
 
                                                     </div>
+                                                    <div id="edit_crane_dry">
+
+                                                    </div>
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group" id="edit_div_bsh">
                                                     <label class="col-form-label">BSH :</label>
                                                     <input id="edit_bsh" type="number" class="form-control">
                                                 </div>
+                                                <div class="form-group" id="edit_div_tgh">
+                                                    <label class="col-form-label">TGH :</label>
+                                                    <input id="edit_tgh" type="number" class="form-control">
+                                                </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
-                                                    <select  id="edit_nextp" class="form-control">
+                                                    <select  id="edit_nextp" class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                     
@@ -462,7 +472,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">DEST PORT : </label>
-                                                    <select  id="edit_deshp" class="form-control">
+                                                    <select  id="edit_deshp" class="select2-A" style="width:100%;"  data-live-search="true">
                                                             <!-- <option>-----------</option> -->
                                                     </select>
                                                 </div>
@@ -470,7 +480,7 @@
                                                     <label class="col-form-label">Jumlah Bongkar : </label>
                                                     <input id="edit_disc" type="number" class="form-control">
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group" id="edit_div_load">
                                                     <label class="col-form-label">Jumlah Muat : </label>
                                                     <input id="edit_load" type="number" class="form-control">
                                                 </div>
@@ -549,15 +559,19 @@
                                       </div>
                                       <div class="modal-body">
                                         <label for="ocean_interisland">Pilih Tipe Kapal :  </label>
-                                          <input type="radio" id="con" class="kapal" name="kapal2" value="C" checked > Container</input> 
-                                          <input type="radio" id="dry" class="kapal" name="kapal2" value="D"  > Dry Bulk</input>
+                                          <input type="radio" id="unreg_con" class="unreg_type" name="unreg_kapal2" value="CONTAINER" checked > Container</input> 
+                                          <input type="radio" id="unreg_dry" class="unreg_type" name="unreg_kapal2" value="DRY_BULK"  > Dry Bulk</input>
                                         <br>
                                         <form>
                                             {{csrf_field()}}
 
-                                            <div id="formCon" >
+                                            <div id="edit_formCon" >
                                                 <div class="form-group">
-                                                    <label class="col-form-label">Vessel Name: </label>
+                                                    <label class="col-form-label">Vessel ID : </label>
+                                                    <input id="unreg_vessel_id" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Vessel Name : </label>
                                                     <input id="unreg_vessel_name" class="form-control">
                                                 </div>
                                                 <div class="form-group">
@@ -578,36 +592,45 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">ETD :</label>
-                                                    <input id="unreg_etd" type="datetime-local" class="form-control" disabled>
+                                                    <input id="unreg_etd" type="datetime-local" class="form-control">
                                                 </div>
                                                 <div class="form-group" >
                                                     <label class="col-form-label text-right">CRANE :</label><br>
                                                     <div id="unreg_crane">
 
                                                     </div>
+                                                    <div id="unreg_crane_dry">
+
+                                                    </div>
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group" id="unreg_div_bsh">
                                                     <label class="col-form-label">BSH :</label>
                                                     <input id="unreg_bsh" type="number" class="form-control">
                                                 </div>
+                                                <div class="form-group" id="unreg_div_tgh">
+                                                    <label class="col-form-label">TGH :</label>
+                                                    <input id="unreg_tgh" type="number" class="form-control">
+                                                </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
-                                                    <select  id="unreg_nextp" class="form-control">
+                                                    <select  id="unreg_nextp" class="select2-A" style="width:100%;"  data-live-search="true">
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">DEST PORT : </label>
-                                                    <select  id="unreg_deshp" class="form-control">
+                                                    <select  id="unreg_deshp" class="select2-A" style="width:100%;"  data-live-search="true">
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">Jumlah Bongkar : </label>
                                                     <input id="unreg_disc" type="number" class="form-control">
                                                 </div>
+                                                <div id="unreg_div_load">
                                                 <div class="form-group">
                                                     <label class="col-form-label">Jumlah Muat : </label>
                                                     <input id="unreg_load" type="number" class="form-control">
+                                                </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-form-label">Kade Meter : </label>
