@@ -611,7 +611,28 @@ circle2 {
     left: 37px;
     top: 159px;
 }
-.print_at
+.print_at {
+    text-align: center;
+    font-size: 7px;
+    font-weight: bold;
+    margin: auto;
+    color: black !important;
+    position: absolute;
+    font-family: "Arial";
+    text-transform: uppercase;
+}
+
+#print_at {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 122px;
+    height: 17px;
+    /* background: #952; */
+    position: absolute;
+    left: 1144px;
+    top: 1206px;
+}
 
 
 
@@ -794,7 +815,8 @@ circle2 {
         <!-- <div class = "grup_detail" id="1g"><p class="grup_text"> I / D</p></div>
         <div class = "grup_detail" id="2g"><p class="grup_text"> II / A</p></div>
         <div class = "grup_detail" id="3g"><p class="grup_text"> III / B</p></div> -->
-
+    </div>
+    <div id="print_at">
     </div>
 
     <div id="ttd1">
@@ -848,6 +870,15 @@ circle2 {
 </script>
 
 <script type="text/javascript">
+
+    var newdateprint = new Date();
+    var start_date_print = moment(newdateprint).format("dddd, DD/MM/YYYY HH:mm:ss ");
+    $("#print_at").append('<div class="print_at"> '+start_date_print+'</div>');
+
+        
+
+
+    
     $("#start").append('<p class="startend"><?php echo $hari1 ?></p>');
     $("#starttgl").append('<p class="startendtgl"><?php echo $tgl1 ?></p>');
     $("#end").append('<p class="startend"><?php echo $hari7 ?></p>');
