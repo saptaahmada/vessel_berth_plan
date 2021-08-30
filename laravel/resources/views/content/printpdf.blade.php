@@ -482,7 +482,7 @@ circle2 {
 }
 .arustext {
     text-align:center;
-    font-size: 4px;
+    font-size: 5.9px;
     /*font-weight: bold;*/
     margin:1px;
     color: white !important;
@@ -571,6 +571,50 @@ circle2 {
     top: 748.5px;
 }
 
+.grup_text{
+    text-align:center;
+    font-size: 8px;
+    font-weight: bold;
+    margin:auto;
+    color: white !important;
+    position: absolute;
+    font-family: "Arial"; 
+    text-transform: uppercase;
+}
+.grup_detail1
+{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+
+    width: 15px;
+    height: 41.3px;
+     /*background: #342345;     */
+    
+    position: absolute;
+    left: 37px;
+    top: 159px;
+}
+.grup_detail2
+{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    width: 15px;
+    height: 41.3px;
+     /*background: #342345;    */
+    position: absolute;
+    left: 37px;
+    top: 159px;
+}
+.print_at
+
+
+
 
 
 
@@ -607,6 +651,16 @@ circle2 {
         text-shadow: 1px 1px #313131;
         -webkit-print-color-adjust: exact; 
     }
+    .arustext{
+        color: #ffff !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .grup_text{
+        color: #ffff !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    
+    
     .arsirdomes{
         color: #877F7D !important;
         -webkit-print-color-adjust: exact; 
@@ -676,7 +730,7 @@ circle2 {
 
     ?>
    
-    <img src="{{asset('/img/vessel_print_650.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
+    <img src="{{asset('/img/vessel_print_650_new-new.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
     <!-- <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" > -->
     
     <div id="start">
@@ -715,7 +769,7 @@ circle2 {
     <div id="tanggal">
     </div>
 
-     <div id="arusminus">
+    <div id="arusminus">
         <div id="arusminus1">
           <!--   <p class="arustext">ARUS MINUS<br>
                 (15:00-16:00)<br>
@@ -723,7 +777,6 @@ circle2 {
             </p> -->
         </div>
         <div id="arusminus2">
-           
         </div>
         <div id="arusminus3">
         </div>
@@ -735,6 +788,13 @@ circle2 {
         </div>
         <div id="arusminus7">
         </div>
+    </div>
+
+    <div id="grup">     
+        <!-- <div class = "grup_detail" id="1g"><p class="grup_text"> I / D</p></div>
+        <div class = "grup_detail" id="2g"><p class="grup_text"> II / A</p></div>
+        <div class = "grup_detail" id="3g"><p class="grup_text"> III / B</p></div> -->
+
     </div>
 
     <div id="ttd1">
@@ -755,19 +815,20 @@ circle2 {
 </body>
 </html>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     window.onload = function () {
     window.print();
     setTimeout(function(){window.close();}, 1);
   }
-</script> -->
+</script>
 
 
 
 <script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
 
 <script type="text/javascript">
-
+    $("#2g").css("top","200.5px");
+    $("#3g").css("top","242px");
 
     for (i = 1; i < 3; ++i) {
         // console.log(i);
@@ -803,8 +864,8 @@ circle2 {
     var vesseldom = [];
 
     arusminus();
-    // Load();  
-    // signature();    
+    Load();  
+    signature();    
     function Load() {
         $.ajax({
             url : "{{route('blokirkade')}}",
@@ -1154,39 +1215,91 @@ circle2 {
         var newdate = new Date();
         var start_date = moment(newdate).format("YYYY-MM-DD");
         var end_date = moment(newdate).add(6,'d').format('YYYY-MM-DD');
-
+        grup(start_date,end_date);
 
         $.ajax({  
-        url : "{{ url('/print/arus') }}",
-        type : "post",
-        data: {
-            "_token": "{{ csrf_token() }}",
-            start_date:start_date,
-            end_date:end_date
-            },
-        dataType : "json",
-        async : false,
-        success : function(result){
-            for (d = 1; d < result.length+1; ++d) {
-                var arus = result[d-1].arus;
-                // console.log(arus);
+            url : "{{ url('/print/arus') }}",
+            type : "post",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                start_date:start_date,
+                end_date:end_date
+                },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                for (d = 1; d < result.length+1; ++d) {
+                    var arus = result[d-1].arus;
+                    // console.log(arus);
 
-                if (arus.length !== 0){
-                $("#arusminus"+d).append('<p class="arustext" id ="rus'+d+'">ARUS MINUS<br></p>');
-                }
+                    if (arus.length !== 0){
+                    $("#arusminus"+d).append('<p class="arustext" id ="rus'+d+'">ARUS MINUS<br></p>');
+                    }
 
-                for (s=0;s<arus.length; s++){
-                    var start_time = arus[s].start_time;
-                    var end_time = arus[s].end_time;
-                    $("#rus"+d).append('<p class="arustext">('+start_time+'-'+end_time+')</p>');
+                    for (s=0;s<arus.length; s++){
+                        var start_time = arus[s].start_time;
+                        var end_time = arus[s].end_time;
+                        $("#rus"+d).append('<p class="arustext">('+start_time+'-'+end_time+')</p>');
+
+                    }
 
                 }
 
             }
-
-        }
-    });
+        });
     }
+    function grup(start_date, end_date){
+
+         $.ajax({  
+            url : "{{ url('/print/grup') }}",
+            type : "post",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                start_date:start_date,
+                end_date:end_date
+                },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                var index = "1";
+                for (c = 1;c < result.length+1;c++){
+                    // console.log(c); 
+                    var grup = result[c-1].grup;
+
+                    var shiftke = "";
+
+                    for (s=1; s < grup.length+1;s++){
+                        if (grup[s-1].shift === '1'){
+                           shiftke = "I";
+                        } else if (grup[s-1].shift === '2'){
+                           shiftke = "II";
+                        } else {
+                          shiftke = "III";
+                        }
+                    
+                        $("#grup").append('<div class = "grup_detail1" id="g'+index+'"><p class="grup_text"> '+shiftke+' / '+grup[s-1].grup+'</p></div>');
+                        $("#grup").append('<div class = "grup_detail2" id="s'+index+'"><p class="grup_text"> '+shiftke+' / '+grup[s-1].grup+'</p></div>');
+                        index++;
+
+
+                    }
+                    
+                }
+
+                var up = 159;
+                for (f=1; f<index; f++){
+                    $(".grup_detail2").css("left", "879px");
+                    $("#g"+f).css("top", up+"px");
+                    $("#s"+f).css("top", up+"px");
+                    up = up+41.5;
+
+                }
+
+
+            }   
+        });
+
+    } 
 
 </script>
 

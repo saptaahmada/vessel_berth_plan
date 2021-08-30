@@ -71,8 +71,49 @@ class PrintController extends Controller
             }
             $index++;
         }
+        // dump($arr);
 
         return response()->json($arr);
+    }
+
+    public function grup(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $grup_all = DB::table('CBSLAM.CBS_JADWAL_GROUP')
+        -> whereBetween('TANGGAL',[$start_date, $end_date])
+        -> get();
+
+        $startTime = strtotime($start_date);
+        $endTime = strtotime( $end_date );
+        $index = 0;
+
+        $arr = [];
+
+        for ( $f = $startTime; $f <= $endTime; $f = $f + 86400 ) {
+          $thisDate = date( 'Y-m-d', $f );
+          // dump($thisDate);
+          $arr[$index] = ['tanggal' => $thisDate,'grup' => []];
+
+            for($i=0;$i < count( $grup_all ); $i++){
+                if ($thisDate == $grup_all[$i]->tanggal) {
+
+                    $grup_1 = $grup_all[$i]->kd_group;
+                    $shift = $grup_all[$i]->shift;
+                    $arr[$index]['grup'][] = [
+                        'grup' => $grup_1,
+                        'shift' =>  $shift
+                    ];
+                    // $arr[$index] = ['tanggal' => $thisDate,'start_time' =>  $start_time,'end_time' => $end_time] ;
+                }
+            }
+            $index++;
+        }
+
+        // dump($arr);
+
+         return response()->json($arr);
 
     }
 }

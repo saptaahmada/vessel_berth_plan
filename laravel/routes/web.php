@@ -102,6 +102,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');
     Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
     Route::post('/print/arus','PrintController@arusminus')->name('arusminus');
+    Route::post('/print/grup','PrintController@grup')->name('grup');
 
 
     Route::get('/Monitoring', function () {
