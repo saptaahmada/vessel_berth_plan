@@ -300,7 +300,7 @@
         /* text-shadow: 1px 1px #313131; */
         z-index: -2;
         
-    }
+}
 .text_detail{
     color: black;
     font-size:3.5px;
@@ -327,7 +327,7 @@
     /* padding-top: 5px; */
    
     position: absolute;
-    }
+}
 .ims{
     float:right;
     width: 18%;
@@ -634,18 +634,6 @@ circle2 {
     top: 1206px;
 }
 
-
-
-
-
-
-
-
-/* #img{
-    left: 0px;
-    top: 150px;
-} */
-
 @media print {
     .box {
         background-color: #FFC312, #006266, #1289A7, #EE5A24, #B53471 !important;
@@ -672,16 +660,6 @@ circle2 {
         text-shadow: 1px 1px #313131;
         -webkit-print-color-adjust: exact; 
     }
-    .arustext{
-        color: #ffff !important;
-        -webkit-print-color-adjust: exact; 
-    }
-    .grup_text{
-        color: #ffff !important;
-        -webkit-print-color-adjust: exact; 
-    }
-    
-    
     .arsirdomes{
         color: #877F7D !important;
         -webkit-print-color-adjust: exact; 
@@ -694,7 +672,31 @@ circle2 {
         color: #877F7D !important;
         -webkit-print-color-adjust: exact; 
     }
+    .startendtgl{
+        color: white !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .grup_text{
+        color: white !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .arustext{
+        color: white !important;
+        -webkit-print-color-adjust: exact; 
+    }
 }
+
+
+
+
+
+
+
+/* #img{
+    left: 0px;
+    top: 150px;
+} */
+
 
 
 
@@ -837,12 +839,12 @@ circle2 {
 </body>
 </html>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     window.onload = function () {
     window.print();
     setTimeout(function(){window.close();}, 1);
   }
-</script>
+</script> -->
 
 
 
@@ -874,9 +876,6 @@ circle2 {
     var newdateprint = new Date();
     var start_date_print = moment(newdateprint).format("dddd, DD/MM/YYYY HH:mm:ss ");
     $("#print_at").append('<div class="print_at"> '+start_date_print+'</div>');
-
-        
-
 
     
     $("#start").append('<p class="startend"><?php echo $hari1 ?></p>');
@@ -1188,13 +1187,13 @@ circle2 {
                     var along_sidecur = vesselcur[i-1].btoa_side;
                     
                     // console.log(height);
-                    if(along_sidecur == "S"){ //kiri star
+                    if(along_sidecur == "P"){ //kiri star
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", topcur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
                     $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidecur == "P") {
+                    }else if (along_sidecur == "S") {
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", topcur +"px");

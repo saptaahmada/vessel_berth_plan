@@ -939,13 +939,13 @@ circle2 {
                     var along_sidecur = vesselcur[i-1].btoa_side;
                     
                     // console.log(height);
-                    if(along_sidecur == "S"){ //kiri star
+                    if(along_sidecur == "P"){ //kiri star
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", startdatecur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
                     $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidecur == "P") {
+                    }else if (along_sidecur == "S") {
                     $("#cur"+i).css("left", leftcur+"px");
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", startdatecur +"px");
