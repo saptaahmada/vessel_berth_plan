@@ -6,6 +6,6 @@
    
 </div>
 
-<div class='ruler' id=Rcur > 
+<div class='ruler_cur' id=Rcur > 
       
 </div>
