@@ -1033,20 +1033,24 @@ circle2 {
                     var along_sidein = vessel[i-1].btoa_side;
                 
                     if(along_sidein == "P"){
-                    $("#zone"+i).css("left", left+"px");
-                    $("#zone"+i).css("width", width+"px");
-                    $("#zone"+i).css("top", top +"px");
-                    $("#zone"+i).css("height", height+"px");
-                    $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        $("#zone"+i).css("left", left+"px");
+                        $("#zone"+i).css("width", width+"px");
+                        $("#zone"+i).css("top", top +"px");
+                        $("#zone"+i).css("height", height+"px");
+                        $("#text_judul"+i).css("padding-left", "20%");
+                        $("#text_detail"+i).css("padding-left", "18%");
+                        $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
                     } else if (along_sidein == "S") {
-                    $("#zone"+i).css("left", left+"px");
-                    $("#zone"+i).css("width", width+"px");
-                    $("#zone"+i).css("top", top +"px");
-                    $("#zone"+i).css("height", height+"px");
-                    $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                    $("#text_judul"+i+".text_judul").css("padding-left", "5px");
-                    $("#text_judul"+i+".text_judul").css("padding-top", "5px");
-                    $("#text_detail"+i+".text_detail").css("padding-left", "5px");
+                        $("#zone"+i).css("left", left+"px");
+                        $("#zone"+i).css("width", width+"px");
+                        $("#zone"+i).css("top", top +"px");
+                        $("#zone"+i).css("height", height+"px");
+                        $("#text_judul"+i).css("padding-left", "5px");
+                        $("#text_detail"+i).css("padding-left", "5px");
+                        $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                        // $("#text_judul"+i+".text_judul").css("padding-left", "5px");
+                        // $("#text_judul"+i+".text_judul").css("padding-top", "5px");
+                        // $("#text_detail"+i+".text_detail").css("padding-left", "5px");
                     }
                 }
 
@@ -1113,6 +1117,8 @@ circle2 {
                     $("#dom"+i).css("width", widthdom+"px");
                     $("#dom"+i).css("top", topdom +"px");
                     $("#dom"+i).css("height", heightdom+"px");
+                    $("#text_juduldom"+i).css("padding-left", "20%");
+                    $("#text_detaildom"+i).css("padding-left", "18%");
                     $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
                     }else if (along_sidedom == "S") {
                     $("#dom"+i).css("left", leftdom+"px");
@@ -1192,6 +1198,8 @@ circle2 {
                     $("#cur"+i).css("width", widthcur+"px");
                     $("#cur"+i).css("top", topcur +"px");
                     $("#cur"+i).css("height", heightcur+"px");
+                    $("#text_judulcur"+i).css("padding-left", "20%");
+                    $("#text_detailcur"+i).css("padding-left", "18%");
                     $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
                     }else if (along_sidecur == "S") {
                     $("#cur"+i).css("left", leftcur+"px");

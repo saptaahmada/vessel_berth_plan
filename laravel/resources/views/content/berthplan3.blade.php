@@ -18,15 +18,6 @@
             <h3 class="animated fadeInLeft" style="color:#2e80ce;"><b>Vessel Berthing Plan</b></h3>
             <p class="animated fadeInDown"><span class="fa  fa-map-marker"></span> Surabaya,Indonesia</p>
 
-            
-
-            <!-- <ul class="nav navbar-nav">
-                <li><a href="" >Impedit</a></li>
-                <li><a href="" class="active">Virtute</a></li>
-                <li><a href="">Euismod</a></li>
-                <li><a href="">Explicar</a></li>
-                <li><a href="">Rebum</a></li>
-            </ul> -->
             </div>
         </div>                    
     </div>
@@ -120,26 +111,8 @@
                                             @include('content.isi.ruler')
                                          
                                             <div id='canvas'>
-                                            <!-- <div id="curah"> <img src="{{asset('/img/cur.png')}}" style="width: 500px; height: 3296px; position:absolute;" > </div> -->
                                                 <div id='wrap_sw'>
-                                                    <!-- <div id="box" class="box">
-                                                        <div id="img">
-                                                            <img id="ims" class="ims" src = "{{asset('/img/logo.png')}}"/>
-                                                        </div>
-                                                        <div id="text_judul" class="text_judul">
-                                                            MV. MENTARI PRAKARSA
-                                                        </div>
-                                                        <div id="text_detail" class="text_detail">
-                                                            <div style="margin:1px; color:red;">ETA :24/05/2021 12:00</div>
-                                                            <div style="margin:1px;">ETB :24/05/2021 14:00</div>
-                                                            <div style="margin:1px;">ETD :25/05/2021 07:00</div>
-                                                            <div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:0/273 BOX</div>
-                                                            <div style="margin:1px;">LOA : 108 M</div>
-                                                            <div style="margin:1px;">POD : TOBELO</div>
-                                                        </div>
-                                                    </div> -->
                                                 </div>
-                                                
                                             </div>
                                          
                                         </div>
@@ -219,10 +192,7 @@
                                                     <label class="col-form-label">Jumlah Bongkar : </label>
                                                     <input id="bongkarDry" type="number" class="form-control" onkeyup="autofillCon()">
                                                 </div>
-                                                <!-- <div class="form-group">
-                                                    <label class="col-form-label">Jumlah Muat : </label>
-                                                    <input id="muatDry" type="number" class="form-control" onkeyup="autofillCon()">
-                                                </div> -->
+
                                                 <div class="form-group">
                                                     <label class="col-form-label">Kade Meter : </label>
                                                     <div class="row">
@@ -238,39 +208,58 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Along Side : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="optionDry" value="S" checked=""> Star Board
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Along Side : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="dry_side_s" class ="sideDry" name="optionDry" value="S" checked=""> Star Board
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="dry_side_p" class ="sideDry" name="optionDry" value="P"> Port Side
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="optionDry" value="P"> Port Side
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Window : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" class ="sideDry" name="windowDry" value="1" checked=""> ON WINDOW
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" class ="sideDry" name="windowDry" value="0"> OFF WINDOW
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Tentatif : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="tentatifDry_yes" class ="tentatifDry" name="tentatifDry" value="1" checked=""> Yes
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="tentatifDry_no" class ="tentatifDry" name="tentatifDry" value="0"> No
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 well">
+                                                        <div>
+                                                        <h4>Arus Minus</h4>
+                                                        <table class="table table-bordered" id="dry_table_arus" style="background: white">
+                                                            <thead>
+                                                                <th>Start</th>
+                                                                <th>End</th>
+                                                            </thead>
+                                                            <tbody id="dry_tbody_arus"></tbody>
+                                                        </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Window : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="windowDry" value="1" checked=""> ON WINDOW
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="sideDry" name="windowDry" value="0"> OFF WINDOW
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Tentatif : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="tentatifDry_yes" class ="tentatifDry" name="tentatifDry" value="1" checked=""> Yes
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="tentatifDry_no" class ="tentatifDry" name="tentatifDry" value="0"> No
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="infoDry"></textarea>
@@ -314,7 +303,6 @@
                                                 <div class="form-group">
                                                     <label class="col-form-label">NEXT PORT :</label>
                                                     <select  id="nextP"  class="select2-A" style="width:100%;"  data-live-search="true">
-                                                            <!-- <option>-----------</option> -->
                                                     </select>
                                                     
                                                 </div>
@@ -347,39 +335,56 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Along Side : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="side" name="option" value="S" checked=""> Star Board
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Along Side : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="side_s" class ="side" name="option" value="S" checked=""> Star Board
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="side_p" class ="side" name="option" value="P"> Port Side
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="side" name="option" value="P"> Port Side
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Window : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" class ="window" name="window" value="1" checked=""> ON WINDOW
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" class ="window" name="window" value="0"> OFF WINDOW
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Tentatif : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="tentatif_yes" class ="tentatif" name="tentatif" value="1" checked=""> Yes
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="tentatif_no" class ="tentatif" name="tentatif" value="0"> No
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 well">
+                                                        <div>
+                                                        <h4>Arus Minus</h4>
+                                                        <table class="table table-bordered" id="table_arus" style="background: white">
+                                                            <thead>
+                                                                <th>Start</th>
+                                                                <th>End</th>
+                                                            </thead>
+                                                            <tbody id="tbody_arus"></tbody>
+                                                        </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Window : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="window" name="window" value="1" checked=""> ON WINDOW
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" class ="window" name="window" value="0"> OFF WINDOW
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Tentatif : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="tentatif_yes" class ="tentatif" name="tentatif" value="1" checked=""> Yes
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="tentatif_no" class ="tentatif" name="tentatif" value="0"> No
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="info"></textarea>
@@ -499,39 +504,57 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Along Side : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="edit_side_s" class ="edit_side" name="edit_option" value="S"> Star Board
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Along Side : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="edit_side_s" class ="edit_side" name="edit_option" value="S"> Star Board
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="edit_side_p" class ="edit_side" name="edit_option" value="P"> Port Side
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="edit_side_p" class ="edit_side" name="edit_option" value="P"> Port Side
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Window : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="edit_window_on" class ="edit_window" name="edit_window" value="1"> ON WINDOW
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="edit_window_off" class ="edit_window" name="edit_window" value="0"> OFF WINDOW
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Tentatif : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="edit_tentatif_yes" class ="edit_tentatif" name="edit_tentatif" value="1"> Yes
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="edit_tentatif_no" class ="edit_tentatif" name="edit_tentatif" value="0"> No
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 well">
+                                                        <div>
+                                                        <h4>Arus Minus</h4>
+                                                        <table class="table table-bordered" id="edit_table_arus" style="background: white">
+                                                            <thead>
+                                                                <th>Start</th>
+                                                                <th>End</th>
+                                                            </thead>
+                                                            <tbody id="edit_tbody_arus"></tbody>
+                                                        </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Window : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="edit_window_on" class ="edit_window" name="edit_window" value="1"> ON WINDOW
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="edit_window_off" class ="edit_window" name="edit_window" value="0"> OFF WINDOW
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Tentatif : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="edit_tentatif_yes" class ="edit_tentatif" name="edit_tentatif" value="1"> Yes
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="edit_tentatif_no" class ="edit_tentatif" name="edit_tentatif" value="0"> No
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="edit_info"></textarea>
@@ -645,41 +668,61 @@
                                                             <input id="unreg_end" placeholder="End" type="text" class="form-control" disabled>
                                                         </div>
                                                     </div>
+                                                </div>.
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Along Side : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="unreg_side_s" class ="unreg_side" name="unreg_option" value="S"> Star Board
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="unreg_side_p" class ="unreg_side" name="unreg_option" value="P"> Port Side
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Window : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="unreg_window_on" class ="unreg_window" name="unreg_window" value="1"> ON WINDOW
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="unreg_window_off" class ="unreg_window" name="unreg_window" value="0"> OFF WINDOW
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Tentatif : </label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="unreg_tentatif_yes" class ="unreg_tentatif" name="unreg_tentatif" value="1"> Yes
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="unreg_tentatif_no" class ="unreg_tentatif" name="unreg_tentatif" value="0"> No
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 well">
+                                                        <div>
+                                                        <h4>Arus Minus</h4>
+                                                        <table class="table table-bordered" id="unreg_table_arus" style="background: white">
+                                                            <thead>
+                                                                <th>Start</th>
+                                                                <th>End</th>
+                                                            </thead>
+                                                            <tbody id="unreg_tbody_arus"></tbody>
+                                                        </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Along Side : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="unreg_side_s" class ="unreg_side" name="unreg_option" value="S"> Star Board
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="unreg_side_p" class ="unreg_side" name="unreg_option" value="P"> Port Side
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Window : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="unreg_window_on" class ="unreg_window" name="unreg_window" value="1"> ON WINDOW
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="unreg_window_off" class ="unreg_window" name="unreg_window" value="0"> OFF WINDOW
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-form-label">Tentatif : </label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="unreg_tentatif_yes" class ="unreg_tentatif" name="unreg_tentatif" value="1"> Yes
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="radio" id="unreg_tentatif_no" class ="unreg_tentatif" name="unreg_tentatif" value="0"> No
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="form-group">
                                                     <label class="col-form-label">Info : </label>
                                                     <textarea style="resize: none;" rows="5" class="form-control" id="unreg_info"></textarea>

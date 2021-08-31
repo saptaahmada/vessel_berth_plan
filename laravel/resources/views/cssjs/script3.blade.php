@@ -16,6 +16,8 @@
     var m_allowed_collision = false;
     var m_show_distance_vessel = false;
     var m_vessel_removed = [];
+    var m_arus = [];
+    var m_cur_arus = [];
 
     var vessel=[];
     var dermaga =[];
@@ -152,6 +154,7 @@
             getKadeAll();
             loadAll('D');
             kade('D');
+            getAllArus();
             
 
             $("#cekbox1").click(function () {
@@ -246,6 +249,22 @@
             async : false,
             success : function(result){
                 m_kade_all = result;
+            }
+        });
+
+    }
+
+    function getAllArus() {
+        $.ajax({  
+            url : "{{route('getAllArus')}}",
+            type : "post",
+            dataType : "json",
+            data: {
+                "_token": "{{ csrf_token() }}",
+            },
+            async : false,
+            success : function(result){
+                m_arus = result;
             }
         });
 
@@ -429,12 +448,55 @@ function autofillCon() {
    }
 }
 
+function changeAlongside(etb, side_s, side_p, tbody, allow_selected=true) {
+    const format    = "YYYY-MM-DD";
+    etb_date_str    = moment($('#'+etb).val()).format(format);
+    etb_date        = new Date($('#'+etb).val()).getTime();
+    m_cur_arus = [];
+    var html = "";
+
+    for(var i=0; i<m_arus.length; i++) {
+        if(m_arus[i].tanggal == etb_date_str) {
+            var start_date   = new Date(m_arus[i].start_date).getTime();
+            var end_date     = new Date(m_arus[i].end_date).getTime();
+            var style = '';
+
+    console.log("masuk2");
+
+
+            if(start_date <= etb_date && end_date >= etb_date) {
+                if(allow_selected) {
+                    if(m_dermaga_current == 'D')
+                        $("#"+side_s).prop("checked", true);
+                    else
+                        $("#"+side_p).prop("checked", true);
+                }
+
+                style = "style='background:#bfffbf'";
+            }
+
+            html += "<tr "+style+"><td>"+m_arus[i].start_time+"</td><td>"+m_arus[i].end_time+"</td></tr>";
+            m_cur_arus.push(m_arus[i]);
+        }
+    }
+    $('#'+tbody).html(html);
+}
+
+$('#etBDry').on('change', function () {
+    changeAlongside('etBDry', 'dry_side_s', 'dry_side_p', 'dry_tbody_arus');
+});
+
+$('#etB').on('change', function () {
+    changeAlongside('etB', 'side_s', 'side_p', 'tbody_arus');
+});
+
 $('#unreg_start').on('change', function () {
     var end = parseInt($('#unreg_loa').val())+parseInt($(this).val());
     $('#unreg_end').val(end);
 })
 $('#unreg_etb').on('change', function () {
     changeUnregETD();
+    changeAlongside('unreg_etb', 'unreg_side_s', 'unreg_side_p', 'unreg_tbody_arus');
 })
 $('#unreg_bsh').on('change', function () {
     changeUnregETD();
@@ -454,6 +516,8 @@ $('#unreg_start').on('change', function () {
 })
 $('#edit_etb').on('change', function () {
     changeEditETD();
+    console.log("masuk1");
+    changeAlongside('edit_etb', 'edit_side_s', 'edit_side_p', 'edit_tbody_arus', false);
 })
 $('#edit_bsh').on('change', function () {
     changeEditETD();
@@ -506,16 +570,12 @@ $(document).keypress(function(e) {
 
         if(e.which == 97) {
             runMovement('left');
-            console.log('You pressed left!');
         } else if(e.which == 119) {
             runMovement('up');
-            console.log('You pressed up!');
         } else if(e.which == 100) {
             runMovement('right');
-            console.log('You pressed right!');
         } else if(e.which == 115) {
             runMovement('down');
-            console.log('You pressed down!');
         }
     }
 });
@@ -528,7 +588,7 @@ function prepare(i) {
 }
 
 function runMovement(action) {
-    console.log("action", action);
+
     otop =  $('#box'+m_index_box_keypress).position().top;
     left =  $('#box'+m_index_box_keypress).position().left;
     height =  $('#box'+m_index_box_keypress).height();
@@ -626,6 +686,8 @@ function runMovement(action) {
     vessel[urutan].berth_to_metre_ori   =  vessel[urutan].berth_to_metre/2;
     vessel[urutan].est_berth_ts         =  etb;
     vessel[urutan].est_dep_ts           =  etd;
+
+    reloadShadow();
 }
 
 function changeUnregETD() {
@@ -636,9 +698,10 @@ function changeUnregETD() {
     var load    = unreg_type == 'DRY_BULK' ? 0 : $('#unreg_load').val();
     var bch     = unreg_type == 'DRY_BULK' ? $('#unreg_tgh').val() : $('#unreg_bsh').val();
     var est_time= ((parseInt(disc)+parseInt(load))/parseInt(bch))*60;
+    var penambahan = unreg_type == 'DRY_BULK' ? 6*60 : 2*60;
 
     var newdate =new Date(etB);
-    newdate.setMinutes(newdate.getMinutes() + est_time + 2*60);
+    newdate.setMinutes(newdate.getMinutes() + est_time + penambahan);
     const format90 = "YYYY-MM-DD HH:mm"
     var etBout= moment(etB).format(format90);
     var newdateoutCon = moment(newdate).format(format90);
@@ -652,16 +715,10 @@ function changeEditETD() {
     var load    = m_dermaga_current == 'C' ? 0 : $('#edit_load').val();
     var bch     = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
     var est_time= ((parseInt(disc)+parseInt(load))/parseInt(bch))*60;
-
-    // console.log("unreg_type", unreg_type);
-    console.log("etb", etB);
-    console.log("disc", disc);
-    console.log("load", load);
-    console.log("bch", bch);
-    console.log("est_time", est_time);
+    var penambahan = m_dermaga_current == 'C' ? 6*60 : 2*60;
 
     var newdate = new Date(etB);
-    newdate.setMinutes(newdate.getMinutes() + est_time + 2*60);
+    newdate.setMinutes(newdate.getMinutes() + est_time + penambahan);
     const format90 = "YYYY-MM-DD HH:mm"
     var etBout= moment(etB).format(format90);
     var newdateoutCon = moment(newdate).format(format90);
@@ -752,6 +809,9 @@ function reloadAll() {
 function setVesselBox() {
     for (i = 1; i < vessel.length+1; ++i) {
         setVesselBoxPosition(vessel[i-1], i);
+        if(vessel[i-1].is_prev_day == 1) {
+            $("#box"+i).draggable({ disabled: true }); 
+        }
     }
 }
 
@@ -812,9 +872,8 @@ function getVesselContent(vees, i, craneloopload=null) {
     var content = '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
             '<div class="widget-inner" onclick="prepare('+i+')">'+
                 '<div id="text_detail'+i+'" class="text_detail" style="font-size:'+font_size+'">'+
-
-                        (vees.is_unreg == 0 ? 
-                         '<img id="ims'+i+'" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 50px; height: 50px; position:absolute; right: 25px;"/>':'')+
+                    (vees.is_unreg == 0 && vees.img != null ? 
+                    '<img id="ims'+i+'" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 50px; height: 50px; position:absolute; right: 25px;"/>':'')+
                     '<div class="row">'+
                     '<div class="col-sm-8">'+
                         '<span class="text_title"> MV. '+vees.ves_name+' ('+ vees.ves_id + ')</span><br>'+
@@ -828,9 +887,9 @@ function getVesselContent(vees, i, craneloopload=null) {
                         )+
                         '<span class="ETD_'+i+'">ETD : '+moment(vees.est_dep_ts).format('DD-MM-YY HH:mm')+'</span><br>'+
                         'LOA : '+vees.width_ori+' M<br>'+
-                        (vees.ocean_interisland_fake=='C'?'MOVES EST: '+vees.est_discharge+' MT':'MOVES EST: '+vees.est_load+'/'+vees.est_discharge+' BOX')+'<br>'+
+                        (m_dermaga_current=='C'?'MOVES EST: '+vees.est_discharge+' MT':'MOVES EST: '+vees.est_discharge+'/'+vees.est_load+' BOX')+'<br>'+
                         (vees.dest_port!=null?'POD :'+vees.dest_port+'<br>':'')+
-                        (vees.ocean_interisland_fake != 'C' ? 
+                        (m_dermaga_current != 'C' ? 
                             (vees.load_act != null ? 'LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain + '<br>': '')+
                             (vees.disc_act != null ? 'DISC BOX : '+vees.disc_act+'/'+vees.disc_plan+' => '+vees.disc_remain + '<br>': '')+
                             (vees.time_remain != null ? (parseInt(vees.time_remain)>0? 'Est End Work : '+vees.est_end_date + '<br>':'') : '')+
@@ -841,7 +900,7 @@ function getVesselContent(vees, i, craneloopload=null) {
                     '</div>'+
                     '<div class="col-sm-4" style="margin-top:'+margin_top_crane+'px">'+
                         '<div style="margin-left:-30px">'+
-                        ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle><br>'+
+                        ' <circle><span class="kade_box_'+i+'">'+parseInt(vees.berth_fr_metre_ori)+' On '+parseInt(vees.berth_to_metre_ori)+'</span></circle><br>'+
                         craneloopload+
                         '</div>'+
                     '</div>'+
@@ -849,38 +908,6 @@ function getVesselContent(vees, i, craneloopload=null) {
             '</div>'+
         '</div>';
 
-    // var content = '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
-    //         '<div class="widget-inner">'+
-    //             '<div id="img'+i+'">'+
-    //                 (vees.is_unreg == 0 ? 
-    //                  '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 20%; height: 20%; "/>':'')+
-    //             '</div>'+
-    //             '<div id="text_judul'+i+'" class="text_judul">'+
-    //                 'MV. '+vees.ves_name+' ('+ vees.ves_id + ')'+
-    //             '</div>'+
-    //             '<div id="text_detail'+i+'" class="text_detail">'+
-    //                 '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
-    //                 '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button>'+
-    //                 '<div class="ETA_'+i+'" style="margin:1px;">ETA :'+(vees.est_pilot_ts!=null?vees.est_pilot_ts.substring(0,16):'')+'</div>'+
-    //                 (vees.req_berth_ts!=null?'<div class="RBT_'+i+'" style="margin:1px;">RBT :'+vees.req_berth_ts.substring(0,16)+'</div>':'')+
-    //                 '<div class="ETB_'+i+'" style="margin:1px;">ETB :'+vees.est_berth_ts.substring(0,16)+'</div>'+
-    //                 '<div class="ETD_'+i+'" style="margin:1px;">ETD : '+vees.est_dep_ts.substring(0,16)+'</div>'+
-    //                 '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vees.est_load+'/'+vees.est_discharge+' '+(vees.ocean_interisland_fake=='C'?'MT':'BOX')+'</div>'+
-    //                 '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
-    //                 '<div style="margin:1px;">POD : '+vees.dest_port+'</div>'+
-    //                 (vees.ocean_interisland_fake != 'C' ? 
-    //                     (vees.load_act != null ? '<div style="margin:1px;">LOAD BOX : '+vees.load_act+'/'+vees.load_plan+' => '+vees.load_remain+'</div>' : '')+
-    //                     (vees.disc_act != null ? '<div style="margin:1px;">DISC BOX : '+vees.disc_act+'/'+vees.disc_plan+' => '+vees.disc_remain+'</div>' : '')+
-    //                     (vees.time_remain != null ? (parseInt(vees.time_remain)>0? '<div style="margin:1px;">Est End Work : '+vees.est_end_date+'</div>':'') : '')+
-    //                     (vees.time_remain != null ? (parseInt(vees.time_remain)>0? '<div style="margin:1px;">Est Done : '+vees.time_remain_label+' left</div>':'') : '')
-    //                 : '')+
-    //                 '<div style="margin:1px;">WINDOW : '+(vees.windows==1?'ON_WINDOW':'OFF_WINDOW')+'</div>'+
-    //                 (vees.info!=null?'<div class="INFO_'+(i-1)+'">INFO :'+vees.info+'</div>':'')+
-    //                 ' <circle><span class="kade_box_'+i+'">'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
-    //                 craneloopload+
-    //             '</div>'+
-    //         '</div>'+
-    //     '</div>';
     return content;
 }
 
@@ -1124,7 +1151,10 @@ function toDelete(index) {
     }
 
 function checkField() {
-    if(m_dermaga_current == 'I' || m_dermaga_current == 'D') {
+    var ocean_interisland_fake = $('input[class=kapal]:checked').val();
+
+    if(ocean_interisland_fake == 'C') {
+        console.log("masuk1");
         if($('#vessel2').val() != '' && 
             $('#etB').val() != '' && 
             $('#etD').val() != '' && 
@@ -1135,12 +1165,18 @@ function checkField() {
             $('#end').val() != '') {
             return true
         }
-    } else if (m_dermaga_current == 'C') {
+    } else if (ocean_interisland_fake == 'D') {
+        console.log("masuk2");
+        console.log("vessel", $('#vessel3').val());
+        console.log("etBDry", $('#etBDry').val());
+        console.log("etDDry", $('#etDDry').val());
+        console.log("tghDry", $('#tghDry').val());
+        console.log("startDry", $('#startDry').val());
+        console.log("endDry", $('#endDry').val());
         if($('#vessel3').val() != '' && 
             $('#etBDry').val() != '' && 
             $('#etDDry').val() != '' && 
             $('#tghDry').val() != '' && 
-            $('#bongkarDry').val() != '' && 
             $('#startDry').val() != '' && 
             $('#endDry').val() != '') {
             return true
@@ -1667,7 +1703,7 @@ function unregvessel() {
         berth_to_metre : (parseInt($('#unreg_end').val())*2).toString(),
         berth_fr_metre_ori : (parseInt($('#unreg_start').val())).toString(),
         berth_to_metre_ori : (parseInt($('#unreg_end').val())).toString(),
-        windows         : $('input[class=unreg_window]:checked').val().toString(),
+        windows         : $('input[class=unreg_window]:checked').val(),
         tentatif        : $('input[class=unreg_tentatif]:checked').val(),
         y_awal          : y_awal_etb.toString(),
         y_akhir         : (y_awal_etb+height).toString(),
@@ -1698,8 +1734,11 @@ function getDateByPosition(topp, isDeparture = false) {
 }
 
 function getLeft(left, width) {
+    console.log("left1", left);
     var cuker_len =  m_kade_all.cur[0].param4*2;
     var left = m_dermaga_current=='C'? cuker_len - left - width : left;
+    console.log("left2", left);
+    console.log('width', width);
     return left;
 }
 
@@ -1860,8 +1899,6 @@ function convertToDrag() {
                 var x1 = left;
                 var x2 = left + $(this).width(); 
 
-                console.log()
-
                 for (var i = 0; i < m_blokirkade.length; i++) {
 
                     if(m_blokirkade[i].param2 == m_dermaga_current) {
@@ -1894,15 +1931,13 @@ function convertToDrag() {
 
             vessel[urutan].height               =  parseInt($(this).height()).toString();
             vessel[urutan].berth_fr_metre       =  getLeft($(this).position().left, vessel[urutan].width);
-            vessel[urutan].berth_to_metre       =  cuker_len-$(this).position().left;
+            vessel[urutan].berth_to_metre       =  m_dermaga_current == 'C' ? cuker_len-$(this).position().left : $(this).position().left + parseInt(vessel[urutan].width);
             vessel[urutan].berth_fr_metre_ori   =  vessel[urutan].berth_fr_metre/2;
             vessel[urutan].berth_to_metre_ori   =  vessel[urutan].berth_to_metre/2;
             vessel[urutan].est_berth_ts         =  etb;
             vessel[urutan].est_dep_ts           =  etd;
 
-            console.log(vessel[urutan].berth_fr_metre);
-
-            $('.kade_box_'+(urutan+1)).text(vessel[urutan].berth_fr_metre_ori+' On '+ vessel[urutan].berth_to_metre_ori);
+            $('.kade_box_'+(urutan+1)).text(parseInt(vessel[urutan].berth_fr_metre_ori)+' On '+ parseInt(vessel[urutan].berth_to_metre_ori));
 
             reloadShadow();
 

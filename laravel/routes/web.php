@@ -97,6 +97,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/Arus/update','ArusController@update')->name('arusUpdate');
     Route::post('/Arus/remove','ArusController@remove')->name('arusRemove');
     Route::get('/Arus/json','ArusController@json');
+    Route::post('/Arus/getAll','ArusController@getAll')->name('getAllArus');
     
     Route::get('/print','HomeController@print')->name('print');
     Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');

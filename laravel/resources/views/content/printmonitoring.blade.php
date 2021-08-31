@@ -595,7 +595,7 @@ circle2 {
 
     ?>
    
-   <img src="{{asset('/img/vessel_print_650.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
+   <img src="{{asset('/img/vessel_print_650_new-new.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
     <!-- <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" > -->
     
     <div id="start">
@@ -763,9 +763,9 @@ circle2 {
                     if(vessel[i-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vessel[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vessel[i-1].tentatif == 0) {
                         rand = getColor(2);
+                    } else if(vessel[i-1].tentatif == 0) {
+                        rand = getColor(1);
                     }
 
                     var est_berth = vessel[i-1].est_berth_ts;

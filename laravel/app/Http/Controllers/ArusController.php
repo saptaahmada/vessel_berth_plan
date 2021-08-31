@@ -21,6 +21,11 @@ class ArusController extends Controller
         return DataTables::of(Arus::all())->make(true);
     }
 
+    public function getAll(Request $request)
+    {
+        echo json_encode(DB::table('CBSLAM.CBS_MASTER_ARUS')->whereDate('START_DATE', '>=', date('Y-m-d 00:00:00'))->get());
+    }
+
     public function add(Request $request)
     {
         $start = $request->start_date;

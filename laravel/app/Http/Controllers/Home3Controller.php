@@ -337,6 +337,7 @@ class Home3Controller extends Controller
                                                 $param_vess[$i]['est_pilot_ts'] : $null_date,
                     'REQ_BERTH_TS'          => $param_vess[$i]['req_berth_ts'] != null ? 
                                                 $param_vess[$i]['req_berth_ts'] : $null_date,
+                    'est_berth_ts'          => $param_vess[$i]['est_berth_ts'],
                     'est_dep_ts'            => $param_vess[$i]['est_dep_ts'],
                     'CRANE'                 => $crane_string,
                     'BCH'                   => $param_vess[$i]['bsh'],
