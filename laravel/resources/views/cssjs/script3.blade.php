@@ -482,6 +482,31 @@ function changeAlongside(etb, side_s, side_p, tbody, allow_selected=true) {
     $('#'+tbody).html(html);
 }
 
+$('#btn_sync').on('click', function () {
+    if(confirm('Are you sure to sync data?, before it, you have to make sure to save your plan')) {
+        $.ajax({  
+            url : "{{route('sync_prod')}}",
+            type : "post",
+            data : {
+                "_token": "{{ csrf_token() }}"
+            },
+            dataType : "json",
+            async : true,
+            success : function(result){
+                if(result) {
+                    swal({
+                        title: "Synchronization success",
+                        text: "Synchronization success",
+                        icon: "success",
+                        button: "Oke",
+                        });
+                    location.reload();
+                }
+            }
+        });
+    }
+})
+
 $('#etBDry').on('change', function () {
     changeAlongside('etBDry', 'dry_side_s', 'dry_side_p', 'dry_tbody_arus');
 });
@@ -568,13 +593,13 @@ $(document).keypress(function(e) {
         !$('#modal_note').hasClass('in') && 
         !$('#modal_print').hasClass('in')) {
 
-        if(e.which == 97) {
+        if(e.which == 97 || e.which == 65) {
             runMovement('left');
-        } else if(e.which == 119) {
+        } else if(e.which == 119 || e.which == 87) {
             runMovement('up');
-        } else if(e.which == 100) {
+        } else if(e.which == 100 || e.which == 68) {
             runMovement('right');
-        } else if(e.which == 115) {
+        } else if(e.which == 115 || e.which == 83) {
             runMovement('down');
         }
     }
@@ -673,8 +698,8 @@ function runMovement(action) {
     var math_kiri = Math.round(kiri);
     var math_bto = Math.round(bto);
     $('.kade_box_'+urutan).text(math_kiri+' On '+ math_bto);
-    $('.ETB_'+urutan).text('ETB :'+moment(etb).format('DD-MM-YY HH:mm'));
-    $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD-MM-YY HH:mm'));
+    $('.ETB_'+urutan).text('ETB :'+moment(etb).format('DD/MM/YYYY HH:mm'));
+    $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD/MM/YYYY HH:mm'));
 
     urutan = urutan-1;
 
@@ -879,13 +904,13 @@ function getVesselContent(vees, i, craneloopload=null) {
                         '<span class="text_title"> MV. '+vees.ves_name+' ('+ vees.ves_id + ')</span><br>'+
                         '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
                         '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button><br>'+
-                        (vees.req_berth_ts!=null?'RBT :'+moment(vees.req_berth_ts).format('DD-MM-YY HH:mm')+'<br>':'')+
-                        (vees.est_pilot_ts!=null?'ETA : '+moment(vees.est_pilot_ts).format('DD-MM-YY HH:mm')+'<br>':'')+
+                        (vees.req_berth_ts!=null?'RBT :'+moment(vees.req_berth_ts).format('DD/MM/YYYY HH:mm')+'<br>':'')+
+                        (vees.est_pilot_ts!=null?'ETA : '+moment(vees.est_pilot_ts).format('DD/MM/YYYY HH:mm')+'<br>':'')+
                         (vees.act_berth_ts!=null ? 
-                            'ATB : '+moment(vees.act_berth_ts).format('DD-MM-YY HH:mm') + '<br>' : 
-                            '<span class="ETB_'+i+'">ETB : '+moment(vees.est_berth_ts).format('DD-MM-YY HH:mm')+'</span><br>'
+                            'ATB : '+moment(vees.act_berth_ts).format('DD/MM/YYYY HH:mm') + '<br>' : 
+                            '<span class="ETB_'+i+'">ETB : '+moment(vees.est_berth_ts).format('DD/MM/YYYY HH:mm')+'</span><br>'
                         )+
-                        '<span class="ETD_'+i+'">ETD : '+moment(vees.est_dep_ts).format('DD-MM-YY HH:mm')+'</span><br>'+
+                        '<span class="ETD_'+i+'">ETD : '+moment(vees.est_dep_ts).format('DD/MM/YYYY HH:mm')+'</span><br>'+
                         'LOA : '+vees.width_ori+' M<br>'+
                         (m_dermaga_current=='C'?'MOVES EST: '+vees.est_discharge+' MT':'MOVES EST: '+vees.est_discharge+'/'+vees.est_load+' BOX')+'<br>'+
                         (vees.dest_port!=null?'POD :'+vees.dest_port+'<br>':'')+
@@ -1865,8 +1890,8 @@ function convertToDrag() {
             var urutan = $(this).attr('urutan');
             var math_kiri = Math.round(kiri);
             var math_bto = Math.round(bto);
-            $('.ETB_'+urutan).text('ETB :'+moment(etb).format('DD-MM-YY HH:mm'));
-            $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD-MM-YY HH:mm'));
+            $('.ETB_'+urutan).text('ETB :'+moment(etb).format('DD/MM/YYYY HH:mm'));
+            $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD/MM/YYYY HH:mm'));
 
 
             var isCollision = false;
@@ -1982,7 +2007,7 @@ function convertToDrag() {
             var urutan = $(this).attr('urutan');
             var etd= getDateByPosition($(this).outerHeight()+topp);
 
-            $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD-MM-YY HH:mm'));
+            $('.ETD_'+urutan).text('ETD :'+moment(etd).format('DD/MM/YYYY HH:mm'));
 
             var isCollision = false;
 
@@ -2257,6 +2282,21 @@ function saveBox() {
 
     console.log(m_vessel_all);
 
+    // $.ajax({  
+    //         url : "{{ url('VesselBerthPlan3/save2') }}",
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             param_vess : m_vessel_all,
+    //             param_vess_removed : m_vessel_removed
+    //         },
+    //         type : "post",
+    //         dataType : "json",
+    //         async : false,
+    //         success : function(result){
+    //             console.log(result);
+    //         } 
+    // });
+
     $.ajax({  
             url : "{{ url('VesselBerthPlan3/save') }}",
             data: {
@@ -2395,7 +2435,7 @@ function print() {
     
     
     var date_print = new Date();
-    const format_date_print = "DD-MM-YYYY HH:mm:ss"
+    const format_date_print = "DD/MM/YYYY HH:mm:ss"
 
     var date_printout = moment(date_print).format(format_date_print);
     var param11= document.getElementById("berth_planner").value;
@@ -2403,17 +2443,39 @@ function print() {
     var nomor_doc=makeid(3);
     var no_doc ="BA."+nomor_doc+"/TI.02.03/PTTL-2021";
 
-    // printout.push({date_print:date_printout,bp:param11,pm:param22})
-    var link1 ="{{ URL::to('/Signature/qr')}}?bp="+param11+"&date="+date_printout+"&no_doc="+no_doc+"";
-    var link2 ="{{ URL::to('/Signature/qr')}}?bp="+param22+"&date="+date_printout+"&no_doc="+no_doc+"";
-    console.log("Link1", link1);
+    var param = enc(param11+"|"+param22+"|"+date_printout+"|"+no_doc);
+
+    window.open("{{ URL::to('/print') }}?param="+param, "_blank");
+    // var date_print = new Date();
+    // const format_date_print = "DD/MM/YYYYYY HH:mm:ss"
+
+    // var date_printout = moment(date_print).format(format_date_print);
+    // var param11= document.getElementById("berth_planner").value;
+    // var param22= document.getElementById("planing_manager").value;
+    // var nomor_doc=makeid(3);
+    // var no_doc ="BA."+nomor_doc+"/TI.02.03/PTTL-2021";
+
+    // // printout.push({date_print:date_printout,bp:param11,pm:param22})
+    // var link1 ="{{ URL::to('/Signature/qr')}}?bp="+param11+"&date="+date_printout+"&no_doc="+no_doc+"";
+    // var link2 ="{{ URL::to('/Signature/qr')}}?bp="+param22+"&date="+date_printout+"&no_doc="+no_doc+"";
+    // console.log("Link1", link1);
 
 
     
     
     
 
-      window.open("{{ URL::to('/print') }}?param11="+param11+"&param22="+param22+"&link1="+encodeURIComponent(link1)+"&link2="+encodeURIComponent(link2), "_blank");
+    //   window.open("{{ URL::to('/print') }}?param11="+param11+"&param22="+param22+"&link1="+encodeURIComponent(link1)+"&link2="+encodeURIComponent(link2), "_blank");
+}
+
+function enc(str) {
+    var encoded = "";
+    for (i=0; i<str.length;i++) {
+        var a = str.charCodeAt(i);
+        var b = a ^ 123;    // bitwise XOR with any number, e.g. 123
+        encoded = encoded+String.fromCharCode(b);
+    }
+    return encoded;
 }
 
 

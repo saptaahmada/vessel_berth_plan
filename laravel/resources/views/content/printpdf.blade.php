@@ -330,8 +330,8 @@
 }
 .ims{
     float:right;
-    width: 18%;
-    height: 18%;
+    width: 20%;
+    height: 20%;
     padding-top: 8px;
 
 /* position: absolute; */
@@ -655,11 +655,6 @@ circle2 {
         color: white !important;
         -webkit-print-color-adjust: exact; 
     }
-    .text_judul{
-        color: #ffff !important;
-        text-shadow: 1px 1px #313131;
-        -webkit-print-color-adjust: exact; 
-    }
     .arsirdomes{
         color: #877F7D !important;
         -webkit-print-color-adjust: exact; 
@@ -713,6 +708,7 @@ circle2 {
 
 </head>
 <body>
+    <div id="printkan">
     <?php
         setlocale(LC_TIME, 'id_ID.utf8');
 
@@ -834,10 +830,7 @@ circle2 {
         <div id="planning_manager" style="position: absolute;margin-top: -10px; color:black;text-decoration: underline; font-size:5px; font-family:arial; font-weight:bold; text-transform:uppercase;">PIERRE ROCHEL </div>
     </div>
 
-
-
-</body>
-</html>
+    </div>
 
 <!-- <script type="text/javascript">
     window.onload = function () {
@@ -849,6 +842,9 @@ circle2 {
 
 
 <script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
+
+<!-- <script type="text/javascript" src="{{asset('js/jspdf/dist/jspdf.umd.min.js')}}"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script> -->
 
 <script type="text/javascript">
     $("#2g").css("top","200.5px");
@@ -869,10 +865,6 @@ circle2 {
     $(".box2").css("left", "842px");
 
 
-</script>
-
-<script type="text/javascript">
-
     var newdateprint = new Date();
     var start_date_print = moment(newdateprint).format("dddd, DD/MM/YYYY HH:mm:ss ");
     $("#print_at").append('<div class="print_at"> '+start_date_print+'</div>');
@@ -884,14 +876,16 @@ circle2 {
     $("#endtgl").append('<p class="startendtgl"><?php echo $tgl7 ?></p>');
 
     
-</script>
-
-
-
-<script type="text/javascript">
-
     var vessel=[];
     var vesseldom = [];
+
+    // function PrintPage() {
+    //     window.resizeTo(960, 600);
+    //     document.URL = "";
+    //     window.location.href = "";
+    //     window.print();
+    //     window.close();
+    // }
 
     arusminus();
     Load();  
@@ -964,258 +958,297 @@ circle2 {
             }
         });
 
-        $.ajax({  
-            url : "{{route('getvessel')}}",
-            type : "post",
-            data : {
-                "_token": "{{ csrf_token() }}",
-            },
-            dataType : "json",
-            async : false,
-            success : function(result){
-                vessel = result.Intern;
-                vesseldom = result.Domes;
-                vesselcur = result.Curah;
+        // var url = 'getvessel';
+        var data_url    = <?=json_encode($data)?>;
 
-                for (i = 1; i < vessel.length+1; ++i) {
-                    var crane =  vessel[i-1].crane;
-                    var uncrane=[];
-                    if (crane==null)
-                    uncrane=[];
-                    else
-                    uncrane = crane.split(',');
 
-                    var pot= vessel[i-1].dest_port;
-                    if (pot == null)
-                        pod = "-";
-                    else 
-                        pod = pot;
+        if (typeof data_url.param11 !== 'undefined') {
 
-                    // console.log(uncrane);
-                    var craneloop = "";
-                    for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
-                        craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
-                    };
+            console.log(data_url);
 
-                    $("#intern").append(
-                        '<div id="zone'+i+'" class="zone">'+
-                            '<div id="img'+i+'">'+
-                                '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vessel[i-1].image+'"/>'+
-                            '</div>'+
-                            '<div id="text_judul'+i+'" class="text_judul" val="'+vessel[i-1].ves_id+'">'+
-                                'MV. '+vessel[i-1].ves_name+''+
-                            '</div>'+
-                            '<div id="text_detail'+i+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
-                                '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+pod+'</div>'+
-                                ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
-                                craneloop+
-                            '</div>'+
-                        '</div>');
-                }
-                for (i = 1; i < vessel.length+1; ++i) {
-                    if(vessel[i-1].act_berth_ts != null) {
-                        rand = getColor(0);
-                    } else if(vessel[i-1].tentatif == 1) {
-                        rand = getColor(2);
-                    } else if(vessel[i-1].tentatif == 0) {
-                        rand = getColor(1);
+            $.ajax({  
+                url : (data_url.is_required ? "{{route('print_getvessel')}}" : "{{route('getvessel')}}"),
+                type : "post",
+                data : {
+                    "_token": "{{ csrf_token() }}",
+                    "code" : (data_url.is_required ? data_url.code : '')
+                },
+                dataType : "json",
+                async : false,
+                success : function(result){
+                    vessel = result.Intern;
+                    vesseldom = result.Domes;
+                    vesselcur = result.Curah;
+
+                    for (i = 1; i < vessel.length+1; ++i) {
+                        var crane =  vessel[i-1].crane;
+                        var uncrane=[];
+                        if (crane==null)
+                        uncrane=[];
+                        else
+                        uncrane = crane.split(',');
+
+                        var pot= vessel[i-1].dest_port;
+                        if (pot == null)
+                            pod = "-";
+                        else 
+                            pod = pot;
+
+                        // console.log(uncrane);
+                        var craneloop = "";
+                        for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
+                            craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
+                        };
+
+                        var est_pilot_ts = moment(vessel[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vessel[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vessel[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vessel[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vessel[i-1].info;
+
+                        $("#intern").append(
+                            '<div id="zone'+i+'" class="zone">'+
+                                '<div id="img'+i+'">'+
+                                    '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vessel[i-1].image+'"/>'+
+                                '</div>'+
+                                '<div id="text_judul'+i+'" class="text_judul" val="'+vessel[i-1].ves_id+'">'+
+                                    'MV. '+vessel[i-1].ves_name+' ('+vessel[i-1].ves_id+")"+
+                                '</div>'+
+                                '<div id="text_detail'+i+'" class="text_detail">'+
+                                    (vessel[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (vessel[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>')+
+                                    '<div style="margin:1px;">ETB :'+est_berth_ts+'</div>'+
+                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_discharge+'/'+vessel[i-1].est_load+' BOX</div>'+
+                                    '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
+                                    '<div style="margin:1px;">POD : '+pod+'</div>'+
+                                    (info == null || info == '' ? '' : '<div style="margin:1px;">INFO : '+info+'</div>')+
+                                    '<div style="margin:1px;">WINDOW : '+(vessel[i-1].windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
+                                    craneloop+
+                                '</div>'+
+                            '</div>');
                     }
+                    for (i = 1; i < vessel.length+1; ++i) {
+                        if(vessel[i-1].act_berth_ts != null) {
+                            rand = getColor(0);
+                        } else if(vessel[i-1].tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vessel[i-1].tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                        
+                        var left = vessel[i-1].berth_fr_metre_ori /10 *7.611111111111111;;
+                        var top = vessel[i-1].y_awal/20 * 5.1875;;
+                        var width = vessel[i-1].width_ori/10 *7.611111111111111;;
+                        var height = vessel[i-1].height/20 * 5.1875;;
+                        var along_sidein = vessel[i-1].btoa_side;
                     
-                    var left = vessel[i-1].berth_fr_metre_ori /10 *7.611111111111111;;
-                    var top = vessel[i-1].y_awal/20 * 5.1875;;
-                    var width = vessel[i-1].width_ori/10 *7.611111111111111;;
-                    var height = vessel[i-1].height/20 * 5.1875;;
-                    var along_sidein = vessel[i-1].btoa_side;
+                        if(along_sidein == "P"){
+                            $("#zone"+i).css("left", left+"px");
+                            $("#zone"+i).css("width", width+"px");
+                            $("#zone"+i).css("top", top +"px");
+                            $("#zone"+i).css("height", height+"px");
+                            $("#text_judul"+i).css("padding-left", "20%");
+                            $("#text_detail"+i).css("padding-left", "18%");
+                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        } else if (along_sidein == "S") {
+                            $("#zone"+i).css("left", left+"px");
+                            $("#zone"+i).css("width", width+"px");
+                            $("#zone"+i).css("top", top +"px");
+                            $("#zone"+i).css("height", height+"px");
+                            $("#text_judul"+i).css("padding-left", "5px");
+                            $("#text_detail"+i).css("padding-left", "5px");
+                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                            // $("#text_judul"+i+".text_judul").css("padding-left", "5px");
+                            // $("#text_judul"+i+".text_judul").css("padding-top", "5px");
+                            // $("#text_detail"+i+".text_detail").css("padding-left", "5px");
+                        }
+                    }
+
+                    for (i = 1; i < vesseldom.length+1; ++i) {
+                        var cranedom =  vesseldom[i-1].crane;
+                        var uncranedom=[];
+                        if (cranedom==null)
+                        uncranedom=[];
+                        else
+                        uncranedom = cranedom.split(',');
+
+                        var pot= vesseldom[i-1].dest_port;
+                        if (pot == null)
+                            pod = "-";
+                        else 
+                            pod = pot;
+
+                        // console.log(uncrane);
+                        var craneloopdom = "";
+                        for (var x = 0; x < uncranedom.length; x++) { //Move the for loop from here
+                            craneloopdom += '<circle2><span>'+uncranedom[x]+'</span></circle2>';
+                        };
+
+                        var est_pilot_ts = moment(vesseldom[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vesseldom[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vesseldom[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vesseldom[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vesseldom[i-1].info;
+                        
+                        $("#domes").append(
+                            '<div id="dom'+i+'" class="zone">'+
+                                '<div id="img'+i+'">'+
+                                    '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesseldom[i-1].image+'"/>'+
+                                '</div>'+
+                                '<div id="text_juduldom'+i+'" class="text_judul" val="'+vesseldom[i-1].ves_id+'">'+
+                                    'MV. '+vesseldom[i-1].ves_name+' ('+vesseldom[i-1].ves_id+')'+
+                                '</div>'+
+                                '<div id="text_detaildom'+i+'" class="text_detail">'+
+                                    (vesseldom[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (vesseldom[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>')+
+                                    '<div style="margin:1px;">ETB :'+est_berth_ts+'</div>'+
+                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].est_discharge+'/'+vesseldom[i-1].est_load+' BOX</div>'+
+                                    '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
+                                    '<div style="margin:1px;">POD : '+pod+'</div>'+
+                                    (info == null || info == '' ? '' : '<div style="margin:1px;">INFO : '+info+'</div>')+
+                                    '<div style="margin:1px;">WINDOW : '+(vesseldom[i-1].windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
+                                    craneloopdom+
+                                '</div>'+
+                            '</div>');
+                    }
+                    for (i = 1; i < vesseldom.length+1; ++i) {
+
+                        if(vesseldom[i-1].act_berth_ts != null) {
+                            rand = getColor(0);
+                        } else if(vesseldom[i-1].tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vesseldom[i-1].tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                        
+                        
+                        var leftdom = vesseldom[i-1].berth_fr_metre_ori/10 *7.611111111111111; // done
+                        var topdom = vesseldom[i-1].y_awal/20 * 5.1875; // done
+                        var widthdom = vesseldom[i-1].width_ori/10 *7.611111111111111;
+                        var heightdom = vesseldom[i-1].height/20 * 5.1875;
+                        var along_sidedom = vesseldom[i-1].btoa_side;
+                        
+                        // console.log(height);
+                        if(along_sidedom == "P"){ //kiri star
+                        $("#dom"+i).css("left", leftdom+"px");
+                        $("#dom"+i).css("width", widthdom+"px");
+                        $("#dom"+i).css("top", topdom +"px");
+                        $("#dom"+i).css("height", heightdom+"px");
+                        $("#text_juduldom"+i).css("padding-left", "20%");
+                        $("#text_detaildom"+i).css("padding-left", "18%");
+                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        }else if (along_sidedom == "S") {
+                        $("#dom"+i).css("left", leftdom+"px");
+                        $("#dom"+i).css("width", widthdom+"px");
+                        $("#dom"+i).css("top", topdom +"px");
+                        $("#dom"+i).css("height", heightdom+"px");
+                        $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
+                        $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
+                        
+
+                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                        }
+                    }
+
+                    for (a = 1; a < vesselcur.length+1; ++a) {
+                        var cranecur =   vesselcur[a-1].crane;
+                        var uncranecur=[];
+                        if (cranecur==null)
+                        uncranecur=[];
+                        else
+                        uncranecur = cranecur.split(',');
+
+
+                        var pot= vesselcur[a-1].dest_port;
+                        if (pot == null)
+                            pod = "-";
+                        else 
+                            pod = pot;
+
+                        // console.log(uncrane);
+                        var craneloopcur = "";
+                        for (var x = 0; x < uncranecur.length; x++) { //Move the for loop from here
+                            craneloopcur += '<circle2><span>'+uncranecur[x]+'</span></circle2>';
+                        };
+
+                        var est_pilot_ts = moment(vesselcur[a-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vesselcur[a-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vesselcur[a-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vesselcur[a-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vesselcur[a-1].info;
+
+                        $("#curah").append(
+                            '<div id="cur'+a+'" class="zone">'+
+                                '<div id="img'+a+'">'+
+                                    '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesselcur[a-1].image+'"/>'+
+                                '</div>'+
+                                '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vesselcur[a-1].ves_id+'">'+
+                                    'MV. '+vesselcur[a-1].ves_name+' ('+vesselcur[a-1].ves_id+')'+
+                                '</div>'+
+                                '<div id="text_detailcur'+a+'" class="text_detail">'+
+                                    (vesselcur[a-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (vesselcur[a-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>')+
+                                    '<div style="margin:1px;">ETB :'+est_berth_ts+'</div>'+
+                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].est_discharge+' MT</div>'+
+                                    '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
+                                    '<div style="margin:1px;">POD : '+pod+'</div>'+
+                                    (info == null || info == '' ? '' : '<div style="margin:1px;">INFO : '+info+'</div>')+
+                                    '<div style="margin:1px;">WINDOW : '+(vesselcur[a-1].windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
+                                    craneloopcur+
+                                '</div>'+
+                            '</div>');
+                    }
+                    for (i = 1; i < vesselcur.length+1; ++i) {
+                        if(vesselcur[i-1].act_berth_ts != null) {
+                            rand = getColor(0);
+                        } else if(vesselcur[i-1].tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vesselcur[i-1].tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                       
+                        var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);
+                        var widthcur = (((250 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
+
+                        // console.log("left", leftcur);
+
+                        var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
+                        var heightcur = vesselcur[i-1].height/20 * 5.1875;
+                        var along_sidecur = vesselcur[i-1].btoa_side;
+                        
+                        // console.log(height);
+                        if(along_sidecur == "P"){ //kiri star
+                        $("#cur"+i).css("left", leftcur+"px");
+                        $("#cur"+i).css("width", widthcur+"px");
+                        $("#cur"+i).css("top", topcur +"px");
+                        $("#cur"+i).css("height", heightcur+"px");
+                        $("#text_judulcur"+i).css("padding-left", "20%");
+                        $("#text_detailcur"+i).css("padding-left", "18%");
+                        $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        }else if (along_sidecur == "S") {
+                        $("#cur"+i).css("left", leftcur+"px");
+                        $("#cur"+i).css("width", widthcur+"px");
+                        $("#cur"+i).css("top", topcur +"px");
+                        $("#cur"+i).css("height", heightcur+"px");
+                        $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
+                        $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
+                        
+                        $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                        }
+                    }
+
                 
-                    if(along_sidein == "P"){
-                        $("#zone"+i).css("left", left+"px");
-                        $("#zone"+i).css("width", width+"px");
-                        $("#zone"+i).css("top", top +"px");
-                        $("#zone"+i).css("height", height+"px");
-                        $("#text_judul"+i).css("padding-left", "20%");
-                        $("#text_detail"+i).css("padding-left", "18%");
-                        $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    } else if (along_sidein == "S") {
-                        $("#zone"+i).css("left", left+"px");
-                        $("#zone"+i).css("width", width+"px");
-                        $("#zone"+i).css("top", top +"px");
-                        $("#zone"+i).css("height", height+"px");
-                        $("#text_judul"+i).css("padding-left", "5px");
-                        $("#text_detail"+i).css("padding-left", "5px");
-                        $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                        // $("#text_judul"+i+".text_judul").css("padding-left", "5px");
-                        // $("#text_judul"+i+".text_judul").css("padding-top", "5px");
-                        // $("#text_detail"+i+".text_detail").css("padding-left", "5px");
-                    }
                 }
+            });
 
-                for (i = 1; i < vesseldom.length+1; ++i) {
-                    var cranedom =  vesseldom[i-1].crane;
-                    var uncranedom=[];
-                    if (cranedom==null)
-                    uncranedom=[];
-                    else
-                    uncranedom = cranedom.split(',');
+        }
 
-                    var pot= vesseldom[i-1].dest_port;
-                    if (pot == null)
-                        pod = "-";
-                    else 
-                        pod = pot;
-
-                    // console.log(uncrane);
-                    var craneloopdom = "";
-                    for (var x = 0; x < uncranedom.length; x++) { //Move the for loop from here
-                        craneloopdom += '<circle2><span>'+uncranedom[x]+'</span></circle2>';
-                    };
-
-                    $("#domes").append(
-                        '<div id="dom'+i+'" class="zone">'+
-                            '<div id="img'+i+'">'+
-                                '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vesseldom[i-1].image+'"/>'+
-                            '</div>'+
-                            '<div id="text_juduldom'+i+'" class="text_judul" val="'+vesseldom[i-1].ves_id+'">'+
-                                'MV. '+vesseldom[i-1].ves_name+''+
-                            '</div>'+
-                            '<div id="text_detaildom'+i+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+vesseldom[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETB :'+vesseldom[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETD : '+vesseldom[i-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].est_load+'/'+vesseldom[i-1].est_discharge+' BOX</div>'+
-                                '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+pod+'</div>'+
-                                ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
-                                craneloopdom+
-                            '</div>'+
-                        '</div>');
-                }
-                for (i = 1; i < vesseldom.length+1; ++i) {
-
-                    if(vesseldom[i-1].act_berth_ts != null) {
-                        rand = getColor(0);
-                    } else if(vesseldom[i-1].tentatif == 1) {
-                        rand = getColor(2);
-                    } else if(vesseldom[i-1].tentatif == 0) {
-                        rand = getColor(1);
-                    }
-                    
-                    
-                    var leftdom = vesseldom[i-1].berth_fr_metre_ori/10 *7.611111111111111; // done
-                    var topdom = vesseldom[i-1].y_awal/20 * 5.1875; // done
-                    var widthdom = vesseldom[i-1].width_ori/10 *7.611111111111111;
-                    var heightdom = vesseldom[i-1].height/20 * 5.1875;
-                    var along_sidedom = vesseldom[i-1].btoa_side;
-                    
-                    // console.log(height);
-                    if(along_sidedom == "P"){ //kiri star
-                    $("#dom"+i).css("left", leftdom+"px");
-                    $("#dom"+i).css("width", widthdom+"px");
-                    $("#dom"+i).css("top", topdom +"px");
-                    $("#dom"+i).css("height", heightdom+"px");
-                    $("#text_juduldom"+i).css("padding-left", "20%");
-                    $("#text_detaildom"+i).css("padding-left", "18%");
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidedom == "S") {
-                    $("#dom"+i).css("left", leftdom+"px");
-                    $("#dom"+i).css("width", widthdom+"px");
-                    $("#dom"+i).css("top", topdom +"px");
-                    $("#dom"+i).css("height", heightdom+"px");
-                    $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
-                    $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
-                    
-
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                    }
-                }
-
-                for (a = 1; a < vesselcur.length+1; ++a) {
-                    var cranecur =   vesselcur[a-1].crane;
-                    var uncranecur=[];
-                    if (cranecur==null)
-                    uncranecur=[];
-                    else
-                    uncranecur = cranecur.split(',');
-
-
-                    var pot= vesselcur[a-1].dest_port;
-                    if (pot == null)
-                        pod = "-";
-                    else 
-                        pod = pot;
-
-                    // console.log(uncrane);
-                    var craneloopcur = "";
-                    for (var x = 0; x < uncranecur.length; x++) { //Move the for loop from here
-                        craneloopcur += '<circle2><span>'+uncranecur[x]+'</span></circle2>';
-                    };
-
-                    $("#curah").append(
-                        '<div id="cur'+a+'" class="zone">'+
-                            '<div id="img'+a+'">'+
-                                '<img id="ims'+a+'" class="ims" src = "{{asset('/img/')}}/'+vesselcur[a-1].image+'"/>'+
-                            '</div>'+
-                            '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vesselcur[a-1].ves_id+'">'+
-                                'MV. '+vesselcur[a-1].ves_name+''+
-                            '</div>'+
-                            '<div id="text_detailcur'+a+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+vesselcur[a-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETB :'+vesselcur[a-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETD : '+vesselcur[a-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].est_load+'/'+vesselcur[a-1].est_discharge+' MT</div>'+
-                                '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+pod+'</div>'+
-                                ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
-                                craneloopcur+
-                            '</div>'+
-                        '</div>');
-                }
-                for (i = 1; i < vesselcur.length+1; ++i) {
-                    if(vesselcur[i-1].act_berth_ts != null) {
-                        rand = getColor(0);
-                    } else if(vesselcur[i-1].tentatif == 1) {
-                        rand = getColor(2);
-                    } else if(vesselcur[i-1].tentatif == 0) {
-                        rand = getColor(1);
-                    }
-                   
-                    var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);
-                    var widthcur = (((250 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
-
-                    // console.log("left", leftcur);
-
-                    var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
-                    var heightcur = vesselcur[i-1].height/20 * 5.1875;
-                    var along_sidecur = vesselcur[i-1].btoa_side;
-                    
-                    // console.log(height);
-                    if(along_sidecur == "P"){ //kiri star
-                    $("#cur"+i).css("left", leftcur+"px");
-                    $("#cur"+i).css("width", widthcur+"px");
-                    $("#cur"+i).css("top", topcur +"px");
-                    $("#cur"+i).css("height", heightcur+"px");
-                    $("#text_judulcur"+i).css("padding-left", "20%");
-                    $("#text_detailcur"+i).css("padding-left", "18%");
-                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidecur == "S") {
-                    $("#cur"+i).css("left", leftcur+"px");
-                    $("#cur"+i).css("width", widthcur+"px");
-                    $("#cur"+i).css("top", topcur +"px");
-                    $("#cur"+i).css("height", heightcur+"px");
-                    $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
-                    $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
-                    
-                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                    }
-                }
-
-            
-            }
-        });
     }
     function getColor(param) {
         var green = '#a9d18e';
@@ -1230,23 +1263,20 @@ circle2 {
             return yellow 
     }
     function signature() {
-        
-        // const urlParams = new URLSearchParams(window.location.search);
-        var url_string      = window.location.href;
-        var url = new URL(url_string);
+        var data_url = <?=json_encode($data)?>;
 
-        var berth_planner = url.searchParams.get("param11");
-        var planning_manager =url.searchParams.get('param22');
-        var link1 = url.searchParams.get("link1");
-        var link2 = url.searchParams.get("link2");
+        var berth_planner       = data_url.param11;
+        var planning_manager    = data_url.param22;
+        var date                = data_url.date;
+        var no_doc              = data_url.no_doc;
 
-        var link1up = encodeURIComponent(link1);
-        var link2up = encodeURIComponent(link2);
+        var link1 ="{{ URL::to('/Signature/qr')}}?bp="+berth_planner+"&date="+date+"&no_doc="+no_doc+"";
+        var link2 ="{{ URL::to('/Signature/qr')}}?bp="+planning_manager+"&date="+date+"&no_doc="+no_doc+"";
 
         $('#berth_planner').text(berth_planner);
         $('#planning_manager').text(planning_manager);
-        $('#link1').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link1up+"&choe=UTF-8");
-        $('#link2').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link2up+"&choe=UTF-8");
+        $('#link1').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+encodeURIComponent(link1)+"&choe=UTF-8");
+        $('#link2').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+encodeURIComponent(link2)+"&choe=UTF-8");
     }
     function arusminus(){
 
@@ -1342,11 +1372,5 @@ circle2 {
 </script>
 
 
-
-
-
-
-
-
-
-
+</body>
+</html>

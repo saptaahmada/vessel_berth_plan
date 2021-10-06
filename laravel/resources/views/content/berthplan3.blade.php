@@ -46,6 +46,9 @@
                         <button type="button" class="btn ripple-infinite btn-round btn-3d btn-warning"  data-toggle="modal" data-target="#modal_print" style='margin:10px;'>
                         Print Berthing Plan
                         </button>
+                        <button type="button" class="btn ripple-infinite btn-round btn-3d btn-default" id="btn_sync" style='margin:10px;'>
+                        Sync Now
+                        </button>
                         <div>
                             <input type="checkbox" name="cb_collision" id="cb_collision"> Vessel tumpuk diperbolehkan
                         </div>

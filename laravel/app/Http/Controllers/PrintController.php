@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
+use App\Note;
 
 class PrintController extends Controller
 {
@@ -116,4 +117,109 @@ class PrintController extends Controller
          return response()->json($arr);
 
     }
+
+    
+    public function getvessel(Request $request)
+    {
+        set_time_limit(60000);
+        $vessel = DB::table('CBSLAM.VESSEL_DETAILS_SIM_TMP')->where('PRINT_CODE', $request->code)->get();
+
+        $dataIntern = [];
+        $dataDomes = [];
+        $dataCurah = [];
+
+        foreach ($vessel as $key => $val) {
+            if($val->ocean_interisland_fake == 'I') {
+                $dataIntern[] = $val;
+            } else if($val->ocean_interisland_fake == 'D') {
+                $dataDomes[] = $val;
+            } else if($val->ocean_interisland_fake == 'C') {
+                $dataCurah[] = $val;
+            }
+        }
+
+        $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
+
+        $note_d = [];
+        $note_i = [];
+        $note_c = [];
+
+        foreach ($note as $key => $val) {
+            if($val['ocean_interisland'] == 'D')
+                $note_d[] = $val;
+            else if($val['ocean_interisland'] == 'I')
+                $note_i[] = $val;
+            else if($val['ocean_interisland'] == 'C')
+                $note_c[] = $val;
+        }
+
+        $data = [
+            'Intern' => $dataIntern,
+            'Domes' => $dataDomes,
+            'Curah' => $dataCurah,
+            'note' => $note,
+            'note_d' => $note_d,
+            'note_i' => $note_i,
+            'note_c' => $note_c,
+        ];
+
+        return response()->json($data);
+    }
+
+
+    public function print()
+    {
+        $data = [];
+        
+        if(isset($_GET['param'])) {
+            $encoded = $_GET['param'];   // <-- encoded string from the request
+            $decoded = "";
+            for( $i = 0; $i < strlen($encoded); $i++ ) {
+                $b = ord($encoded[$i]);
+                $a = $b ^ 123;  // <-- must be same number used to encode the character
+                $decoded .= chr($a);
+            }
+            
+            $arrParam = explode('|', str_replace('[', 'P', $decoded));
+
+            if(count($arrParam) == 4) {
+                $data = [
+                    'param11' => $arrParam[0],
+                    'param22' => $arrParam[1],
+                    'date'    => $arrParam[2],
+                    'no_doc'  => $arrParam[3],
+                ];
+            }
+        }
+
+        return view('content.printpdf', compact('data'));
+    }
+
+
+    public function show()
+    {
+        $data = [];
+
+        if(isset($_GET['params'])) {
+
+            $params = safeDecrypt(str_replace(' ', '+', $_GET['params']), 'P3lindoBer1');
+
+            $arrParam = explode('|', $params);
+
+            if(count($arrParam) == 5) {
+                $data = [
+                    'param11' => $arrParam[0],
+                    'param22' => $arrParam[1],
+                    'date'    => $arrParam[2],
+                    'no_doc'  => $arrParam[3],
+                    'code'    => $arrParam[4],
+                    'is_required'=> true
+                ];
+            }
+        }
+
+        return view('content.printpdf', compact('data'));
+    }
+
+
 }

@@ -33,6 +33,25 @@
   <script src="{{asset('asset/js/jquery.ui.min.js')}}"></script>
 
   <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+
+    <!-- start: Javascript -->
+    
+    <script src="{{asset('asset/js/bootstrap.min.js')}}"></script>
+   
+    
+    <!-- plugins -->
+    <script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/jquery.datatables.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/datatables.bootstrap.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/fullcalendar.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/jquery.nicescroll.js')}}"></script>
+
+  
+
+    <!-- custom -->
+     <script src="{{asset('asset/js/main.js')}}"></script>
+
   <style type="text/css">
   .preloader {
     position: fixed;
@@ -156,22 +175,6 @@
       </button>
        <!-- end: Mobile -->
 
-    <!-- start: Javascript -->
-    
-    <script src="{{asset('asset/js/bootstrap.min.js')}}"></script>
-   
-    
-    <!-- plugins -->
-    <script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/jquery.datatables.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/datatables.bootstrap.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/fullcalendar.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/jquery.nicescroll.js')}}"></script>
-
-  
-
-    <!-- custom -->
-     <script src="{{asset('asset/js/main.js')}}"></script>
 
      <script>
     $(document).ready(function(){

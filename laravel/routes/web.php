@@ -55,11 +55,10 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     // Route::get('/VesselBerthPlan/getsignature', 'HomeController@getsignature')->name('getsignature');
     
     
-    Route::get('/VesselBerthPlan_Logo','HomeController@logo')->name('logo');
-    Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','HomeController@updatelogo')->name('updatelogo');
+    // Route::get('/VesselBerthPlan_Logo','HomeController@logo')->name('logo');
+    // Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','HomeController@updatelogo')->name('updatelogo');
 
     Route::get('/VesselBerthPlan3', 'Home3Controller@parkingbackup')->name('vessel'); 
-    Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
     Route::post('/VesselBerthPlan3/addvessel', 'Home3Controller@addvessel')->name('addvessel');
     Route::post('/VesselBerthPlan3/save', 'Home3Controller@Save')->name('save');
     Route::get('/VesselBerthPlan3/getdermaga', 'Home3Controller@getdermaga')->name('getdermaga');
@@ -69,8 +68,11 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan3/getsignature', 'Home3Controller@getsignature')->name('getsignature');
     Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     
+    Route::post('/VesselBerthPlan3/save2', 'Home3Controller@save2')->name('save2');
+    Route::post('/VesselBerthPlan3/sync_prod', 'Home3Controller@sync_prod')->name('sync_prod');
     Route::get('/VesselBerthPlan_Logo','Home3Controller@logo')->name('logo3');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
+    Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
     
     Route::get('/Dermaga','DermagaController@index')->name('dermaga');
     Route::post('/Dermaga/add','DermagaController@add')->name('dermagaAdd');
@@ -99,11 +101,6 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/Arus/json','ArusController@json');
     Route::post('/Arus/getAll','ArusController@getAll')->name('getAllArus');
     
-    Route::get('/print','HomeController@print')->name('print');
-    Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');
-    Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
-    Route::post('/print/arus','PrintController@arusminus')->name('arusminus');
-    Route::post('/print/grup','PrintController@grup')->name('grup');
 
 
     Route::get('/Monitoring', function () {
@@ -120,7 +117,13 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     
 });
 
-
+Route::get('/print','PrintController@print')->name('print');
+Route::get('/print/show','PrintController@show')->name('print_show');
+Route::get('/print/blockkade','PrintController@blokirkade')->name('blokirkade');
+Route::post('/print/arus','PrintController@arusminus')->name('arusminus');
+Route::post('/print/grup','PrintController@grup')->name('grup');
+Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
+Route::post('/print/getvessel', 'PrintController@getvessel')->name('print_getvessel');
 
 
 Route::get('/Signature/qr', function () {

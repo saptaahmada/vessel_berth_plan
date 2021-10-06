@@ -273,13 +273,6 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-    public function print()
-    {  
-
-
-        return view('content.printpdf');
-    }
-
     public function getcrane()
     {
         $craneCon = DB::table('CBSLAM.CBS_CHE_MASTER')

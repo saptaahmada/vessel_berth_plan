@@ -12,7 +12,7 @@ use App\Note;
 
 class Home3Controller extends Controller
 {
-    
+
     public function index()
     {
         return view('content.printplan');
@@ -280,6 +280,87 @@ class Home3Controller extends Controller
     //     }
     // }
 
+    public function save2(Request $request)
+    {
+        $arr_vess = $request->param_vess;
+        $arr_removed = $request->param_vess_removed;
+
+        // echo json_encode($arr_vess['Intern']);
+        // die();
+
+        // $act_berth_ts = "";
+        // $act_dep_ts
+        // $act_dep_ts_ori
+        // $agent
+        // $agent_mobile
+        // $agent_name
+        // $bch
+        // $berth_fr_metre
+        // $berth_fr_metre_ori
+        // $berth_to_metre
+        // $berth_to_metre_ori
+        // $box_act
+        // $box_plan
+        // $box_remain
+        // $bsh
+        // $btoa_side
+        // $crane
+        // $dest_port
+        // $disc_act
+        // $disc_plan
+        // $disc_remain
+        // $doco_cutoff_ts
+        // $est_anchorage_ts
+        // $est_berth_ts
+        // $est_dep_ts
+        // $est_disch
+        // $est_discharge
+        // $est_end_date
+        // $est_end_work_ts
+        // $est_load
+        // $est_pilot_ts
+        // $est_start_work_ts
+        // $height
+        // $height_est
+        // $image
+        // $info
+        // $in_voyage
+        // $is_inserted
+        // $is_prev_day
+        // $is_simulation
+        // $is_unreg
+        // $load_act
+        // $load_plan
+        // $load_remain
+        // $next_port
+        // $ocean_interisland
+        // $ocean_interisland_fake
+        // $out_voyage
+        // $real_disch
+        // $real_load
+        // $recv_cargo_cutoff_ts
+        // $recv_ctr_cutoff_ts
+        // $req_berth_ts
+        // $tentatif
+        // $time_remain
+        // $time_remain_label
+        // $ves_code
+        // $ves_id
+        // $ves_id_old
+        // $ves_name
+        // $ves_service
+        // $ves_type
+        // $width
+        // $width_ori
+        // $windows
+        // $y_akhir
+        // $y_akhir_est
+        // $y_awal
+
+        echo "'".json_encode(['vess' => $arr_vess, 'removed' => $arr_removed])."'";
+        // return response()->json(["sukses"=> true ]);
+
+    }
     
     public function save(Request $request)
     {
@@ -594,7 +675,7 @@ class Home3Controller extends Controller
     {  
        
         if($request->hasfile('file')){
-            $request->file('file')->move('img/',$request->file('file')->getClientOriginalName());
+            $request->file('file')->move('public/img/customer/',$request->file('file')->getClientOriginalName());
             $img_name = $request->file('file')->getClientOriginalName();
             }
            
@@ -605,13 +686,6 @@ class Home3Controller extends Controller
 
           
         return redirect()->back();
-    }
-
-    public function print()
-    {  
-
-
-        return view('content.printpdf');
     }
 
     public function getcrane()
@@ -654,5 +728,15 @@ class Home3Controller extends Controller
         ];
 
         return response()->json($getsign);
+    }
+
+    public function sync_prod(Request $request)
+    {
+        // $result = DB::select(DB::raw("begin CBSLAM.VIERA_VES_DET_SIM_SYNC; end;"));
+        $procedureName = 'CBSLAM.VIERA_VES_DET_SIM_SYNC';
+
+        $result = DB::executeProcedure($procedureName);
+
+        return response()->json($result);
     }
 }
