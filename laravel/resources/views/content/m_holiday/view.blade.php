@@ -8,13 +8,18 @@ hr{
 }
 </style>
 
+<link rel="stylesheet" type="text/css" href="{{asset('bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
+
+
     <div id="content">
             <div class="panel box-shadow-none content-header">
                 <div class="panel-body">
                     <div class="col-md-12">
-                    <h3 class="animated fadeInLeft" style="color:#2e80ce;"><b>Arus</b></h3>
+                    <h3 class="animated fadeInLeft" style="color:#2e80ce;"><b>Master Holiday</b></h3>
                     <p class="animated fadeInDown">
-                     Data Master <span class="fa-angle-right fa"></span> Data Arus
+                     Data Master <span class="fa-angle-right fa"></span> Master Holiday
                     </p>
                     </div>
                 </div>
@@ -23,7 +28,7 @@ hr{
                 <div class="col-md-12">
                   <div class="panel">
                     <div class="panel-heading">
-                      <h3>Data Arus <button class="btn ripple-btn-round btn-3d btn-success right" id="btn_add"  data-toggle="modal" data-target="#modal_add" >
+                      <h3>Master Holiday <button class="btn ripple-btn-round btn-3d btn-success right" id="btn_add"  data-toggle="modal" data-target="#modal_add" >
                         <i class='fa fa-plus '></i> Tambah
                       </button></h3>
 
@@ -53,7 +58,7 @@ hr{
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Arus</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Master Holiday</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -68,14 +73,26 @@ hr{
         <div class="container-fluid">
           <div class ="row">
             <div class="col-md-9">
-                  <div class="form-group">
-                    <label class="col-form-label">Start Date </label>
-                    <input type="datetime-local" class="form-control start"  name="param4">
+
+              <div class="form-group">
+                  <label class="col-form-label">Start Date : </label>
+                  <div class="input-group date form_datetime bs-datetime">
+                      <input type="text" id="start_date" size="16" class="form-control start">
+                      <span class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                      </span>
                   </div>
-                  <div class="form-group">
-                    <label class="col-form-label">End Date </label>
-                    <input type="datetime-local" class="form-control end"  name="param5">
+              </div>
+
+              <div class="form-group">
+                  <label class="col-form-label">End Date : </label>
+                  <div class="input-group date form_datetime bs-datetime">
+                      <input type="text" id="end_date" size="16" class="form-control end">
+                      <span class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                      </span>
                   </div>
+              </div>
               
             </div>
           
@@ -101,7 +118,18 @@ hr{
 <script type="text/javascript">
  $(document).ready(function(){
     refreshTable();
+    initialDatetime();
   });
+
+function initialDatetime() {
+  $(".form_datetime").datetimepicker({
+    autoclose: !0,
+    isRTL: false,
+    format: "dd/mm/yyyy hh:ii",
+    fontAwesome: !0,
+    pickerPosition: false ? "bottom-right" : "bottom-left"
+  });
+}
 
 function refreshTable(){
   $('#table').DataTable({
@@ -114,13 +142,13 @@ function refreshTable(){
       "responsive":false,
       "orderCellsTop": true,
       "fixedHeader": true,
-      ajax: "{{url('Arus/json')}}",
+      ajax: "{{url('MHoliday/json')}}",
       columns: [
-        { data: 'arus_id', name: 'arus_id' },
+        { data: 'id', name: 'id' },
         { data: 'start_date', name: 'start_date' },
         { data: 'end_date', name: 'end_date' },
         { 
-          "data": "arus_id",
+          "data": "id",
           "render": function ( data, type, row ) {
               return "<button class='btn ripple-btn-round btn-3d btn-danger' onclick=\"remove('"+data+"')\">"+
                         "<i class='fa fa-trash'></i>"+
@@ -138,14 +166,25 @@ $('#input_add').on('click', function() {
               '<div class="container-fluid">'+
                 '<div class ="row">'+
                   '<div class="col-md-9">'+
-                        '<div class="form-group">'+
-                          '<label class="col-form-label">Start Date </label>'+
-                          '<input type="datetime-local" class="form-control start"  name="param4">'+
+                    '<div class="form-group">'+
+                        '<label class="col-form-label">Start Date : </label>'+
+                        '<div class="input-group date form_datetime bs-datetime">'+
+                            '<input type="text" id="start_date" size="16" class="form-control start">'+
+                            '<span class="input-group-addon">'+
+                                '<i class="fa fa-calendar"></i>'+
+                            '</span>'+
                         '</div>'+
-                        '<div class="form-group">'+
-                          '<label class="col-form-label">End Date </label>'+
-                          '<input type="datetime-local" class="form-control end"  name="param5">'+
+                    '</div>'+
+
+                    '<div class="form-group">'+
+                        '<label class="col-form-label">End Date : </label>'+
+                        '<div class="input-group date form_datetime bs-datetime">'+
+                            '<input type="text" id="end_date" size="16" class="form-control end">'+
+                            '<span class="input-group-addon">'+
+                                '<i class="fa fa-calendar"></i>'+
+                            '</span>'+
                         '</div>'+
+                    '</div>'+
                   '</div>'+
                   '<div class="col-md-3 ml-auto" >'+
                     '<div style="margin-top:70px"><a class="remove_block" onclick="removediv('+numb+')" href="#">Remove</a></div>'+
@@ -155,8 +194,8 @@ $('#input_add').on('click', function() {
             '</div>';
 
   $('#form_add').append(html);
+  initialDatetime();
   numb++;
-
    
 });
 
@@ -176,15 +215,15 @@ function clear() {
 
 $('#submit_add').on('click', function() {
   var start= $.map($('.start'), function (el) { 
-    return moment(el.value).format("YYYY-MM-DD HH:mm:ss");
+    return el.value;
   });
 
   var end = $.map($('.end'), function (i) { 
-    return moment(i.value).format("YYYY-MM-DD HH:mm:ss"); 
+    return i.value; 
   });
 
   $.ajax({  
-    url :"{{ url('Arus/add') }}" ,
+    url :"{{ url('MHoliday/add') }}" ,
     data: {
       "_token": "{{ csrf_token() }}",
       start_date:start,
@@ -209,13 +248,13 @@ $('#submit_add').on('click', function() {
 
 
 
-function remove(arus_id) {
+function remove(id) {
     if(confirm('apakah anda yakin ingin menghapus data ini?')) {
       $.ajax({  
-        url : "{{ url('Arus/remove') }}",
+        url : "{{ url('MHoliday/remove') }}",
         data: {
           "_token": "{{ csrf_token() }}",
-          arus_id:arus_id,
+          id:id,
         },
         type : "post",
         dataType : "json",

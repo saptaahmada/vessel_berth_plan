@@ -360,6 +360,13 @@
     left :0px; /* ini juga ternyata */
     /* box-shadow: px 10px 5px grey; */
 } 
+.note {
+    padding: 2px;
+    text-align: left;
+    transition: 0.5s;
+    position:absolute;
+    background: rgb(255, 150, 143);
+} 
 .dom {
     /* padding: 90px 0; */
     margin: 0 auto;
@@ -878,6 +885,7 @@ circle2 {
     
     var vessel=[];
     var vesseldom = [];
+    var m_kade_all = [];
 
     // function PrintPage() {
     //     window.resizeTo(960, 600);
@@ -889,7 +897,8 @@ circle2 {
 
     arusminus();
     Load();  
-    signature();    
+    signature();
+    getKadeAll(); 
     function Load() {
         $.ajax({
             url : "{{route('blokirkade')}}",
@@ -980,6 +989,17 @@ circle2 {
                     vesseldom = result.Domes;
                     vesselcur = result.Curah;
 
+                    note_d = result.note_d;
+                    note_i = result.note_i;
+                    note_c = result.note_c;
+
+                    var min_height = 180;
+
+                    // var left_right_int = m_kade_all.int[0].param5;
+                    // var left_right_dom = m_kade_all.dom[0].param5;
+                    // var left_right_cur = m_kade_all.cur[0].param5;
+
+
                     for (i = 1; i < vessel.length+1; ++i) {
                         var crane =  vessel[i-1].crane;
                         var uncrane=[];
@@ -1000,11 +1020,17 @@ circle2 {
                             craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
                         };
 
+                        var act_berth_ts = null;
+
+                        if(vessel[i-1].act_berth_ts != null)
+                            act_berth_ts = moment(vessel[i-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
+
                         var est_pilot_ts = moment(vessel[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
                         var req_berth_ts = moment(vessel[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
                         var est_berth_ts = moment(vessel[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
                         var est_dep_ts = moment(vessel[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vessel[i-1].info;
+                        var info = vessel[i-1].info != null ? vessel[i-1].info.replace("\n", "<br>") : '';
+                        var height = parseInt(vessel[i-1].height);
 
                         $("#intern").append(
                             '<div id="zone'+i+'" class="zone">'+
@@ -1016,13 +1042,17 @@ circle2 {
                                 '</div>'+
                                 '<div id="text_detail'+i+'" class="text_detail">'+
                                     (vessel[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
-                                    (vessel[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>')+
-                                    '<div style="margin:1px;">ETB :'+est_berth_ts+'</div>'+
+                                    (height >= min_height ?
+                                    (vessel[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (act_berth_ts != null ? 
+                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                    )+
                                     '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
                                     '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_discharge+'/'+vessel[i-1].est_load+' BOX</div>'+
                                     '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
-                                    '<div style="margin:1px;">POD : '+pod+'</div>'+
-                                    (info == null || info == '' ? '' : '<div style="margin:1px;">INFO : '+info+'</div>')+
+                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
                                     '<div style="margin:1px;">WINDOW : '+(vessel[i-1].windows=='1'?'ON':'OFF')+'</div>'+
                                     ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
                                     craneloop+
@@ -1043,7 +1073,7 @@ circle2 {
                         var width = vessel[i-1].width_ori/10 *7.611111111111111;;
                         var height = vessel[i-1].height/20 * 5.1875;;
                         var along_sidein = vessel[i-1].btoa_side;
-                    
+
                         if(along_sidein == "P"){
                             $("#zone"+i).css("left", left+"px");
                             $("#zone"+i).css("width", width+"px");
@@ -1086,11 +1116,17 @@ circle2 {
                             craneloopdom += '<circle2><span>'+uncranedom[x]+'</span></circle2>';
                         };
 
+                        var act_berth_ts = null;
+
+                        if(vesseldom[i-1].act_berth_ts != null)
+                            act_berth_ts = moment(vesseldom[i-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
+
                         var est_pilot_ts = moment(vesseldom[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
                         var req_berth_ts = moment(vesseldom[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
                         var est_berth_ts = moment(vesseldom[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
                         var est_dep_ts = moment(vesseldom[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vesseldom[i-1].info;
+                        var info = vesseldom[i-1].info != null ? vesseldom[i-1].info.replace("\n", "<br>") : '';
+                        var height = parseInt(vesseldom[i-1].height);
                         
                         $("#domes").append(
                             '<div id="dom'+i+'" class="zone">'+
@@ -1102,13 +1138,17 @@ circle2 {
                                 '</div>'+
                                 '<div id="text_detaildom'+i+'" class="text_detail">'+
                                     (vesseldom[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
-                                    (vesseldom[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>')+
-                                    '<div style="margin:1px;">ETB :'+est_berth_ts+'</div>'+
+                                    (height >= min_height ?
+                                    (vesseldom[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (act_berth_ts != null ? 
+                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                    )+
                                     '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
                                     '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].est_discharge+'/'+vesseldom[i-1].est_load+' BOX</div>'+
                                     '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
-                                    '<div style="margin:1px;">POD : '+pod+'</div>'+
-                                    (info == null || info == '' ? '' : '<div style="margin:1px;">INFO : '+info+'</div>')+
+                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
                                     '<div style="margin:1px;">WINDOW : '+(vesseldom[i-1].windows=='1'?'ON':'OFF')+'</div>'+
                                     ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
                                     craneloopdom+
@@ -1133,7 +1173,7 @@ circle2 {
                         var along_sidedom = vesseldom[i-1].btoa_side;
                         
                         // console.log(height);
-                        if(along_sidedom == "P"){ //kiri star
+                        if(along_sidedom == "S"){ //kiri star
                         $("#dom"+i).css("left", leftdom+"px");
                         $("#dom"+i).css("width", widthdom+"px");
                         $("#dom"+i).css("top", topdom +"px");
@@ -1175,11 +1215,17 @@ circle2 {
                             craneloopcur += '<circle2><span>'+uncranecur[x]+'</span></circle2>';
                         };
 
+                        var act_berth_ts = null;
+
+                        if(vesselcur[a-1].act_berth_ts != null)
+                            act_berth_ts = moment(vesselcur[a-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
+                        
                         var est_pilot_ts = moment(vesselcur[a-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
                         var req_berth_ts = moment(vesselcur[a-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
                         var est_berth_ts = moment(vesselcur[a-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
                         var est_dep_ts = moment(vesselcur[a-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vesselcur[a-1].info;
+                        var info = vesselcur[a-1].info != null ? vesselcur[a-1].info.replace("\n", "<br>") : '';
+                        var height = parseInt(vesselcur[a-1].height);
 
                         $("#curah").append(
                             '<div id="cur'+a+'" class="zone">'+
@@ -1191,13 +1237,17 @@ circle2 {
                                 '</div>'+
                                 '<div id="text_detailcur'+a+'" class="text_detail">'+
                                     (vesselcur[a-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
-                                    (vesselcur[a-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>')+
-                                    '<div style="margin:1px;">ETB :'+est_berth_ts+'</div>'+
+                                    (height >= min_height ?
+                                    (vesselcur[a-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (act_berth_ts != null ? 
+                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                    )+
                                     '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
                                     '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].est_discharge+' MT</div>'+
                                     '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
-                                    '<div style="margin:1px;">POD : '+pod+'</div>'+
-                                    (info == null || info == '' ? '' : '<div style="margin:1px;">INFO : '+info+'</div>')+
+                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
                                     '<div style="margin:1px;">WINDOW : '+(vesselcur[a-1].windows=='1'?'ON':'OFF')+'</div>'+
                                     ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
                                     craneloopcur+
@@ -1243,6 +1293,62 @@ circle2 {
                         }
                     }
 
+
+
+
+
+
+                    for (i = 0; i < note_i.length; ++i) {
+                        $("#intern").append(
+                            '<div id="note_i'+i+'" class="note">'+
+                                '<div style="font-size:5px">'+note_i[i].text+'</div>'+
+                            '</div>');
+
+                        var left = (note_i[i].x/2) /10 *7.611111111111111;
+                        var top = note_i[i].y/20 * 5.1875;
+                        var width = (note_i[i].width/2)/10 *7.611111111111111;
+                        var height = note_i[i].height/20 * 5.1875;
+
+                        $("#note_i"+i).css("left", left+"px");
+                        $("#note_i"+i).css("width", width+"px");
+                        $("#note_i"+i).css("top", top +"px");
+                        $("#note_i"+i).css("height", height+"px");
+                    }
+
+                    for (i = 0; i < note_d.length; ++i) {
+                        $("#domes").append(
+                            '<div id="note_d'+i+'" class="note">'+
+                                '<div style="font-size:5px">'+note_d[i].text+'</div>'+
+                            '</div>');
+
+                        var left = (note_d[i].x/2) /10 *7.611111111111111;
+                        var top = note_d[i].y/20 * 5.1875;
+                        var width = (note_d[i].width/2)/10 *7.611111111111111;
+                        var height = note_d[i].height/20 * 5.1875;
+
+                        $("#note_d"+i).css("left", left+"px");
+                        $("#note_d"+i).css("width", width+"px");
+                        $("#note_d"+i).css("top", top +"px");
+                        $("#note_d"+i).css("height", height+"px");
+                    }
+
+                    for (i = 0; i < note_c.length; ++i) {
+                        $("#curah").append(
+                            '<div id="note_c'+i+'" class="note">'+
+                                '<div style="font-size:5px">'+note_c[i].text+'</div>'+
+                            '</div>');
+
+                        var left = (note_c[i].x/2) /10 *7.611111111111111;
+                        var top = note_c[i].y/20 * 5.1875;
+                        var width = (note_c[i].width/2)/10 *7.611111111111111;
+                        var height = note_c[i].height/20 * 5.1875;
+
+                        $("#note_c"+i).css("left", left+"px");
+                        $("#note_c"+i).css("width", width+"px");
+                        $("#note_c"+i).css("top", top +"px");
+                        $("#note_c"+i).css("height", height+"px");
+                    }
+
                 
                 }
             });
@@ -1250,6 +1356,21 @@ circle2 {
         }
 
     }
+
+    function getKadeAll() {
+        
+        $.ajax({  
+            url : "{{route('getkade')}}",
+            type : "get",
+            dataType : "json",
+            async : true,
+            success : function(result){
+                m_kade_all = result;
+            }
+        });
+
+    }
+
     function getColor(param) {
         var green = '#a9d18e';
         var blue = '#9dc3e6';

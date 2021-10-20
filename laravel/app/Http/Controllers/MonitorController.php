@@ -8,15 +8,22 @@ use App\Blokirkade;
 
 class MonitorController extends Controller
 {
+    public function index($is_act)
+    {
+        $is_act = $is_act;
+        return view('content.monitoring', compact('is_act'));
+    }
+    
     public function proses(Request $request)
     {
 
         $from = $request->date_start;
         $to = $request->date_end;
+        $is_act = $request->is_act;
 
-        $dataIntern= DB::select($this->getSql('I', $from, $to));
-        $dataDomes= DB::select($this->getSql('D', $from, $to));
-        $dataCurah= DB::select($this->getSql('C', $from, $to));
+        $dataIntern= DB::select($this->getSql('I', $from, $to, $is_act));
+        $dataDomes= DB::select($this->getSql('D', $from, $to, $is_act));
+        $dataCurah= DB::select($this->getSql('C', $from, $to, $is_act));
         $data = [
             'Intern' => $dataIntern,
             'Domes' => $dataDomes,
@@ -44,8 +51,13 @@ class MonitorController extends Controller
         return response()->json($data);
     }
 
-    private function getSql($ocean_interisland_fake, $from, $to)
+    private function getSql($ocean_interisland_fake, $from, $to, $is_act=0)
     {
+      $sql_is_act = "";
+      if($is_act == 1) {
+        $sql_is_act = " AND TO_CHAR(A.ACT_BERTH_TS, 'YYYY')<>'1900'";
+      }
+
         return "SELECT A.VES_ID,
           VES_ID_OLD,
           A.VES_NAME,
@@ -426,6 +438,7 @@ class MonitorController extends Controller
                             AND TRIM (A.VES_ID) = TRIM (E.VES_ID(+))
                             AND TRIM (A.VES_ID) = TRIM (F.VES_ID(+))
                             AND TRIM (A.VES_ID) = TRIM (G.VES_ID(+))
+                            {$sql_is_act}
                    ORDER BY EST_BERTH_TS DESC) A) A
                    WHERE ocean_interisland_fake='{$ocean_interisland_fake}'
                    and EST_BERTH_TS BETWEEN TO_DATE('{$from}', 'YYYY-MM-DD') AND TO_DATE('{$to} 23:59:59', 'YYYY-MM-DD HH24:MI:SS')";

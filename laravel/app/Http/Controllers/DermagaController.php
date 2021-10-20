@@ -73,15 +73,15 @@ class DermagaController extends Controller
         $kadedom = DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->where ('PARAM2', 'D')
-        ->get('PARAM4');
+        ->get();
         $kadeint = DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->where ('PARAM2', 'I')
-        ->get('PARAM4');
+        ->get();
         $kadecur = DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->where ('PARAM2', 'C')
-        ->get('PARAM4');
+        ->get();
         
         $kade = [
                     'all' => $all,

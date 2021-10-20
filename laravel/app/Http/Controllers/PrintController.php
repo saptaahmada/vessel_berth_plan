@@ -138,18 +138,19 @@ class PrintController extends Controller
             }
         }
 
-        $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
+        $note = DB::table('CBSLAM.VIERV_NOTE')->get();
+        // $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
 
         $note_d = [];
         $note_i = [];
         $note_c = [];
 
         foreach ($note as $key => $val) {
-            if($val['ocean_interisland'] == 'D')
+            if($val->ocean_interisland == 'D')
                 $note_d[] = $val;
-            else if($val['ocean_interisland'] == 'I')
+            else if($val->ocean_interisland == 'I')
                 $note_i[] = $val;
-            else if($val['ocean_interisland'] == 'C')
+            else if($val->ocean_interisland == 'C')
                 $note_c[] = $val;
         }
 

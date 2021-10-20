@@ -25,6 +25,7 @@
 	<!-- end: Css -->
 
 	<link rel="shortcut icon" href="{{asset('/img/icon.png')}}">
+  <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/select2.min.css')}}"/>
 
 
   <link href="{{asset('asset/css/resizing.css')}}" rel="stylesheet">
@@ -34,23 +35,6 @@
 
   <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 
-
-    <!-- start: Javascript -->
-    
-    <script src="{{asset('asset/js/bootstrap.min.js')}}"></script>
-   
-    
-    <!-- plugins -->
-    <script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/jquery.datatables.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/datatables.bootstrap.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/fullcalendar.min.js')}}"></script>
-    <script src="{{asset('asset/js/plugins/jquery.nicescroll.js')}}"></script>
-
-  
-
-    <!-- custom -->
-     <script src="{{asset('asset/js/main.js')}}"></script>
 
   <style type="text/css">
   .preloader {
@@ -175,6 +159,25 @@
       </button>
        <!-- end: Mobile -->
 
+    <!-- start: Javascript -->
+    
+    <script src="{{asset('asset/js/bootstrap.min.js')}}"></script>
+   
+    
+    <!-- plugins -->
+    <script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/jquery.datatables.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/datatables.bootstrap.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/fullcalendar.min.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/jquery.nicescroll.js')}}"></script>
+
+  
+
+    <!-- custom -->
+     <script src="{{asset('asset/js/main.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/select2.full.min.js')}}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{asset('js/jquery.blockUI.js')}}"></script>
 
      <script>
     $(document).ready(function(){

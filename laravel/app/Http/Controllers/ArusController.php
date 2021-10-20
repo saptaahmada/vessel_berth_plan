@@ -23,7 +23,7 @@ class ArusController extends Controller
 
     public function getAll(Request $request)
     {
-        echo json_encode(DB::table('CBSLAM.CBS_MASTER_ARUS')->whereDate('START_DATE', '>=', date('Y-m-d 00:00:00'))->get());
+        echo json_encode(DB::table('CBSLAM.VIERV_ARUS')->whereDate('START_DATE', '>=', date('Y-m-d 00:00:00'))->get());
     }
 
     public function add(Request $request)
@@ -44,7 +44,7 @@ class ArusController extends Controller
         }
         return [
             'success'	=> $result,
-            'message'	=> ($result?'Success':'Gagal')
+            'message'	=> ($result?'Success':'Failed')
         ];
 
         
@@ -59,7 +59,7 @@ class ArusController extends Controller
         ->delete();
         return [
         	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+        	'message'	=> ($result?'Success':'Failed')
         ];
     }
 

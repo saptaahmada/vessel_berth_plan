@@ -98,6 +98,12 @@ transform: translate(0px, 0px);
 position: absolute !important;
 
 }
+.box_arus{
+position: absolute !important;
+}
+.box_holiday{
+position: absolute !important;
+}
 
 #wrap_sw {
 filter: drop-shadow(4px 4px 5px #313131);

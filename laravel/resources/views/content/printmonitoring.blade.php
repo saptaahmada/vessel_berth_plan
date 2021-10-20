@@ -745,7 +745,7 @@ circle2 {
                                 '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vessel[i-1].image+'"/>'+
                             '</div>'+
                             '<div id="text_judul'+i+'" class="text_judul" val="'+vessel[i-1].ves_id+'">'+
-                                'MV. '+vessel[i-1].ves_name+''+
+                                'MV. '+vessel[i-1].ves_name+' ('+ vessel[i-1].ves_id +')'+
                             '</div>'+
                             '<div id="text_detail'+i+'" class="text_detail">'+
                                 '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
@@ -822,7 +822,7 @@ circle2 {
                                 '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesseldom[i-1].image+'"/>'+
                             '</div>'+
                             '<div id="text_juduldom'+i+'" class="text_judul" val="'+vesseldom[i-1].ves_id+'">'+
-                                'MV. '+vesseldom[i-1].ves_name+''+
+                                'MV. '+vesseldom[i-1].ves_name+' ('+ vesseldom[i-1].ves_id +')'+
                             '</div>'+
                             '<div id="text_detaildom'+i+'" class="text_detail">'+
                                 '<div style="margin:1px; color:red;">ETA :'+vesseldom[i-1].est_berth_ts+'</div>'+
@@ -899,7 +899,7 @@ circle2 {
                                 '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesselcur[a-1].image+'"/>'+
                             '</div>'+
                             '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vesselcur[a-1].ves_id+'">'+
-                                'MV. '+vesselcur[a-1].ves_name+''+
+                                'MV. '+vesselcur[i-1].ves_name+' ('+ vesselcur[i-1].ves_id +')'+
                             '</div>'+
                             '<div id="text_detailcur'+a+'" class="text_detail">'+
                                 '<div style="margin:1px; color:red;">ETA :'+vesselcur[a-1].est_berth_ts+'</div>'+

@@ -318,6 +318,8 @@
 
     });
 
+    var m_is_act = '<?=$is_act?>';
+
 
     function getColor(param) {
         var green = '#a9d18e';
@@ -371,7 +373,8 @@
             data: {
                 "_token": "{{ csrf_token() }}",
                 date_start:datestart,
-                date_end:dateend
+                date_end:dateend,
+                is_act : m_is_act
                 },
             dataType : "json",
             async : false,

@@ -20,6 +20,8 @@
 
 Route::get('/', 'LoginController@loginForm')->name('login');
 Route::post('/login/proses',  'LoginController@login')->name('loginproses');
+Route::post('/login/login_customer_1',  'LoginController@login_customer_1')->name('login_customer_1');
+Route::post('/login/login_customer_2',  'LoginController@login_customer_2')->name('login_customer_2');
 
 Route::get('/login2', function () {
     return view('login.login2');
@@ -39,9 +41,13 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/role/proses',  'LoginController@role')->name('roleproses');
     Route::post('/role/session',  'LoginController@rolesession')->name('rolesession');
 
-    Route::get('/Dashboard', function () {
-        return view('content.dashboard');
-    });
+    Route::get('/Dashboard',  'DashboardController@index');
+    Route::get('/Dashboard/json/{ocean_interisland}/{date_from}/{date_to}',  'DashboardController@json');
+    Route::post('/Dashboard/get_ship_to_ship',  'DashboardController@get_ship_to_ship');
+
+    // Route::get('/Dashboard', function () {
+    //     return view('content.dashboard');
+    // });
    
   
 
@@ -66,19 +72,55 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan3/getcrane', 'Home3Controller@getcrane')->name('getcrane');
     Route::get('/VesselBerthPlan3/getport', 'Home3Controller@getport')->name('getport');
     Route::get('/VesselBerthPlan3/getsignature', 'Home3Controller@getsignature')->name('getsignature');
-    Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     
+    Route::post('/VesselBerthPlan3/delete_one', 'Home3Controller@delete_one')->name('delete_one');
+    Route::post('/VesselBerthPlan3/save_one', 'Home3Controller@save_one')->name('save_one');
+    Route::post('/VesselBerthPlan3/delete_note_one', 'Home3Controller@delete_note_one')->name('delete_note_one');
+    Route::post('/VesselBerthPlan3/save_note_one', 'Home3Controller@save_note_one')->name('save_note_one');
     Route::post('/VesselBerthPlan3/save2', 'Home3Controller@save2')->name('save2');
     Route::post('/VesselBerthPlan3/sync_prod', 'Home3Controller@sync_prod')->name('sync_prod');
     Route::get('/VesselBerthPlan_Logo','Home3Controller@logo')->name('logo3');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
     Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
+    Route::get('/VesselBerthPlan3/ves_not_yet_json', 'Home3Controller@ves_not_yet_json')->name('ves_not_yet_json');
     
+    Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     Route::get('/Dermaga','DermagaController@index')->name('dermaga');
     Route::post('/Dermaga/add','DermagaController@add')->name('dermagaAdd');
     Route::post('/Dermaga/update','DermagaController@update')->name('dermagaUpdate');
     Route::post('/Dermaga/remove','DermagaController@remove')->name('dermagaRemove');
     Route::get('/Dermaga/json','DermagaController@json');
+
+    
+    Route::get('/MonReqPandu','MonReqPanduController@index')->name('monreqpandu');
+    Route::get('/MonReqPandu/json/{tipe}','MonReqPanduController@json');
+
+    Route::get('/MonAssignmentPandu','MonAssignmentPanduController@index')->name('monassignmentpandu');
+    Route::get('/MonAssignmentPandu/json','MonAssignmentPanduController@json');
+
+    Route::get('/MPic','MPicController@index')->name('mpic');
+    Route::post('/MPic/add','MPicController@add')->name('mpicAdd');
+    Route::post('/MPic/update','MPicController@update')->name('mpicUpdate');
+    Route::post('/MPic/remove','MPicController@remove')->name('mpicRemove');
+    Route::get('/MPic/json','MPicController@json');
+
+
+    Route::get('/ReqBerth','ReqBerthController@index')->name('reqberth');
+    Route::post('/ReqBerth/add','ReqBerthController@add')->name('reqberthAdd');
+    Route::post('/ReqBerth/cancel','ReqBerthController@cancel')->name('reqberthCancel');
+    // Route::post('/ReqBerth/update','ReqBerthController@update')->name('reqberthUpdate');
+    Route::post('/ReqBerth/getAll','ReqBerthController@getAll')->name('reqberthGetAll');
+    Route::get('/ReqBerth/json','ReqBerthController@json');
+
+
+
+    Route::post('/GeneralService/get_vessel_by_ves_code','GeneralServiceController@get_vessel_by_ves_code');
+    Route::post('/GeneralService/get_vessel_det_by_ves_code','GeneralServiceController@get_vessel_det_by_ves_code');
+    Route::post('/GeneralService/get_vessel_json','GeneralServiceController@get_vessel_json');
+    Route::post('/GeneralService/get_port_json','GeneralServiceController@get_port_json');
+    Route::post('/GeneralService/get_service_json','GeneralServiceController@get_service_json');
+
+    Route::post('/Customer/get_agent_json','CustomerController@get_agent_json')->name('get_agent_json');
     
 
     Route::get('/Blokirkade','BlokirkadeController@index')->name('blokirkade');
@@ -100,12 +142,25 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/Arus/remove','ArusController@remove')->name('arusRemove');
     Route::get('/Arus/json','ArusController@json');
     Route::post('/Arus/getAll','ArusController@getAll')->name('getAllArus');
+
+
+    Route::get('/MHoliday','MHolidayController@index')->name('arus');
+    Route::post('/MHoliday/add','MHolidayController@add')->name('arusAdd');
+    Route::post('/MHoliday/update','MHolidayController@update')->name('arusUpdate');
+    Route::post('/MHoliday/remove','MHolidayController@remove')->name('arusRemove');
+    Route::get('/MHoliday/json','MHolidayController@json');
+    Route::post('/MHoliday/getAll','MHolidayController@getAll')->name('getAllMHoliday');
     
 
 
-    Route::get('/Monitoring', function () {
-        return view('content.monitoring');
-    });
+    Route::get('/Monitoring/{is_act}','MonitorController@index');
+    Route::get('/Monitoring/{is_act}','MonitorController@index');
+    // Route::get('/Monitoring', function () {
+    //     return view('content.monitoring');
+    // });
+    // Route::get('/Monitoring/Act', function () {
+    //     return view('content.monitoring');
+    // });
     Route::get('/Monitoring/print', function () {
         return view('content.printmonitoring');
     });

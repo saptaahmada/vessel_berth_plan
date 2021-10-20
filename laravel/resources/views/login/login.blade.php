@@ -277,6 +277,29 @@
     .button:hover{
     opacity: 0.7;
     }
+
+    .button2 {
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-decoration: none;
+    position: relative;
+    width: 80%;
+    display: block;
+    margin: 30px auto;
+    font-size: 14px;
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background: blue;
+    -webkit-transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out;
+    -o-transition: all 2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    cursor:pointer;
+    }
+    .button2:hover{
+    opacity: 0.7;
+    }
     .pass{
         margin-left: 50px;
         color: #fff;
@@ -295,7 +318,7 @@
 
 <div id="container">
     <img src="{{asset('/img/VIERA33.png')}}"></img>
-    <h1>LOGIN</h1>
+    <h1 id="m_title">LOGIN</h1>
     <!-- <h4>Vessel Information Berthing Plan</h4> -->
     
     <!-- <span class="close-btn">
@@ -320,6 +343,9 @@
 
        
         <button type="submit" class="button">Login</button>
+        <span style="margin-left: 30px; color: white; cursor: pointer;" id="btn_login_customer">
+            Login pengguna jasa >>
+        </span>
         <!-- <div style="width:280px; margin:auto;" class="alert alert-danger alert-dismissible fade in" role="alert">
             <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
             session
@@ -334,6 +360,20 @@
 
         
 
+    </form>
+
+    <div id="div_message" style="margin:10px"></div>
+
+    <form class="form-customer">
+        @csrf
+        <div id="div_customer_1">
+            <input type="text" id="hp" name="hp" placeholder="No HP">
+            <div class="button" id="submit_login_customer_1">Login</div>
+        </div>
+        <div id="div_customer_2">
+            <input type="text" id="code" name="code" placeholder="Masukkan Kode Verifikasi">
+            <div class="button" id="submit_login_customer_2">Konfirm</div>
+        </div>
     </form>
     
 
@@ -389,5 +429,54 @@
 				$('#pass').attr('type','password');
 			}
 		});
+        $('.form-signin').show();
+        $('.form-customer').hide();
+        $('#div_customer_1').show();
+        $('#div_customer_2').hide();
 	});
+
+    $('#btn_login_customer').on('click', function () {
+        $('.form-signin').hide();
+        $('.form-customer').show();
+    })
+
+    $('#submit_login_customer_1').on('click', function () {
+        $.ajax({  
+            url : "{{route('login_customer_1')}}",
+            type : "post",
+            data : {
+                "_token": "{{ csrf_token() }}",
+                'hp' : $('#hp').val()
+            },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                if(result.success) {
+                    $('#div_customer_1').hide();
+                    $('#div_customer_2').show();
+                }
+                $('#div_message').html(result.message);
+            }
+        });
+    })
+
+    $('#submit_login_customer_2').on('click', function () {
+        $.ajax({  
+            url : "{{route('login_customer_2')}}",
+            type : "post",
+            data : {
+                "_token": "{{ csrf_token() }}",
+                'hp' : $('#hp').val(),
+                'code' : $('#code').val(),
+            },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                if(result.success) {
+                    window.location = "{{url('Dashboard')}}";
+                }
+                $('#div_message').html(result.message);
+            }
+        });
+    })
     </script>

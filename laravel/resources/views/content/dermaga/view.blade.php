@@ -118,7 +118,6 @@
                             " <button class='btn ripple-btn-round btn-3d btn-warning' onclick=\"prepareUpdate(true, '"+data+"', '"+row.param3+"', '"+row.param4+"')\" data-toggle='modal' data-target='#modal_add' >"+
                               "<i class='fa fa-pencil'></i>"+
                             "</button>";
-                            (state, param2, param3, param4)
                 }
             }
         ]
