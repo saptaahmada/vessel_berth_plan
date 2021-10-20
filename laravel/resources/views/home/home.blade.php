@@ -25,6 +25,7 @@
 	<!-- end: Css -->
 
 	<link rel="shortcut icon" href="{{asset('/img/icon.png')}}">
+  <link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/select2.min.css')}}"/>
 
 
   <link href="{{asset('asset/css/resizing.css')}}" rel="stylesheet">
@@ -33,6 +34,8 @@
   <script src="{{asset('asset/js/jquery.ui.min.js')}}"></script>
 
   <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+
   <style type="text/css">
   .preloader {
     position: fixed;
@@ -172,6 +175,9 @@
 
     <!-- custom -->
      <script src="{{asset('asset/js/main.js')}}"></script>
+    <script src="{{asset('asset/js/plugins/select2.full.min.js')}}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{asset('js/jquery.blockUI.js')}}"></script>
 
      <script>
     $(document).ready(function(){

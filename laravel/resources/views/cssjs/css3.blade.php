@@ -98,6 +98,12 @@ transform: translate(0px, 0px);
 position: absolute !important;
 
 }
+.box_arus{
+position: absolute !important;
+}
+.box_holiday{
+position: absolute !important;
+}
 
 #wrap_sw {
 filter: drop-shadow(4px 4px 5px #313131);
@@ -118,12 +124,18 @@ border-radius: 2px;
 
 }
 
+.text_title {
+	font-size:13px;
+	font-weight:bold;
+	margin-left: 5px
+}
+
 .text_judul {
 color: #000;
-font-size: 14px;
+font-size: 12px;
 font-family: sans-serif;
 font-weight: bold;
-padding-left: 20px;
+/*padding-left: 20px;*/
 padding-top: 2px;
 width: 100%;
 /* text-shadow: 1px 1px #313131; */
@@ -133,7 +145,7 @@ z-index: -2;
 
 .text_detail {
 color: black;
-font-size: 12px;
+font-size: 10px;
 font-family: sans-serif;
 font-weight: bold;
 padding-left: 20px;
@@ -167,7 +179,7 @@ padding-top: 8px;
 circle span {
 position: absolute;
 color: #fff;
-font-size: 12px;
+font-size: 9px;
 top: 50%;
 transform: translate(-50%, -50%);
 width: 100%;
@@ -176,7 +188,7 @@ width: 100%;
 circle {
 /* float:right; */
 background: #000;
-width: 70px;
+width: 50px;
 height: 20px;
 /* border-radius: 50%; */
 display: inline-block;
@@ -191,7 +203,7 @@ z-index: -1;
 circle2 span {
 position: absolute;
 color: #fff;
-font-size: 12px;
+font-size: 8px;
 top: 50%;
 transform: translate(-50%, -50%);
 width: 100%;
@@ -200,8 +212,8 @@ width: 100%;
 circle2 {
 /* float:right; */
 background: #000;
-width: 23px;
-height: 23px;
+width: 20px;
+height: 20px;
 border-radius: 50%;
 display: inline-block;
 text-align: center;
@@ -239,6 +251,7 @@ width: 1002px;
 /* margin: 10px auto; */
 height: 14px;
 }
+
 
 .ruler .cm,
 .ruler .mm {
@@ -699,7 +712,7 @@ content: "2650m";
 left: 540%;
 }
 
-.ruler .cm:nth-of-type(5):after {
+.ruler .cm:nth-of-type(55):after {
 content: "2700m";
 }
 
@@ -1140,6 +1153,121 @@ left: 90px;
 
 }
 
+
+
+/*  Start Ruler CSS */
+.ruler_cur {
+position: relative;
+width: 1002px;
+height: 14px;
+}
+.ruler_cur .cm_cur,
+.ruler_cur .mm_cur {
+position: absolute;
+border-left: 1px solid #555;
+height: 14px;
+width: 10%;
+}
+.ruler_cur .cm_cur:after {
+position: absolute;
+bottom: -15px;
+font: 11px/1 sans-serif;
+font-weight: bold;
+}
+
+.ruler_cur .mm_cur {
+height: 5px;
+}
+
+
+.ruler_cur .cm_cur:nth-of-type(1) {
+left: 0%;
+}
+
+.ruler_cur .cm_cur:nth-of-type(1):after {
+content: "250m";
+}
+
+.ruler_cur .cm_cur:nth-of-type(2) {
+left: 10%;
+}
+
+.ruler_cur .cm_cur:nth-of-type(2):after {
+content: "200m";
+}
+
+.ruler_cur .cm_cur:nth-of-type(3) {
+left: 20%;
+}
+
+.ruler_cur .cm_cur:nth-of-type(3):after {
+content: "150m";
+}
+
+.ruler_cur .cm_cur:nth-of-type(4) {
+left: 30%;
+}
+
+.ruler_cur .cm_cur:nth-of-type(4):after {
+content: "100m";
+}
+
+.ruler_cur .cm_cur:nth-of-type(5) {
+left: 40%;
+}
+
+.ruler_cur .cm_cur:nth-of-type(5):after {
+content: "50m";
+}
+
+.ruler_cur .cm_cur:nth-of-type(6) {
+left: 50%;
+}
+
+.ruler_cur .cm_cur:nth-of-type(6):after {
+content: "0m";
+}
+
+
+.ruler_cur .mm_cur:nth-of-type(1) {
+left: 10%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(2) {
+left: 20%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(3) {
+left: 30%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(4) {
+left: 40%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(5) {
+left: 50%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(6) {
+left: 60%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(7) {
+left: 70%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(8) {
+left: 80%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(9) {
+left: 90%;
+}
+
+.ruler_cur .mm_cur:nth-of-type(10) {
+left: 100%;
+}
 /* #bongkar,#muat{
 width: 20em;
 } */

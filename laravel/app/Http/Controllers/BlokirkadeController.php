@@ -11,7 +11,7 @@ class BlokirkadeController extends Controller
 {
     public function index()
     {
-        // $blokirkade = DB::table('TOWER.VBP_GEN_REF')
+        // $blokirkade = DB::table('CBSLAM.VBP_GEN_REF')
         // ->where('PARAM1', 'BLOKIR_KADE')
         // ->get();
         return view('content.blokirkade.view');
@@ -19,7 +19,7 @@ class BlokirkadeController extends Controller
 
     public function add(Request $request)
     {
-        $result = DB::table('TOWER.VBP_GEN_REF')
+        $result = DB::table('CBSLAM.VBP_GEN_REF')
         ->insert([
         	'PARAM1'	=> 'BLOKIR_KADE',
         	'PARAM2'	=> $request->param2,
@@ -34,7 +34,7 @@ class BlokirkadeController extends Controller
 
     public function update(Request $request)
     {
-        $result = DB::table('TOWER.VBP_GEN_REF')
+        $result = DB::table('CBSLAM.VBP_GEN_REF')
         ->where('PARAM2', $request->curParam2)
         ->update([
         	'PARAM2'	=> $request->param2,
@@ -49,7 +49,7 @@ class BlokirkadeController extends Controller
 
     public function remove(Request $request)
     {
-        $result = DB::table('TOWER.VBP_GEN_REF')
+        $result = DB::table('CBSLAM.VBP_GEN_REF')
         ->where('PARAM1', 'BLOKIR_KADE')
         ->where('PARAM2', $request->param2)
         ->delete();

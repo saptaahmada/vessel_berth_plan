@@ -27,7 +27,7 @@ class SignatureController extends Controller
         else 
             $jab = '1';
 
-        $result = DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $result = DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->insert([
         	'NIPP'	=> $request->param2,
         	'NAMA'	=> $request->param3,
@@ -42,7 +42,7 @@ class SignatureController extends Controller
 
     public function update(Request $request)
     {
-        $result = DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $result = DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->where('nipp', $request->curParam2)
         ->update([
         	'NIPP'	=> $request->param2,
@@ -57,7 +57,7 @@ class SignatureController extends Controller
 
     public function remove(Request $request)
     {
-        $result = DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $result = DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->where('nipp', $request->param)
         ->delete();
         return [
@@ -80,7 +80,7 @@ class SignatureController extends Controller
         
         
 
-        $count = DB::table('TOWER.MASTER_SIGNATURE_QR')->count();
+        $count = DB::table('CBSLAM.MASTER_SIGNATURE_QR')->count();
         $countout = $count+1;
         
         if (($count >= 0) && ($count <= 9)) 
@@ -105,7 +105,7 @@ class SignatureController extends Controller
             'DATE_PRINT'=> $date_print
         ];
         // dump($data_print);
-        // DB::table('TOWER.MASTER_SIGNATURE_QR')
+        // DB::table('CBSLAM.MASTER_SIGNATURE_QR')
         // ->insert($data_print);
        
         // return response()->json($param_print);

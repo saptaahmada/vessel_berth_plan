@@ -119,6 +119,78 @@
     left: 0px;
     top: 774px;
 }
+#start{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1018px;
+    top: 13px;
+    position: absolute;
+    /* background: #95c8d8;    */
+}
+#starttgl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1018px;
+    top: 28px;
+    position: absolute;
+    /* background: #95c8d8;    */
+
+}
+#end{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1109.5px;
+    top: 13px;
+    position: absolute;
+    /* background: #95c8d8;    */
+}
+#endtgl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /* writing-mode: vertical-lr; */
+    width: 76px;
+    height: 14.5px;
+    left: 1109.5px;
+    top: 28px;
+    position: absolute;
+    /* background: #95c8d8;    */
+
+}
+.startend{
+    text-align:center;
+    font-size: 6px;
+    font-weight: bold;
+    margin:auto;
+    color: black !important;
+    position: absolute;
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+     /* background: #ca3433;    */
+}
+.startendtgl{
+    text-align:center;
+    font-size: 6px;
+    font-weight: bold;
+    margin:auto;
+    color: white !important;
+    position: absolute;
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+     /* background: #ca3433;    */
+}
 
 #intern{
     width: 503px;
@@ -135,10 +207,10 @@
 
 .arsirintern{
     width: 65px;
-    height: 747px;
+    height: 871.5px;
     position: absolute;
-    left: 319.5px;
-    top: 133px;
+    left: 261px;
+    top: 159px;
     background: #877F7D;   
     opacity: 0.5;
     z-index:0;
@@ -159,14 +231,14 @@
 }
 .arsirdomes{
     width: 97.5px;
-    height: 747px;
+    height: 871.5px;
     background: #877F7D;   
     opacity: 0.5;
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
-    left: 675px;
-    top: 133px;
+    left: 910.9px;
+    top: 159px;
     z-index:0;
 
 }
@@ -183,18 +255,17 @@
 }
 .arsircurah{
     width: 65px;
-    height: 747px;
-    /* background: #877F7D; */
+    height: 871.5px;
+    background: #877F7D;
     /* background: #ca3433; */
     opacity: 0.5; 
     /* border:0.1px solid #ca3433; */
     position: absolute;
     /* left: 157.5px; */
-    left :  93px; 
+    left: 70px;
     /* right: 100px; */
     /* right: 0px; */
-
-    top: 133px;
+    top: 159px;
     z-index:0;
 }
 .box{
@@ -229,7 +300,7 @@
         /* text-shadow: 1px 1px #313131; */
         z-index: -2;
         
-    }
+}
 .text_detail{
     color: black;
     font-size:3.5px;
@@ -256,11 +327,11 @@
     /* padding-top: 5px; */
    
     position: absolute;
-    }
+}
 .ims{
     float:right;
-    width: 18%;
-    height: 18%;
+    width: 20%;
+    height: 20%;
     padding-top: 8px;
 
 /* position: absolute; */
@@ -268,7 +339,7 @@
 #tanggal{
     width: 672px;
     height: 747px;
-    /* background: #95c8d8;    */
+     /*background: #95c8d8;    */
     /* border:1px solid #ca3433; */
     position: absolute;
     /* left: 66.5px; */
@@ -276,119 +347,113 @@
     top: 133px;
 }
 .zone {
-  /* padding: 90px 0; */
-  margin: 0 auto;
-  text-align: left;
-  /* background-blend-mode: darken; */
-  transition: 0.5s;
-  position:absolute;
-  z-index:0;
- width:90px;   /* ini iya */
-  height:60px;  /* ini juga*/
-  top : 20px;  /* ini iya */
-  left :0px; /* ini juga ternyata */
-  /* box-shadow: 10px 10px 5px grey; */
+    /* padding: 90px 0; */
+    margin: 0 auto;
+    text-align: left;
+    /* background-blend-mode: darken; */
+    transition: 0.5s;
+    position:absolute;
+    z-index:0;
+    width:90px;   /* ini iya */
+    height:60px;  /* ini juga*/
+    top : 20px;  /* ini iya */
+    left :0px; /* ini juga ternyata */
+    /* box-shadow: px 10px 5px grey; */
+} 
+.note {
+    padding: 2px;
+    text-align: left;
+    transition: 0.5s;
+    position:absolute;
+    background: rgb(255, 150, 143);
 } 
 .dom {
-  /* padding: 90px 0; */
-  margin: 0 auto;
-  text-align: left;
-  /* background-blend-mode: darken; */
-  transition: 0.5s;
-  position:absolute;
-  z-index:0;
- width:90px;   /* ini iya */
-  height:60px;  /* ini juga*/
-  top : 20px;  /* ini iya */
-  left :0px; /* ini juga ternyata */
+    /* padding: 90px 0; */
+    margin: 0 auto;
+    text-align: left;
+    /* background-blend-mode: darken; */
+    transition: 0.5s;
+    position:absolute;
+    z-index:0;
+    width:90px;   /* ini iya */
+    height:60px;  /* ini juga*/
+    top : 20px;  /* ini iya */
+    left :0px; /* ini juga ternyata */
 } 
 
-/* .zone::before {
-  content:"";
-  position:absolute;
-  
-  clip-path: border-box;
-  top:0;
-  left:0px;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  background: #ffe699 ;
-  clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);
-  -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);
-} */
+
 .zone::before {
-  content:"";
-  position:absolute;
-  
-  clip-path: border-box;
-  top:0;
-  left:0px;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  background: #ffe699 ;
-  clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
-  -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    content:"";
+    position:absolute;
+
+    clip-path: border-box;
+    top:0;
+    left:0px;
+    right:0;
+    bottom:0;
+    z-index:-1;
+    background: #ffe699 ;
+    clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
 }
 .dom::before {
-  content:"";
-  position:absolute;
-  
-  clip-path: border-box;
-  top:0;
-  left:0px;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  background: #ffe699 ;
-  clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
-  -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    content:"";
+    position:absolute;
+
+    clip-path: border-box;
+    top:0;
+    left:0px;
+    right:0;
+    bottom:0;
+    z-index:-1;
+    background: #ffe699 ;
+    clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
+    -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);
 }
 circle span {
-  position: absolute;
-  color:#fff;
-  font-size:4px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+    position: absolute;
+    color:#fff;
+    font-size:4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 circle {
     /* float:right; */
-  background: #000;
-  width: 25px;
-  height: 9px;
-  /* border-radius: 50%; */
-  display: inline-block;
-  text-align: center;
-  /* margin-top: 10%; */
-  margin-right: 5px;
-  
-  position: relative;
-  z-index:-1;
+    background: #000;
+    width: 25px;
+    height: 9px;
+    /* border-radius: 50%; */
+    display: inline-block;
+    text-align: center;
+    /* margin-top: 10%; */
+    margin-right: 5px;
+
+    position: relative;
+    z-index:-1;
 }
 
 circle2 span {
-position: absolute;
-  color:#fff;
-  font-size:4px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+    position: absolute;
+    color:#fff;
+    font-size:4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 circle2 {
-   /* float:right; */
-   background: #000;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-  text-align: center;
-  /* margin-top: 10%; */
-  margin-right: 5px;
-  
-  position: relative;
-  z-index:-1;
+    /* float:right; */
+    background: #000;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    /* margin-top: 10%; */
+    margin-right: 5px;
+
+    position: relative;
+    z-index:-1;
 }
 #ttd1 {
     width: 46px;
@@ -412,14 +477,169 @@ circle2 {
     top: 1134px;
 }
 
+#arusminus{
+    width: 41px;
+    height: 871.5px;
+     /*background: #95c8d8;    */
+     /*border:1px solid #ca3433; */
+    position: absolute;
+    /* left: 66.5px; */
+    left: 808px;
+    top: 158.2px;
+}
+.arustext {
+    text-align:center;
+    font-size: 5.9px;
+    /*font-weight: bold;*/
+    margin:1px;
+    color: white !important;
+    /*position: absolute; */
+    font-family: "Tahoma"; 
+    text-transform: uppercase;
+}
 
+#arusminus1{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    /*writing-mode: vertical-lr;*/
+    /*transform: rotate(180deg);*/
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 1px;
+}
+#arusminus2{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 125.2px;
+}
+#arusminus3{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 249.8px;
+}
+#arusminus4{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 374.5px;
+}
+#arusminus5{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+   left: 1px;
+    top: 499px;
+}
+#arusminus6{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+    left: 1px;
+    top: 623.5px;
+}
+#arusminus7{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 41px;
+    height: 124px;
+     /*background: #952;    */
+    position: absolute;
+   left: 1px;
+    top: 748.5px;
+}
 
+.grup_text{
+    text-align:center;
+    font-size: 8px;
+    font-weight: bold;
+    margin:auto;
+    color: white !important;
+    position: absolute;
+    font-family: "Arial"; 
+    text-transform: uppercase;
+}
+.grup_detail1
+{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
 
+    width: 15px;
+    height: 41.3px;
+     /*background: #342345;     */
+    
+    position: absolute;
+    left: 37px;
+    top: 159px;
+}
+.grup_detail2
+{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    width: 15px;
+    height: 41.3px;
+     /*background: #342345;    */
+    position: absolute;
+    left: 37px;
+    top: 159px;
+}
+.print_at {
+    text-align: center;
+    font-size: 7px;
+    font-weight: bold;
+    margin: auto;
+    color: black !important;
+    position: absolute;
+    font-family: "Arial";
+    text-transform: uppercase;
+}
 
-/* #img{
-    left: 0px;
-    top: 150px;
-} */
+#print_at {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 122px;
+    height: 17px;
+    /* background: #952; */
+    position: absolute;
+    left: 1144px;
+    top: 1206px;
+}
 
 @media print {
     .box {
@@ -442,11 +662,6 @@ circle2 {
         color: white !important;
         -webkit-print-color-adjust: exact; 
     }
-    .text_judul{
-        color: #ffff !important;
-        text-shadow: 1px 1px #313131;
-        -webkit-print-color-adjust: exact; 
-    }
     .arsirdomes{
         color: #877F7D !important;
         -webkit-print-color-adjust: exact; 
@@ -459,7 +674,31 @@ circle2 {
         color: #877F7D !important;
         -webkit-print-color-adjust: exact; 
     }
+    .startendtgl{
+        color: white !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .grup_text{
+        color: white !important;
+        -webkit-print-color-adjust: exact; 
+    }
+    .arustext{
+        color: white !important;
+        -webkit-print-color-adjust: exact; 
+    }
 }
+
+
+
+
+
+
+
+/* #img{
+    left: 0px;
+    top: 150px;
+} */
+
 
 
 
@@ -476,6 +715,7 @@ circle2 {
 
 </head>
 <body>
+    <div id="printkan">
     <?php
         setlocale(LC_TIME, 'id_ID.utf8');
 
@@ -516,10 +756,19 @@ circle2 {
 
     ?>
    
-    <img src="{{asset('/img/vessel_print_650.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
+    <img src="{{asset('/img/vessel_print_650_new-new.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
     <!-- <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" > -->
+    
+    <div id="start">
+    </div>
+    <div id="starttgl">
+    </div>
+    <div id="endtgl">
+    </div>
+    <div id="end">
+    </div>
+   
 
-  <!-- <p class=hari>RABU / WEDNESDAY</p> -->
     <div id="internarsir">
          <!-- <div class="arsirintern" id="arsirintern"></div> -->
     </div>
@@ -539,11 +788,40 @@ circle2 {
 
     </div>
         <div id="curah">
-            <!-- sas -->
+            <!-- <div id="box" class="box"><img src = "{{asset('/img/logo.png')}}" style= "position:absolute; width: 10px; height: 14,38461538461538px; right:2px; top:2px;"/></div> -->
         </div>
 
 
     <div id="tanggal">
+    </div>
+
+    <div id="arusminus">
+        <div id="arusminus1">
+          <!--   <p class="arustext">ARUS MINUS<br>
+                (15:00-16:00)<br>
+                (15:00-16:00)
+            </p> -->
+        </div>
+        <div id="arusminus2">
+        </div>
+        <div id="arusminus3">
+        </div>
+        <div id="arusminus4">
+        </div>
+        <div id="arusminus5">
+        </div>
+        <div id="arusminus6">
+        </div>
+        <div id="arusminus7">
+        </div>
+    </div>
+
+    <div id="grup">     
+        <!-- <div class = "grup_detail" id="1g"><p class="grup_text"> I / D</p></div>
+        <div class = "grup_detail" id="2g"><p class="grup_text"> II / A</p></div>
+        <div class = "grup_detail" id="3g"><p class="grup_text"> III / B</p></div> -->
+    </div>
+    <div id="print_at">
     </div>
 
     <div id="ttd1">
@@ -559,10 +837,7 @@ circle2 {
         <div id="planning_manager" style="position: absolute;margin-top: -10px; color:black;text-decoration: underline; font-size:5px; font-family:arial; font-weight:bold; text-transform:uppercase;">PIERRE ROCHEL </div>
     </div>
 
-
-
-</body>
-</html>
+    </div>
 
 <!-- <script type="text/javascript">
     window.onload = function () {
@@ -573,9 +848,14 @@ circle2 {
 
 
 
+<script src="{{asset('asset/js/plugins/moment.min.js')}}"></script>
+
+<!-- <script type="text/javascript" src="{{asset('js/jspdf/dist/jspdf.umd.min.js')}}"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script> -->
 
 <script type="text/javascript">
-
+    $("#2g").css("top","200.5px");
+    $("#3g").css("top","242px");
 
     for (i = 1; i < 3; ++i) {
         // console.log(i);
@@ -592,18 +872,33 @@ circle2 {
     $(".box2").css("left", "842px");
 
 
-</script>
+    var newdateprint = new Date();
+    var start_date_print = moment(newdateprint).format("dddd, DD/MM/YYYY HH:mm:ss ");
+    $("#print_at").append('<div class="print_at"> '+start_date_print+'</div>');
 
+    
+    $("#start").append('<p class="startend"><?php echo $hari1 ?></p>');
+    $("#starttgl").append('<p class="startendtgl"><?php echo $tgl1 ?></p>');
+    $("#end").append('<p class="startend"><?php echo $hari7 ?></p>');
+    $("#endtgl").append('<p class="startendtgl"><?php echo $tgl7 ?></p>');
 
-
-<script type="text/javascript">
-
+    
     var vessel=[];
     var vesseldom = [];
+    var m_kade_all = [];
 
+    // function PrintPage() {
+    //     window.resizeTo(960, 600);
+    //     document.URL = "";
+    //     window.location.href = "";
+    //     window.print();
+    //     window.close();
+    // }
 
+    arusminus();
     Load();  
-    signature();    
+    signature();
+    getKadeAll(); 
     function Load() {
         $.ajax({
             url : "{{route('blokirkade')}}",
@@ -622,14 +917,12 @@ circle2 {
                         '<div class="arsirintern" id="arsirintern'+o+'"></div>'
                     )
                 }
-
                 for (p = 1; p < blokir_intern.length+1; ++p) {
                     var realstart= blokir_intern[p-1].param3;
-                    var start = ((blokir_intern[p-1].param3 /10) * 6.5) + 222;
-                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *6.5;
+                    var start = ((blokir_intern[p-1].param3 /10) * 7.61111) + 261;
+                    var end = ((blokir_intern[p-1].param4 - realstart )/10) *7.61111;
                     $("#arsirintern"+p).css("left", start+"px");
                     $("#arsirintern"+p).css("width", end+"px");
-
                 }
 
                 // DOMESTIK
@@ -644,16 +937,15 @@ circle2 {
                     var enddom = 0;
                    
                     if(realstartdom <= 50){
-                        startdom =  707.5;
-                        enddom = ((blokir_domes[e-1].param4 /10) *6.5)-26;
+                        startdom =  910.9;
+                        enddom = ((blokir_domes[e-1].param4 /10) *7.6111)-30.4;
                     } else  {
-                        startdom = ((blokir_domes[e-1].param3 /10) * 6.5) + 681.5;
-                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 6.5;
+                        startdom = ((blokir_domes[e-1].param3 /10) * 7.6111) + 880.5;
+                        enddom = ((blokir_domes[e-1].param4 - realstartdom )/10) * 7.6111;
                     }  
 
                     $("#arsirdomes"+e).css("left", startdom+"px");
                     $("#arsirdomes"+e).css("width", enddom+"px");
-
                 }
 
                 
@@ -663,253 +955,417 @@ circle2 {
                         '<div class="arsircurah" id="arsircurah'+d+'"></div>'
                     )
                 }
-
                 for (y = 1; y < blokir_curah.length+1; ++y) {
+                        //250 - 50
                     var realstartcur= blokir_curah[y-1].param3;
-                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 6.5) + 60.5;
-                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 6.5) - (startcur - 60.5) ;
+                    var startcur = (((panjang_curah - blokir_curah[y-1].param4) /10)* 7.6111) + 70;
+                    var endcur = (((panjang_curah - blokir_curah[y-1].param3) /10)* 7.6111) - (startcur - 70) ;
 
                     $("#arsircurah"+y).css("left", startcur+"px");
                     $("#arsircurah"+y).css("width", endcur+"px");
                 }
-                
-
-
             }
         });
 
-        $.ajax({  
-            url : "{{route('getvessel')}}",
-            type : "post",
-            data : {
-                "_token": "{{ csrf_token() }}",
-            },
-            dataType : "json",
-            async : false,
-            success : function(result){
-                vessel = result.Intern;
-                vesseldom = result.Domes;
-                vesselcur = result.Curah;
-                // console.log(vesselcur);
+        // var url = 'getvessel';
+        var data_url    = <?=json_encode($data)?>;
 
-                for (i = 1; i < vessel.length+1; ++i) {
-                    var crane =  vessel[i-1].crane;
-                    var uncrane=[];
-                    if (crane==null)
-                    uncrane=[];
-                    else
-                    uncrane = crane.split(',');
 
-                    // console.log(uncrane);
-                    var craneloop = "";
-                    for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
-                        craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
-                    };
+        if (typeof data_url.param11 !== 'undefined') {
 
-                    $("#intern").append(
-                        '<div id="zone'+i+'" class="zone">'+
-                            '<div id="img'+i+'">'+
-                                '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vessel[i-1].image+'"/>'+
-                            '</div>'+
-                            '<div id="text_judul'+i+'" class="text_judul" val="'+vessel[i-1].ves_id+'">'+
-                                'MV. '+vessel[i-1].ves_name+''+
-                            '</div>'+
-                            '<div id="text_detail'+i+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETB :'+vessel[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETD : '+vessel[i-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_load+'/'+vessel[i-1].est_discharge+' BOX</div>'+
-                                '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+vessel[i-1].dest_port+'</div>'+
-                                ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
-                                craneloop+
-                            '</div>'+
-                        '</div>');
-                }
-                for (i = 1; i < vessel.length+1; ++i) {
-                    if(vessel[i-1].act_berth_ts != null) {
-                        rand = getColor(0);
-                    } else if(vessel[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vessel[i-1].tentatif == 0) {
-                        rand = getColor(2);
+            console.log(data_url);
+
+            $.ajax({  
+                url : (data_url.is_required ? "{{route('print_getvessel')}}" : "{{route('getvessel')}}"),
+                type : "post",
+                data : {
+                    "_token": "{{ csrf_token() }}",
+                    "code" : (data_url.is_required ? data_url.code : '')
+                },
+                dataType : "json",
+                async : false,
+                success : function(result){
+                    vessel = result.Intern;
+                    vesseldom = result.Domes;
+                    vesselcur = result.Curah;
+
+                    note_d = result.note_d;
+                    note_i = result.note_i;
+                    note_c = result.note_c;
+
+                    var min_height = 180;
+
+                    // var left_right_int = m_kade_all.int[0].param5;
+                    // var left_right_dom = m_kade_all.dom[0].param5;
+                    // var left_right_cur = m_kade_all.cur[0].param5;
+
+
+                    for (i = 1; i < vessel.length+1; ++i) {
+                        var crane =  vessel[i-1].crane;
+                        var uncrane=[];
+                        if (crane==null)
+                        uncrane=[];
+                        else
+                        uncrane = crane.split(',');
+
+                        var pot= vessel[i-1].dest_port;
+                        if (pot == null)
+                            pod = "-";
+                        else 
+                            pod = pot;
+
+                        // console.log(uncrane);
+                        var craneloop = "";
+                        for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
+                            craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
+                        };
+
+                        var act_berth_ts = null;
+
+                        if(vessel[i-1].act_berth_ts != null)
+                            act_berth_ts = moment(vessel[i-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
+
+                        var est_pilot_ts = moment(vessel[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vessel[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vessel[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vessel[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vessel[i-1].info != null ? vessel[i-1].info.replace("\n", "<br>") : '';
+                        var height = parseInt(vessel[i-1].height);
+
+                        $("#intern").append(
+                            '<div id="zone'+i+'" class="zone">'+
+                                '<div id="img'+i+'">'+
+                                    '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vessel[i-1].image+'"/>'+
+                                '</div>'+
+                                '<div id="text_judul'+i+'" class="text_judul" val="'+vessel[i-1].ves_id+'">'+
+                                    'MV. '+vessel[i-1].ves_name+' ('+vessel[i-1].ves_id+")"+
+                                '</div>'+
+                                '<div id="text_detail'+i+'" class="text_detail">'+
+                                    (vessel[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (height >= min_height ?
+                                    (vessel[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (act_berth_ts != null ? 
+                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                    )+
+                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_discharge+'/'+vessel[i-1].est_load+' BOX</div>'+
+                                    '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
+                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
+                                    '<div style="margin:1px;">WINDOW : '+(vessel[i-1].windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
+                                    craneloop+
+                                '</div>'+
+                            '</div>');
                     }
-                   
-                    var left = vessel[i-1].berth_fr_metre_ori/10 *7.611111111111111;
-                    var top = vessel[i-1].y_awal/20 * 5.1875;
-                    var width = vessel[i-1].width_ori/10 *7.611111111111111;
-                    var height = vessel[i-1].height/20 * 5.1875 ;
-                    var along_sidein = vessel[i-1].btoa_side;
-                    var name = vessel[i-1].ves_name;
+                    for (i = 1; i < vessel.length+1; ++i) {
+                        if(vessel[i-1].act_berth_ts != null) {
+                            rand = getColor(0);
+                        } else if(vessel[i-1].tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vessel[i-1].tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                        
+                        var left = vessel[i-1].berth_fr_metre_ori /10 *7.611111111111111;;
+                        var top = vessel[i-1].y_awal/20 * 5.1875;;
+                        var width = vessel[i-1].width_ori/10 *7.611111111111111;;
+                        var height = vessel[i-1].height/20 * 5.1875;;
+                        var along_sidein = vessel[i-1].btoa_side;
+
+                        if(along_sidein == "P"){
+                            $("#zone"+i).css("left", left+"px");
+                            $("#zone"+i).css("width", width+"px");
+                            $("#zone"+i).css("top", top +"px");
+                            $("#zone"+i).css("height", height+"px");
+                            $("#text_judul"+i).css("padding-left", "20%");
+                            $("#text_detail"+i).css("padding-left", "18%");
+                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        } else if (along_sidein == "S") {
+                            $("#zone"+i).css("left", left+"px");
+                            $("#zone"+i).css("width", width+"px");
+                            $("#zone"+i).css("top", top +"px");
+                            $("#zone"+i).css("height", height+"px");
+                            $("#text_judul"+i).css("padding-left", "5px");
+                            $("#text_detail"+i).css("padding-left", "5px");
+                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                            // $("#text_judul"+i+".text_judul").css("padding-left", "5px");
+                            // $("#text_judul"+i+".text_judul").css("padding-top", "5px");
+                            // $("#text_detail"+i+".text_detail").css("padding-left", "5px");
+                        }
+                    }
+
+                    for (i = 1; i < vesseldom.length+1; ++i) {
+                        var cranedom =  vesseldom[i-1].crane;
+                        var uncranedom=[];
+                        if (cranedom==null)
+                        uncranedom=[];
+                        else
+                        uncranedom = cranedom.split(',');
+
+                        var pot= vesseldom[i-1].dest_port;
+                        if (pot == null)
+                            pod = "-";
+                        else 
+                            pod = pot;
+
+                        // console.log(uncrane);
+                        var craneloopdom = "";
+                        for (var x = 0; x < uncranedom.length; x++) { //Move the for loop from here
+                            craneloopdom += '<circle2><span>'+uncranedom[x]+'</span></circle2>';
+                        };
+
+                        var act_berth_ts = null;
+
+                        if(vesseldom[i-1].act_berth_ts != null)
+                            act_berth_ts = moment(vesseldom[i-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
+
+                        var est_pilot_ts = moment(vesseldom[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vesseldom[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vesseldom[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vesseldom[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vesseldom[i-1].info != null ? vesseldom[i-1].info.replace("\n", "<br>") : '';
+                        var height = parseInt(vesseldom[i-1].height);
+                        
+                        $("#domes").append(
+                            '<div id="dom'+i+'" class="zone">'+
+                                '<div id="img'+i+'">'+
+                                    '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesseldom[i-1].image+'"/>'+
+                                '</div>'+
+                                '<div id="text_juduldom'+i+'" class="text_judul" val="'+vesseldom[i-1].ves_id+'">'+
+                                    'MV. '+vesseldom[i-1].ves_name+' ('+vesseldom[i-1].ves_id+')'+
+                                '</div>'+
+                                '<div id="text_detaildom'+i+'" class="text_detail">'+
+                                    (vesseldom[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (height >= min_height ?
+                                    (vesseldom[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (act_berth_ts != null ? 
+                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                    )+
+                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].est_discharge+'/'+vesseldom[i-1].est_load+' BOX</div>'+
+                                    '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
+                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
+                                    '<div style="margin:1px;">WINDOW : '+(vesseldom[i-1].windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
+                                    craneloopdom+
+                                '</div>'+
+                            '</div>');
+                    }
+                    for (i = 1; i < vesseldom.length+1; ++i) {
+
+                        if(vesseldom[i-1].act_berth_ts != null) {
+                            rand = getColor(0);
+                        } else if(vesseldom[i-1].tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vesseldom[i-1].tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                        
+                        
+                        var leftdom = vesseldom[i-1].berth_fr_metre_ori/10 *7.611111111111111; // done
+                        var topdom = vesseldom[i-1].y_awal/20 * 5.1875; // done
+                        var widthdom = vesseldom[i-1].width_ori/10 *7.611111111111111;
+                        var heightdom = vesseldom[i-1].height/20 * 5.1875;
+                        var along_sidedom = vesseldom[i-1].btoa_side;
+                        
+                        // console.log(height);
+                        if(along_sidedom == "S"){ //kiri star
+                        $("#dom"+i).css("left", leftdom+"px");
+                        $("#dom"+i).css("width", widthdom+"px");
+                        $("#dom"+i).css("top", topdom +"px");
+                        $("#dom"+i).css("height", heightdom+"px");
+                        $("#text_juduldom"+i).css("padding-left", "20%");
+                        $("#text_detaildom"+i).css("padding-left", "18%");
+                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        }else if (along_sidedom == "S") {
+                        $("#dom"+i).css("left", leftdom+"px");
+                        $("#dom"+i).css("width", widthdom+"px");
+                        $("#dom"+i).css("top", topdom +"px");
+                        $("#dom"+i).css("height", heightdom+"px");
+                        $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
+                        $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
+                        
+
+                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                        }
+                    }
+
+                    for (a = 1; a < vesselcur.length+1; ++a) {
+                        var cranecur =   vesselcur[a-1].crane;
+                        var uncranecur=[];
+                        if (cranecur==null)
+                        uncranecur=[];
+                        else
+                        uncranecur = cranecur.split(',');
+
+
+                        var pot= vesselcur[a-1].dest_port;
+                        if (pot == null)
+                            pod = "-";
+                        else 
+                            pod = pot;
+
+                        // console.log(uncrane);
+                        var craneloopcur = "";
+                        for (var x = 0; x < uncranecur.length; x++) { //Move the for loop from here
+                            craneloopcur += '<circle2><span>'+uncranecur[x]+'</span></circle2>';
+                        };
+
+                        var act_berth_ts = null;
+
+                        if(vesselcur[a-1].act_berth_ts != null)
+                            act_berth_ts = moment(vesselcur[a-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
+                        
+                        var est_pilot_ts = moment(vesselcur[a-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vesselcur[a-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vesselcur[a-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vesselcur[a-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vesselcur[a-1].info != null ? vesselcur[a-1].info.replace("\n", "<br>") : '';
+                        var height = parseInt(vesselcur[a-1].height);
+
+                        $("#curah").append(
+                            '<div id="cur'+a+'" class="zone">'+
+                                '<div id="img'+a+'">'+
+                                    '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesselcur[a-1].image+'"/>'+
+                                '</div>'+
+                                '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vesselcur[a-1].ves_id+'">'+
+                                    'MV. '+vesselcur[a-1].ves_name+' ('+vesselcur[a-1].ves_id+')'+
+                                '</div>'+
+                                '<div id="text_detailcur'+a+'" class="text_detail">'+
+                                    (vesselcur[a-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (height >= min_height ?
+                                    (vesselcur[a-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (act_berth_ts != null ? 
+                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                    )+
+                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].est_discharge+' MT</div>'+
+                                    '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
+                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
+                                    '<div style="margin:1px;">WINDOW : '+(vesselcur[a-1].windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
+                                    craneloopcur+
+                                '</div>'+
+                            '</div>');
+                    }
+                    for (i = 1; i < vesselcur.length+1; ++i) {
+                        if(vesselcur[i-1].act_berth_ts != null) {
+                            rand = getColor(0);
+                        } else if(vesselcur[i-1].tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vesselcur[i-1].tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                       
+                        var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);
+                        var widthcur = (((250 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
+
+                        // console.log("left", leftcur);
+
+                        var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
+                        var heightcur = vesselcur[i-1].height/20 * 5.1875;
+                        var along_sidecur = vesselcur[i-1].btoa_side;
+                        
+                        // console.log(height);
+                        if(along_sidecur == "P"){ //kiri star
+                        $("#cur"+i).css("left", leftcur+"px");
+                        $("#cur"+i).css("width", widthcur+"px");
+                        $("#cur"+i).css("top", topcur +"px");
+                        $("#cur"+i).css("height", heightcur+"px");
+                        $("#text_judulcur"+i).css("padding-left", "20%");
+                        $("#text_detailcur"+i).css("padding-left", "18%");
+                        $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        }else if (along_sidecur == "S") {
+                        $("#cur"+i).css("left", leftcur+"px");
+                        $("#cur"+i).css("width", widthcur+"px");
+                        $("#cur"+i).css("top", topcur +"px");
+                        $("#cur"+i).css("height", heightcur+"px");
+                        $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
+                        $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
+                        
+                        $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                        }
+                    }
+
+
+
+
+
+
+                    for (i = 0; i < note_i.length; ++i) {
+                        $("#intern").append(
+                            '<div id="note_i'+i+'" class="note">'+
+                                '<div style="font-size:5px">'+note_i[i].text+'</div>'+
+                            '</div>');
+
+                        var left = (note_i[i].x/2) /10 *7.611111111111111;
+                        var top = note_i[i].y/20 * 5.1875;
+                        var width = (note_i[i].width/2)/10 *7.611111111111111;
+                        var height = note_i[i].height/20 * 5.1875;
+
+                        $("#note_i"+i).css("left", left+"px");
+                        $("#note_i"+i).css("width", width+"px");
+                        $("#note_i"+i).css("top", top +"px");
+                        $("#note_i"+i).css("height", height+"px");
+                    }
+
+                    for (i = 0; i < note_d.length; ++i) {
+                        $("#domes").append(
+                            '<div id="note_d'+i+'" class="note">'+
+                                '<div style="font-size:5px">'+note_d[i].text+'</div>'+
+                            '</div>');
+
+                        var left = (note_d[i].x/2) /10 *7.611111111111111;
+                        var top = note_d[i].y/20 * 5.1875;
+                        var width = (note_d[i].width/2)/10 *7.611111111111111;
+                        var height = note_d[i].height/20 * 5.1875;
+
+                        $("#note_d"+i).css("left", left+"px");
+                        $("#note_d"+i).css("width", width+"px");
+                        $("#note_d"+i).css("top", top +"px");
+                        $("#note_d"+i).css("height", height+"px");
+                    }
+
+                    for (i = 0; i < note_c.length; ++i) {
+                        $("#curah").append(
+                            '<div id="note_c'+i+'" class="note">'+
+                                '<div style="font-size:5px">'+note_c[i].text+'</div>'+
+                            '</div>');
+
+                        var left = (note_c[i].x/2) /10 *7.611111111111111;
+                        var top = note_c[i].y/20 * 5.1875;
+                        var width = (note_c[i].width/2)/10 *7.611111111111111;
+                        var height = note_c[i].height/20 * 5.1875;
+
+                        $("#note_c"+i).css("left", left+"px");
+                        $("#note_c"+i).css("width", width+"px");
+                        $("#note_c"+i).css("top", top +"px");
+                        $("#note_c"+i).css("height", height+"px");
+                    }
+
                 
-                    if(along_sidein == "P"){
-                    $("#zone"+i).css("left", left+"px");
-                    $("#zone"+i).css("width", width+"px");
-                    $("#zone"+i).css("top", top +"px");
-                    $("#zone"+i).css("height", height+"px");
-                    $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    } else if (along_sidein == "S") {
-                    $("#zone"+i).css("left", left+"px");
-                    $("#zone"+i).css("width", width+"px");
-                    $("#zone"+i).css("top", top +"px");
-                    $("#zone"+i).css("height", height+"px");
-                    $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                    $("#text_judul"+i+".text_judul").css("padding-left", "5px");
-                    $("#text_judul"+i+".text_judul").css("padding-top", "5px");
-                    $("#text_detail"+i+".text_detail").css("padding-left", "5px");
-                    }
-
-
                 }
+            });
 
-                for (i = 1; i < vesseldom.length+1; ++i) {
-                    var cranedom =  vesseldom[i-1].crane;
-                    var uncranedom=[];
-                    if (cranedom==null)
-                    uncranedom=[];
-                    else
-                    uncranedom = cranedom.split(',');
+        }
 
-                    // console.log(uncrane);
-                    var craneloopdom = "";
-                    for (var x = 0; x < uncranedom.length; x++) { //Move the for loop from here
-                        craneloopdom += '<circle2><span>'+uncranedom[x]+'</span></circle2>';
-                    };
+    }
 
-                    $("#domes").append(
-                        '<div id="dom'+i+'" class="zone">'+
-                            '<div id="img'+i+'">'+
-                                '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vesseldom[i-1].image+'"/>'+
-                            '</div>'+
-                            '<div id="text_juduldom'+i+'" class="text_judul" val="'+vesseldom[i-1].ves_id+'">'+
-                                'MV. '+vesseldom[i-1].ves_name+''+
-                            '</div>'+
-                            '<div id="text_detaildom'+i+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+vesseldom[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETB :'+vesseldom[i-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETD : '+vesseldom[i-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].real_load+'/'+vesseldom[i-1].real_disch+' BOX</div>'+
-                                '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+vesseldom[i-1].dest_port+'</div>'+
-                                ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
-                                craneloopdom+
-                            '</div>'+
-                        '</div>');
-                }
-                for (i = 1; i < vesseldom.length+1; ++i) {
-
-                    if(vesseldom[i-1].act_berth_ts != null) {
-                        rand = getColor(0);
-                    } else if(vesseldom[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vesseldom[i-1].tentatif == 0) {
-                        rand = getColor(2);
-                    }
-                    
-                    
-                    var leftdom = vesseldom[i-1].berth_fr_metre_ori/10 *7.611111111111111; // done
-                    var topdom = vesseldom[i-1].y_awal/20 * 5.1875; // done
-                    var widthdom = vesseldom[i-1].width_ori/10 *7.611111111111111;
-                    var heightdom = vesseldom[i-1].height/20 * 5.1875;
-                    var along_sidedom = vesseldom[i-1].btoa_side;
-                    
-                    // console.log(height);
-                    if(along_sidedom == "P"){ //kiri star
-                    $("#dom"+i).css("left", leftdom+"px");
-                    $("#dom"+i).css("width", widthdom+"px");
-                    $("#dom"+i).css("top", topdom +"px");
-                    $("#dom"+i).css("height", heightdom+"px");
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidedom == "S") {
-                    $("#dom"+i).css("left", leftdom+"px");
-                    $("#dom"+i).css("width", widthdom+"px");
-                    $("#dom"+i).css("top", topdom +"px");
-                    $("#dom"+i).css("height", heightdom+"px");
-                    $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
-                    $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
-                    
-
-                    $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                    }
-                }
-
-
-
-                for (a = 1; a < vesselcur.length+1; ++a) {
-                    var cranecur =   vesselcur[a-1].crane;
-                    var uncranecur=[];
-                    if (cranecur==null)
-                    uncranecur=[];
-                    else
-                    uncranecur = cranecur.split(',');
-
-                    // console.log(uncrane);
-                    var craneloopcur = "";
-                    for (var x = 0; x < uncranecur.length; x++) { //Move the for loop from here
-                        craneloopcur += '<circle2><span>'+uncranecur[x]+'</span></circle2>';
-                    };
-
-                    $("#curah").append(
-                        '<div id="cur'+a+'" class="zone">'+
-                            '<div id="img'+a+'">'+
-                                '<img id="ims'+a+'" class="ims" src = "{{asset('/img/')}}/'+vesselcur[a-1].image+'"/>'+
-                            '</div>'+
-                            '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vesselcur[a-1].ves_id+'">'+
-                                'MV. '+vesselcur[a-1].ves_name+''+
-                            '</div>'+
-                            '<div id="text_detailcur'+a+'" class="text_detail">'+
-                                '<div style="margin:1px; color:red;">ETA :'+vesselcur[a-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETB :'+vesselcur[a-1].est_berth_ts+'</div>'+
-                                '<div style="margin:1px;">ETD : '+vesselcur[a-1].est_dep_ts+'</div>'+
-                                '<div style="margin:1px; margin-left:2px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].real_load+'/'+vesselcur[a-1].real_disch+' BOX</div>'+
-                                '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
-                                '<div style="margin:1px;">POD : '+vesselcur[a-1].dest_port+'</div>'+
-                                ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
-                                craneloopcur+
-                            '</div>'+
-                        '</div>');
-                }
-                for (i = 1; i < vesselcur.length+1; ++i) {
-                    if(vesselcur[i-1].act_berth_ts != null) {
-                        rand = getColor(0);
-                    } else if(vesselcur[i-1].tentatif == 1) {
-                        rand = getColor(1);
-                    } else if(vesselcur[i-1].tentatif == 0) {
-                        rand = getColor(2);
-                    }
-                    // var colorscur = ['#FFC312','#ffe699','#9dc3e6','#a9d18e'];
-                    // var rand2cur = colorscur[Math.floor(Math.random() * colorscur.length)];
-                    var leftcur = - (vesselcur[i-1].berth_fr_metre - panjang_curah)-205;
-                    console.log("left", leftcur);
-
-                    var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
-                    // var leftcur = vesselcur[i-1].berth_fr_metre/2;
-                    // var leftcur = ((190 - (vesselcur[i-1].berth_to_metre_ori/1.315789473684211))/10) *7.611111111111111;
-                    // var widthcur = (((190 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur - 70); // done
-                    var widthcur = vesselcur[i-1].width/2.65;
-                    var heightcur = vesselcur[i-1].height/20 * 5.1875;
-                    var along_sidecur = vesselcur[i-1].btoa_side;
-                    
-                    // console.log(height);
-                    if(along_sidecur == "P"){ //kiri star
-                    $("#cur"+i).css("left", leftcur+"px");
-                    $("#cur"+i).css("width", widthcur+"px");
-                    $("#cur"+i).css("top", topcur +"px");
-                    $("#cur"+i).css("height", heightcur+"px");
-                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                    }else if (along_sidecur == "S") {
-                    $("#cur"+i).css("left", leftcur+"px");
-                    $("#cur"+i).css("width", widthcur+"px");
-                    $("#cur"+i).css("top", topcur +"px");
-                    $("#cur"+i).css("height", heightcur+"px");
-                    $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
-                    $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
-                    
-                    $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                    }
-                }
-
-            
+    function getKadeAll() {
+        
+        $.ajax({  
+            url : "{{route('getkade')}}",
+            type : "get",
+            dataType : "json",
+            async : true,
+            success : function(result){
+                m_kade_all = result;
             }
         });
 
@@ -927,37 +1383,115 @@ circle2 {
         else if(param == 2)
             return yellow 
     }
-
     function signature() {
-        
-        // const urlParams = new URLSearchParams(window.location.search);
-        var url_string      = window.location.href;
-        var url = new URL(url_string);
+        var data_url = <?=json_encode($data)?>;
 
-        var berth_planner = url.searchParams.get("param11");
-        var planning_manager =url.searchParams.get('param22');
-        var link1 = url.searchParams.get("link1");
-        var link2 = url.searchParams.get("link2");
+        var berth_planner       = data_url.param11;
+        var planning_manager    = data_url.param22;
+        var date                = data_url.date;
+        var no_doc              = data_url.no_doc;
 
-        var link1up = encodeURIComponent(link1);
-        var link2up = encodeURIComponent(link2);
+        var link1 ="{{ URL::to('/Signature/qr')}}?bp="+berth_planner+"&date="+date+"&no_doc="+no_doc+"";
+        var link2 ="{{ URL::to('/Signature/qr')}}?bp="+planning_manager+"&date="+date+"&no_doc="+no_doc+"";
 
         $('#berth_planner').text(berth_planner);
         $('#planning_manager').text(planning_manager);
-        $('#link1').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link1up+"&choe=UTF-8");
-        $('#link2').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+link2up+"&choe=UTF-8");
-      
+        $('#link1').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+encodeURIComponent(link1)+"&choe=UTF-8");
+        $('#link2').attr("src", "https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl="+encodeURIComponent(link2)+"&choe=UTF-8");
     }
-    
+    function arusminus(){
+
+        var newdate = new Date();
+        var start_date = moment(newdate).format("YYYY-MM-DD");
+        var end_date = moment(newdate).add(6,'d').format('YYYY-MM-DD');
+        grup(start_date,end_date);
+
+        $.ajax({  
+            url : "{{ url('/print/arus') }}",
+            type : "post",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                start_date:start_date,
+                end_date:end_date
+                },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                for (d = 1; d < result.length+1; ++d) {
+                    var arus = result[d-1].arus;
+                    // console.log(arus);
+
+                    if (arus.length !== 0){
+                    $("#arusminus"+d).append('<p class="arustext" id ="rus'+d+'">ARUS MINUS<br></p>');
+                    }
+
+                    for (s=0;s<arus.length; s++){
+                        var start_time = arus[s].start_time;
+                        var end_time = arus[s].end_time;
+                        $("#rus"+d).append('<p class="arustext">('+start_time+'-'+end_time+')</p>');
+
+                    }
+
+                }
+
+            }
+        });
+    }
+    function grup(start_date, end_date){
+
+         $.ajax({  
+            url : "{{ url('/print/grup') }}",
+            type : "post",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                start_date:start_date,
+                end_date:end_date
+                },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                var index = "1";
+                for (c = 1;c < result.length+1;c++){
+                    // console.log(c); 
+                    var grup = result[c-1].grup;
+
+                    var shiftke = "";
+
+                    for (s=1; s < grup.length+1;s++){
+                        if (grup[s-1].shift === '1'){
+                           shiftke = "I";
+                        } else if (grup[s-1].shift === '2'){
+                           shiftke = "II";
+                        } else {
+                          shiftke = "III";
+                        }
+                    
+                        $("#grup").append('<div class = "grup_detail1" id="g'+index+'"><p class="grup_text"> '+shiftke+' / '+grup[s-1].grup+'</p></div>');
+                        $("#grup").append('<div class = "grup_detail2" id="s'+index+'"><p class="grup_text"> '+shiftke+' / '+grup[s-1].grup+'</p></div>');
+                        index++;
+
+
+                    }
+                    
+                }
+
+                var up = 159;
+                for (f=1; f<index; f++){
+                    $(".grup_detail2").css("left", "879px");
+                    $("#g"+f).css("top", up+"px");
+                    $("#s"+f).css("top", up+"px");
+                    up = up+41.5;
+
+                }
+
+
+            }   
+        });
+
+    } 
 
 </script>
 
 
-
-
-
-
-
-
-
-
+</body>
+</html>

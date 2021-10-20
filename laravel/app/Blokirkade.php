@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blokirkade extends Model
 {
-    protected $table = 'TOWER.VBP_GEN_REF';
+    protected $table = 'CBSLAM.VBP_GEN_REF';
 }

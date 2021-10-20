@@ -2,7 +2,11 @@
 
 @section('content')
 
-
+<style>
+hr{
+  border-top: 5px solid #aa9494
+}
+</style>
 
     <div id="content">
             <div class="panel box-shadow-none content-header">
@@ -29,10 +33,9 @@
                       <table id="table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                             
                                 <thead>
-                                  <th>ID</th>
-                                  <th>Tanggal</th>
-                                  <th>Start Time</th>
-                                  <th>End Time</th>
+                                  <th>Id </th>
+                                  <th>Start Date</th>
+                                  <th>End Date</th>
                                   <th>Edit</th>
                                 </thead>
                                 
@@ -55,27 +58,31 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <!-- <form role="form" action="{{ route('addvessel') }}" method="POST"> -->
-        <!-- <form role="form" enctype="multipart/form-data"> -->
-        <!-- {{csrf_field()}} -->
-         <div class="form-group">
-            <label class="col-form-label">ID </label>
-            <input type="text" class="form-control" id="param2" name="param2">
+      <div class ="row" id= "button_input">
+            <button class="btn ripple-btn-round btn-3d btn-warning " id="input_add"  style="margin-left:30px; margin-top:10px">
+                <i class='fa fa-plus'></i>
+            </button>
+      </div>
+      <div class="modal-body" >
+      <div id="form_add">
+        <div class="container-fluid">
+          <div class ="row">
+            <div class="col-md-9">
+                  <div class="form-group">
+                    <label class="col-form-label">Start Date </label>
+                    <input type="datetime-local" class="form-control start"  name="param4">
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">End Date </label>
+                    <input type="datetime-local" class="form-control end"  name="param5">
+                  </div>
+              
+            </div>
+          
           </div>
-          <div class="form-group">
-            <label class="col-form-label">Tanggal </label>
-            <input type="date" class="form-control" id="param3" name="param3">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">Start Time </label>
-            <input type="time" class="form-control" id="param4" name="param4">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">End Time </label>
-            <input type="time" class="form-control" id="param5" name="param5">
-          </div>
-    
+        </div> 
+      </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" id="submit_add" class="btn btn-primary" >Save</button>
@@ -92,94 +99,123 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
+ $(document).ready(function(){
     refreshTable();
   });
 
-  function refreshTable() {
-    $('#table').DataTable({
-        "filter": true,
-        "destroy": true,
-        "ordering": true,
-        "processing": true, 
-        "serverSide": true, 
-        "searching": true, 
-        "responsive":false,
-        "orderCellsTop": true,
-        "fixedHeader": true,
-        ajax: "{{url('Arus/json')}}",
-        columns: [
-            { data: 'arus_id', name: 'param2' },
-            {   data: 'tanggal',
-                "render": function (data) {
-                    var date = new Date(data);
-                    var month = date.getMonth() + 1;
-                    return date.getDate() + " - " + (month.toString().length > 1 ? month : "0" + month) + " - " + date.getFullYear();
-                }, 
-                name: 'tanggal' },
-            { data: 'start_time', name: 'start_time' },
-            { data: 'end_time', name: 'end_time' },
-            { 
-
-              // btn ripple- btn-round btn-3d btn-success
-                "data": "arus_id",
-                "render": function ( data, type, row ) {
-                    return "<button class='btn ripple-btn-round btn-3d btn-danger' onclick=\"remove('"+data+"')\">"+
-                              "<i class='fa fa-trash'></i>"+
-                            "</button>"+
-                            " <button class='btn ripple-btn-round btn-3d btn-warning' onclick=\"prepareUpdate(true, '"+data+"', '"+row.tanggal+"', '"+row.start_time+"', '"+row.end_time+"')\" data-toggle='modal' data-target='#modal_add' >"+
-                              "<i class='fa fa-pencil'></i>"+
-                            "</button>";
-                            (state, param2, tanggal, start_time, end_time)
-                }
-            }
-        ]
-    });
-  }
-
-  mIsUpdate = false;
-  mCurParam2 = '';
-
-  $('#btn_add').on('click', function() {
-      mIsUpdate = false;
-      $('#param2').val('');
-      $('#param3').val('');
-      $('#param4').val('');
-      $('#param5').val('');
-  })
-
-  $('#submit_add').on('click', function() {
-    $.ajax({  
-      url : (!mIsUpdate?"{{ url('Arus/add') }}":"{{ url('Arus/update') }}"),
-      data: {
-        "_token": "{{ csrf_token() }}",
-        curParam2:mCurParam2,
-        param2:$('#param2').val(),
-        param3:$('#param3').val(),
-        param4:$('#param4').val(),
-        param5:$('#param5').val(),
-      },
-      type : "post",
-      dataType : "json",
-      async : false,
-      success : function(result) {
-        if(result.success) {
-          refreshTable();
-          $('#modal_add').modal('hide');
+function refreshTable(){
+  $('#table').DataTable({
+      "filter": true,
+      "destroy": true,
+      "ordering": true,
+      "processing": true, 
+      "serverSide": true, 
+      "searching": true, 
+      "responsive":false,
+      "orderCellsTop": true,
+      "fixedHeader": true,
+      ajax: "{{url('Arus/json')}}",
+      columns: [
+        { data: 'arus_id', name: 'arus_id' },
+        { data: 'start_date', name: 'start_date' },
+        { data: 'end_date', name: 'end_date' },
+        { 
+          "data": "arus_id",
+          "render": function ( data, type, row ) {
+              return "<button class='btn ripple-btn-round btn-3d btn-danger' onclick=\"remove('"+data+"')\">"+
+                        "<i class='fa fa-trash'></i>"+
+                      "</button>";
+          }
         }
-        mIsUpdate = false;
-        alert(result.message);
-      }
-    });
-  })
+      ]
+  });
+}
 
-  function remove(param2) {
+var numb = 0;
+$('#input_add').on('click', function() {
+  var html ='<div class="kolom" id="kolom'+numb+'">'+
+            '<hr>'+
+              '<div class="container-fluid">'+
+                '<div class ="row">'+
+                  '<div class="col-md-9">'+
+                        '<div class="form-group">'+
+                          '<label class="col-form-label">Start Date </label>'+
+                          '<input type="datetime-local" class="form-control start"  name="param4">'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                          '<label class="col-form-label">End Date </label>'+
+                          '<input type="datetime-local" class="form-control end"  name="param5">'+
+                        '</div>'+
+                  '</div>'+
+                  '<div class="col-md-3 ml-auto" >'+
+                    '<div style="margin-top:70px"><a class="remove_block" onclick="removediv('+numb+')" href="#">Remove</a></div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'+
+            '</div>';
+
+  $('#form_add').append(html);
+  numb++;
+
+   
+});
+
+$('#parent').on('click', 'a.remove_block', function(events){
+   $(this).parents('div').eq(1).remove();
+});
+
+function removediv(param){
+  $("#kolom"+param).remove();
+}
+
+function clear() {
+  $('.start').val('');
+  $('.end').val('');
+  $(".kolom").remove();
+}
+
+$('#submit_add').on('click', function() {
+  var start= $.map($('.start'), function (el) { 
+    return moment(el.value).format("YYYY-MM-DD HH:mm:ss");
+  });
+
+  var end = $.map($('.end'), function (i) { 
+    return moment(i.value).format("YYYY-MM-DD HH:mm:ss"); 
+  });
+
+  $.ajax({  
+    url :"{{ url('Arus/add') }}" ,
+    data: {
+      "_token": "{{ csrf_token() }}",
+      start_date:start,
+      end_date:end,
+    },
+    type : "post",
+    dataType : "json",
+    async : false,
+    success : function(result) {
+      if(result.success) {
+        refreshTable();
+        $('#modal_add').modal('hide');
+        clear();
+        
+      }
+      mIsUpdate = false;
+      alert(result.message);
+    }
+  });
+});
+
+
+
+
+function remove(arus_id) {
     if(confirm('apakah anda yakin ingin menghapus data ini?')) {
       $.ajax({  
         url : "{{ url('Arus/remove') }}",
         data: {
           "_token": "{{ csrf_token() }}",
-          param2:param2,
+          arus_id:arus_id,
         },
         type : "post",
         dataType : "json",
@@ -192,24 +228,6 @@
         }
       });
     }
-  }
-
-  function prepareUpdate(state, param2, tanggal, start_time, end_time) {
-    mIsUpdate = state;
-    mCurParam2 = param2;
-
-    var now = new Date(tanggal);
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-
-    // console.log(today);
-
-    $('#param2').val(param2);
-    $('#param3').val(today);
-    $('#param4').val(start_time);
-    $('#param5').val(end_time);
-  }
-
+}
 </script>
 @endsection

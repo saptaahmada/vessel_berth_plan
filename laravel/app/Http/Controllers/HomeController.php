@@ -27,13 +27,13 @@ class HomeController extends Controller
     public function parkingbackup()
     {   
         
-        $domes = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $domes = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> where('ocean_interisland','D')
             -> get();
-        $intern = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $intern = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> where('ocean_interisland','I')
             -> get();
-        $al = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $al = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> get();
     
         return view('content.berthplan', compact("domes", "intern","al"));
@@ -41,19 +41,19 @@ class HomeController extends Controller
 
     public function getdermaga() 
     {
-        $all = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $all = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> get();
-        $dermagaInt = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $dermagaInt = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> where('ocean_interisland',"I")
             -> get();
-        $dermagaDom = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $dermagaDom = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> where('ocean_interisland',"D")
             -> get();
-        $dry = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $dry = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> where('ves_type',"GC")
             -> get();
 
-        $con = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $con = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
             -> where('ves_type',"CT")
          -> get();
 
@@ -71,14 +71,14 @@ class HomeController extends Controller
 
     public function getvessel()
     {
-        $dataIntern = DB::table('TOWER.CBS_VESSEL_PLANNING')
+        $dataIntern = DB::table('CBSLAM.CBS_VESSEL_PLANNING')
         -> where('ocean_interisland_fake','I')
         -> get();
-        $dataDomes = DB::table('TOWER.CBS_VESSEL_PLANNING')
+        $dataDomes = DB::table('CBSLAM.CBS_VESSEL_PLANNING')
         -> where('ocean_interisland_fake','D')
         -> get();
 
-        $dataCurah= DB::table('TOWER.CBS_VESSEL_PLANNING')
+        $dataCurah= DB::table('CBSLAM.CBS_VESSEL_PLANNING')
         -> where('ocean_interisland_fake','C')
         -> get();
 
@@ -93,7 +93,7 @@ class HomeController extends Controller
 
     public function addvessel(Request $request)
     {
-        $dataIntern = DB::table('TOWER.CBS_VESSEL_MASTER_PLAN')
+        $dataIntern = DB::table('CBSLAM.CBS_VESSEL_MASTER_PLAN')
         -> where('ves_id',$request->param_data)
         -> get();
 
@@ -115,7 +115,7 @@ class HomeController extends Controller
 
 
         
-        DB::table('TOWER.VESSEL_DETAILS_SIM')
+        DB::table('CBSLAM.VESSEL_DETAILS_SIM')
             ->where('IS_SIMULATION', '1')
             ->where('OCEAN_INTERISLAND_FAKE', $param_ocean)
             ->delete();
@@ -140,7 +140,7 @@ class HomeController extends Controller
             $occ =($param_vess[$i]['occ']);
             
             $ves_type = ($param_vess[$i]['ves_type']);
-            DB::table('TOWER.VESSEL_DETAILS_CRANE')
+            DB::table('CBSLAM.VESSEL_DETAILS_CRANE')
             ->where('VES_ID', $ves_id)
             ->delete();
 
@@ -205,7 +205,7 @@ class HomeController extends Controller
         ];
       
         if($is_sim == '1' ) {
-            DB::table('TOWER.VESSEL_DETAILS_SIM')
+            DB::table('CBSLAM.VESSEL_DETAILS_SIM')
             ->insert($data_push);
 
             
@@ -216,26 +216,26 @@ class HomeController extends Controller
                     'che_id' => $savecrane[$a]
                 ];
             // dump("data crane",$data_crane);
-                DB::table('TOWER.VESSEL_DETAILS_CRANE')
+                DB::table('CBSLAM.VESSEL_DETAILS_CRANE')
                 ->insert($data_crane);
             }
     
 
         } else {
-            DB::table('TOWER.VESSEL_DETAILS_SIM')
+            DB::table('CBSLAM.VESSEL_DETAILS_SIM')
             ->where('ves_id', $ves_id)
             ->update($data_update);
         }
 
 
         //////////////////////////////////////////////////////////
-        // DB::table('TOWER.VESSEL_DETAILS')
+        // DB::table('CBSLAM.VESSEL_DETAILS')
         // ->where('ves_id', $ves_id)
         // ->update($data);
         // ->get();
         // dump($data);
 
-        // $sql = "UPDATE TOWER.VESSEL_DETAILS SET 
+        // $sql = "UPDATE CBSLAM.VESSEL_DETAILS SET 
         //         BERTH_FR_METRE='{$param_vess[$i]['berth_fr_ori']}',
         //         berth_to_metre='{$param_vess[$i]['berth_to_ori']}',
         //         est_berth_ts = TO_DATE('$est_berth_ts', 'YYYY-MM-DD HH24:MI'),
@@ -251,7 +251,7 @@ class HomeController extends Controller
 
     public function logo()
     {   
-        $customer = DB::table('TOWER.CBS_CUSTOMER')
+        $customer = DB::table('CBSLAM.CBS_CUSTOMER')
             ->get();
         return view('content.tablecustomer',compact("customer"));
     }
@@ -265,7 +265,7 @@ class HomeController extends Controller
             }
            
             $id_cus = $customer.' '; 
-            $cus= DB::table('TOWER.CUSTOMER')
+            $cus= DB::table('CBSLAM.CUSTOMER')
                 ->where("CUSTOMER",$id_cus)
                 ->update(['image' => $img_name]);
 
@@ -273,19 +273,12 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-    public function print()
-    {  
-
-
-        return view('content.printpdf');
-    }
-
     public function getcrane()
     {
-        $craneCon = DB::table('TOWER.CBS_CHE_MASTER')
+        $craneCon = DB::table('CBSLAM.CBS_CHE_MASTER')
         ->where ('CHE_TYPE', 'PTR')
         ->get();
-        $craneDry= DB::table('TOWER.CBS_CHE_MASTER')
+        $craneDry= DB::table('CBSLAM.CBS_CHE_MASTER')
         ->where ('CHE_TYPE', 'GSU')
         ->get();
         $crane = [
@@ -298,17 +291,17 @@ class HomeController extends Controller
 
     public function getport()
     {
-        $getport = DB::table('TOWER.CBS_PORT_MASTER')
+        $getport = DB::table('CBSLAM.CBS_PORT_MASTER')
         ->get();
 
         return response()->json($getport);
     }
     public function getsignature()
     {
-        $manager =  DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $manager =  DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->where('jabatan', "PLANNING MANAGER")
         ->get();
-        $planner =  DB::table('TOWER.MASTER_SIGNATURE_PLAN')
+        $planner =  DB::table('CBSLAM.MASTER_SIGNATURE_PLAN')
         ->where('jabatan', "BERTH PLANNER")
         ->get();
 

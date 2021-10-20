@@ -158,7 +158,7 @@
                                         
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="print()">Print</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="printmonitoring()">Print</button>
                                             </div>
                                             </form>
                                         </div>
@@ -318,6 +318,8 @@
 
     });
 
+    var m_is_act = '<?=$is_act?>';
+
 
     function getColor(param) {
         var green = '#a9d18e';
@@ -350,10 +352,7 @@
        
         // console.log("button",button);
 
-        var start= document.getElementById("start").value;
-
-        
-    
+        var start= document.getElementById("start").value;    
         var datestart = moment(start).format('YYYY/MM/DD');
         var dateend = moment(start).add(6,'d').format('YYYY/MM/DD');
         var y_awalp = moment(start).set({h: 00, m: 00}).format('YYYY-MM-DD HH:mm:ss');
@@ -362,8 +361,10 @@
         for(s=0; s<7; s++){
             var tglloop = moment(start).add(s,'d').format('DD-MM-YYYY');
             $('#tgl'+s).text(tglloop);
-        }
-         
+        }        
+        // console.log(y_awal);
+
+       
         var vessel=[];
         $("#wrap_sw").empty();
         $.ajax({  
@@ -372,13 +373,15 @@
             data: {
                 "_token": "{{ csrf_token() }}",
                 date_start:datestart,
-                date_end:dateend
+                date_end:dateend,
+                is_act : m_is_act
                 },
             dataType : "json",
             async : false,
             success : function(result){
                 if($('#cekbox1').is(':checked')) {
                     vessel = result.Domes;
+                    console.log(vessel);
                     $("#Rdomes").css("display","block");
                     $("#Rintern").css("display","none");
                     $("#Rcur").css("display","none");
@@ -438,6 +441,7 @@
                     var duration = moment.duration(end.diff(y_awal));
                     var hours = duration.asHours();
                     var startdate = ((hours*60)/30)*10;
+                    // console.log(startdate);
 
                     var btoa = vessel[v-1].btoa_side;
 
@@ -446,9 +450,9 @@
                     if(vessel[v-1].act_berth_ts != null) {
                         rand = getColor(0);
                     } else if(vessel[v-1].tentatif == "1") {
-                        rand = getColor(1);
-                    } else if(vessel[v-1].tentatif == "0") {
                         rand = getColor(2);
+                    } else if(vessel[v-1].tentatif == "0") {
+                        rand = getColor(1);
                     }
 
                     
@@ -483,6 +487,33 @@
             }
         });    
     }
+</script>
+
+<script>
+function printmonitoring() {
+    var start= document.getElementById("start").value; 
+    var datestart = moment(start).format('YYYY/MM/DD');
+    var dateend = moment(start).add(6,'d').format('YYYY/MM/DD');
+
+
+    var date_print = new Date();
+    const format_date_print = "DD-MM-YYYY HH:mm:ss"
+    var date_printout = moment(date_print).format(format_date_print);
+    var param11= document.getElementById("berth_planner").value;
+    var param22= document.getElementById("planing_manager").value;
+    var nomor_doc=09278830;
+    var no_doc ="BA."+nomor_doc+"/TI.02.03/PTTL-2021";
+
+    // printout.push({date_print:date_printout,bp:param11,pm:param22})
+    var link1 ="{{ URL::to('/Signature/qr')}}?bp="+param11+"&date="+date_printout+"&no_doc="+no_doc+"";
+    var link2 ="{{ URL::to('/Signature/qr')}}?bp="+param22+"&date="+date_printout+"&no_doc="+no_doc+"";
+    // console.log("Link1", link1);
+    //    var asu = "{{ URL::to('/Monitoring/print') }}?datestart="+datestart+"&dateend="+dateend+"&param11="+param11+"&param22="+param22+"&link1="+encodeURIComponent(link1)+"&link2="+encodeURIComponent(link2);
+    //    console.log(asu);
+
+    window.open("{{ URL::to('/Monitoring/print') }}?datestart="+datestart+"&dateend="+dateend+"&param11="+param11+"&param22="+param22+"&link1="+encodeURIComponent(link1)+"&link2="+encodeURIComponent(link2), "_blank");
+}
+
 </script>
 
 <script>

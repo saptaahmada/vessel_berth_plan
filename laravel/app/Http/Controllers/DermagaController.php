@@ -11,7 +11,7 @@ class DermagaController extends Controller
 {
     public function index()
     {
-        // $dermaga = DB::table('TOWER.VBP_GEN_REF')
+        // $dermaga = DB::table('CBSLAM.VBP_GEN_REF')
         // ->where('PARAM1', 'DERMAGA')
         // ->get();
         return view('content.dermaga.view');
@@ -19,7 +19,7 @@ class DermagaController extends Controller
 
     public function add(Request $request)
     {
-        $result = DB::table('TOWER.VBP_GEN_REF')
+        $result = DB::table('CBSLAM.VBP_GEN_REF')
         ->insert([
             'PARAM1'    => 'DERMAGA',
             'PARAM2'    => $request->param2,
@@ -34,7 +34,7 @@ class DermagaController extends Controller
 
     public function update(Request $request)
     {
-        $result = DB::table('TOWER.VBP_GEN_REF')
+        $result = DB::table('CBSLAM.VBP_GEN_REF')
         ->where('PARAM1', 'DERMAGA')
         ->where('PARAM2', $request->curParam2)
         ->update([
@@ -50,7 +50,7 @@ class DermagaController extends Controller
 
     public function remove(Request $request)
     {
-        $result = DB::table('TOWER.VBP_GEN_REF')
+        $result = DB::table('CBSLAM.VBP_GEN_REF')
         ->where('PARAM1', 'DERMAGA')
         ->where('PARAM2', $request->param2)
         ->delete();
@@ -66,22 +66,22 @@ class DermagaController extends Controller
 
     public function getkade()
     {
-        $all= DB::table('TOWER.VBP_GEN_REF')
+        $all= DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->get();
 
-        $kadedom = DB::table('TOWER.VBP_GEN_REF')
+        $kadedom = DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->where ('PARAM2', 'D')
-        ->get('PARAM4');
-        $kadeint = DB::table('TOWER.VBP_GEN_REF')
+        ->get();
+        $kadeint = DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->where ('PARAM2', 'I')
-        ->get('PARAM4');
-        $kadecur = DB::table('TOWER.VBP_GEN_REF')
+        ->get();
+        $kadecur = DB::table('CBSLAM.VBP_GEN_REF')
         ->where ('PARAM1', 'DERMAGA')
         ->where ('PARAM2', 'C')
-        ->get('PARAM4');
+        ->get();
         
         $kade = [
                     'all' => $all,

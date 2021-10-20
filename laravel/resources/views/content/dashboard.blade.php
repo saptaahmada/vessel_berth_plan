@@ -1,6 +1,17 @@
 @extends('home.home')
 
 @section('content')
+<style>
+    #canvas_ship_to_ship {
+        width:200px; height:160px;
+        display: inline-block;
+        margin: 1em;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="{{asset('asset/js/plugins/raphael.min.js')}}"></script>
+<script src="{{asset('asset/js/plugins/justgate/justgate.js')}}"></script>
 
 <div id="content">
     <div class="panel box-shadow-none content-header">
@@ -17,19 +28,28 @@
         <div class="col-md-12">
             <div class="panel">
                 <div class="panel-heading">
-                @if (session('data'))
-                    <h3>Welcome <span style="text-transform: uppercase;"> {{session('data')}}</span></h3>
-                @endif 
+                    SHIP TO SHIP
                 </div>
                 <div class="panel-body">
-                   <div> Role  : {{session('role')}}</div>
-                   <div> Email : {{session('email')}}</div>
-                   <div> No.Hp : {{session('hp')}}</div>
-
-                   
+                    <div id="canvas_ship_to_ship"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    
+    $(function(){
+        var g1 = new JustGage({
+          id: "canvas_ship_to_ship",
+          value: 10,
+          min: 0,
+          max: 50,
+          title: "Testing",
+          label: "m/s"
+        });
+    });
+</script>
+
 @endsection

@@ -11,7 +11,7 @@ class ArusController extends Controller
 {
     public function index()
     {
-        // $dermaga = DB::table('TOWER.VBP_GEN_REF')
+        // $dermaga = DB::table('CBSLAM.VBP_GEN_REF')
         // ->where('PARAM1', 'DERMAGA')
         // ->get();
         return view('content.arus.arus');
@@ -21,46 +21,45 @@ class ArusController extends Controller
         return DataTables::of(Arus::all())->make(true);
     }
 
-    public function add(Request $request)
+    public function getAll(Request $request)
     {
-        // dump($request->param4);
-        $result = DB::table('TOWER.MASTER_ARUS')
-        ->insert([
-        	'ARUS_ID'	=> $request->param2,
-        	'TANGGAL'	=> $request->param3,
-        	'START_TIME'	=> $request->param4,
-        	'END_TIME'	=> $request->param5
-        ]);
-        return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
-        ];
+        echo json_encode(DB::table('CBSLAM.VIERV_ARUS')->whereDate('START_DATE', '>=', date('Y-m-d 00:00:00'))->get());
     }
 
-    public function update(Request $request)
+    public function add(Request $request)
     {
-        $result = DB::table('TOWER.MASTER_ARUS')
-        ->where('ARUS_ID', $request->curParam2)
-        ->update([
-            'ARUS_ID'	=> $request->param2,
-        	'TANGGAL'	=> $request->param3,
-        	'START_TIME'=> $request->param4,
-        	'END_TIME'	=> $request->param5
-        ]);
+        $start = $request->start_date;
+        $end   = $request->end_date;
+
+        // dump(count($start));
+        for ($s=0 ; $s < count($start); $s++){
+            $data_arus = [
+                'start_date'    => $start[$s],
+                'end_date'      => $end[$s]
+            ];
+
+            $result = DB::table('CBSLAM.MASTER_ARUS')->insert($data_arus);
+           
+                // dump($data_arus);
+        }
         return [
-        	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+            'success'	=> $result,
+            'message'	=> ($result?'Success':'Failed')
         ];
+
+        
     }
+
+   
 
     public function remove(Request $request)
     {
-        $result = DB::table('TOWER.MASTER_ARUS')
-        ->where('ARUS_ID', $request->param2)
+        $result = DB::table('CBSLAM.MASTER_ARUS')
+        ->where('ARUS_ID', $request->arus_id)
         ->delete();
         return [
         	'success'	=> $result,
-        	'message'	=> ($result?'Success':'Gagal')
+        	'message'	=> ($result?'Success':'Failed')
         ];
     }
 
