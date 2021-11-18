@@ -48,11 +48,30 @@ function sendCurlBasicAuth($url, $auth="ttl:pelindottl", $data)
     // echo json_encode($obj);
 }
 
-function getDefaultDate($date)
+function getDefaultDate($date, $is_excel=false)
 {
     $arrDate = explode(' ', $date);
-    $arrTgl = explode('/', $arrDate[0]);
-    $arrTime = explode(':', $arrDate[1]);
+    if(count($arrDate) > 1) {
+        $arrTgl = explode('/', $arrDate[0]);
+        $arrTime = explode(':', $arrDate[1]);
+        if(!$is_excel)
+            return "{$arrTgl[2]}-{$arrTgl[1]}-{$arrTgl[0]} {$arrTime[0]}:{$arrTime[1]}";
+        else
+            return "{$arrTgl[2]}-{$arrTgl[0]}-{$arrTgl[1]} {$arrTime[0]}:{$arrTime[1]}";
+    } else {
+        $arrTgl = explode('/', $arrDate[0]);
+        if(!$is_excel)
+            return "{$arrTgl[2]}-{$arrTgl[1]}-{$arrTgl[0]}";
+        else 
+            return "{$arrTgl[2]}-{$arrTgl[0]}-{$arrTgl[1]}";
+    }
+}
 
-    return "{$arrTgl[2]}-{$arrTgl[1]}-{$arrTgl[0]} {$arrTime[0]}:{$arrTime[1]}";
+
+function getSheet($location)
+{
+    $excelreader    = new PHPExcel_Reader_Excel2007();
+    $loadexcel      = $excelreader->load($location);
+    $sheet          = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
+    return $sheet;
 }

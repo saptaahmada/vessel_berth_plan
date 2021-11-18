@@ -138,7 +138,27 @@ class PrintController extends Controller
             }
         }
 
-        $note = DB::table('CBSLAM.VIERV_NOTE')->get();
+        $sql = "SELECT CODE,
+              TEXT,
+              X,
+              Y,
+              START_DATE,
+              WIDTH,
+              HEIGHT,
+              OCEAN_INTERISLAND,
+              0 IS_EDITED
+         FROM (SELECT A.CODE,
+                      A.TEXT,
+                      A.X,
+                      Y + (TRUNC (START_DATE) - TRUNC (TO_DATE('{$request->datenow}', 'YYYY-MM-DD HH24:MI'))) * 480 Y,
+                      START_DATE,
+                      A.WIDTH,
+                      A.HEIGHT,
+                      OCEAN_INTERISLAND
+                 FROM cbslam.vessel_details_note A)
+        WHERE Y >= 0 AND Y<=480*7 AND START_DATE>=TRUNC(TO_DATE('{$request->datenow}', 'YYYY-MM-DD HH24:MI'))";
+
+        $note = DB::select($sql);
         // $note = Note::whereDate('START_DATE', '>=', date('Y-m-d'))->get();
 
         $note_d = [];
@@ -211,6 +231,7 @@ class PrintController extends Controller
                 $data = [
                     'param11' => $arrParam[0],
                     'param22' => $arrParam[1],
+                    'datestart' => getDefaultDate($arrParam[2]),
                     'date'    => $arrParam[2],
                     'no_doc'  => $arrParam[3],
                     'code'    => $arrParam[4],
@@ -219,8 +240,24 @@ class PrintController extends Controller
             }
         }
 
+        // echo json_encode($data);
+        // die();
+
         return view('content.printpdf', compact('data'));
     }
 
+    public function export()
+    {
+        $data = DB::table('CBSLAM.CBS_VESSEL_MONITORING')
+        ->where('EST_BERTH_TS', '>=', $_GET['export_start'])
+        ->where('EST_BERTH_TS', '<=', $_GET['export_end'])
+        ->orderBy('EST_BERTH_TS', 'DESC')
+        ->get();
+        return view('content.print.export', [
+            "data"      => $data,
+            "start_date"=> $_GET['export_start'],
+            "end_date"  => $_GET['export_end'],
+        ]);
+    }
 
 }

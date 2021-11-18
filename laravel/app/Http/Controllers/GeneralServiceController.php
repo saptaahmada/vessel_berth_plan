@@ -41,12 +41,23 @@ class GeneralServiceController extends Controller
     public function get_vessel_json(Request $request)
     {
         $result = DB::table('CBSLAM.VESSELS')
-        ->where(DB::raw("TRIM(AGENT)"), session('agent'))
         ->where(function($query) use ($request){
             $query->orWhere('VES_NAME', 'LIKE', '%'.strtoupper($request->keyword).'%');
             $query->orWhere('VES_CODE', 'LIKE', '%'.strtoupper($request->keyword).'%');
-        })
-        ->get();
+        });
+        
+        $data_pic = session('data_pic');
+
+        if(count($data_pic) > 0) {
+
+            $result->where(function($query) use ($data_pic){
+                foreach ($data_pic as $key => $val) {
+                    $query->orWhere(DB::raw("TRIM(AGENT)"), $val['agent']);
+                }
+            });
+        }
+
+        $result = $result->get();
 
         $data = [];
 

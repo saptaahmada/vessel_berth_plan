@@ -419,7 +419,7 @@
                             '<img id="ims'+i+'" class="ims" src = "{{asset('/img/')}}/'+vessel[i-1].image+'" style= "width: 20%; height: 20%; "/>'+
                         '</div>'+
                         '<div id="text_judul'+i+'" class="text_judul">'+
-                            'MV. '+vessel[i-1].ves_name+''+
+                            'MV. '+vessel[i-1].ves_name+' ('+vessel[i-1].ves_id+')'+
                         '</div>'+
                         '<div id="text_detail'+i+'" class="text_detail">'+
                             '<div style="margin:1px; color:red;">ETA :'+vessel[i-1].est_berth_ts+'</div>'+

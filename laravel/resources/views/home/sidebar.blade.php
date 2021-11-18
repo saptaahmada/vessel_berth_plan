@@ -13,6 +13,7 @@
             @if (session('role') === "ADMIN")
             <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li>
             <li class="ripple"><a href="{{ url('VesselBerthPlan3') }}"><span class="fa fa-ship"></span>Berth Plan</a></li>
+            <li class="ripple"><a href="{{ url('EquipmentPlan') }}"><span class="fa fa-ship"></span>Equipment Plan</a></li>
             <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span>Data Master  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
               <ul class="nav nav-list tree">
                 <li><a style="margin-top:-10px;" href="{{ url('VesselBerthPlan_Logo') }}"><span></span><span></span>Customer</a></li>
@@ -39,7 +40,7 @@
             <li class="ripple"><a href="{{ url('Monitoring/0') }}"><span class="fa fa-inbox"></span>Monitoring Berth Plan</a></li>
             <li class="ripple"><a href="{{ url('Monitoring/1') }}"><span class="fa fa-inbox"></span>Monitoring Berth Act</a></li>
             @elseif (session('role') === "CUSTOMER")
-            <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li>
+            <!-- <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li> -->
             <li class="ripple"><a href="{{ url('ReqBerth') }}"><span class="fa-home fa"></span>Req Vessel Berth</a></li>
             @else 
             <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li>

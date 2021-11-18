@@ -37,6 +37,8 @@
     var m_vessel_all;
     var m_kade_all;
     var m_left_right = 'L';
+    m_index_box_keypress = null;
+    var m_id_req_berth = null;
 
         $(document).ready(function () {
 
@@ -65,6 +67,9 @@
                     }
 
                     // m_note = result.note;
+                },
+                error: function(request, textStatus, errorThrown) {
+                    alert(request.responseJSON.message);
                 }
             });
 
@@ -112,7 +117,10 @@
 
                     }
                 
-                } 
+                } ,
+                error: function(request, textStatus, errorThrown) {
+                    alert(request.responseJSON.message);
+                }
             });
 
 
@@ -135,16 +143,16 @@
                         var crane = result.Con[s-1];
                         if(crane.ocean_interisland == 'D') {
                             $("#craneCon").append('<input type="checkbox" name="crane" id="checkbox'+result.Con[s-1].che_name+'" value="'+result.Con[s-1].che_name+'" class="crane" />'+
-                                                                '<label>STS '+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
+                                                                '<label>'+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
 
                             $("#unreg_crane").append('<input type="checkbox" name="crane" id="unreg_checkbox'+result.Con[s-1].che_name+'" value="'+result.Con[s-1].che_name+'" class="unreg_crane" />'+
-                                                                '<label>STS '+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
+                                                                '<label>'+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
                         } else {
                             $("#craneCon_2").append('<input type="checkbox" name="crane" id="checkbox'+result.Con[s-1].che_name+'" value="'+result.Con[s-1].che_name+'" class="crane" />'+
-                                                                '<label>STS '+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
+                                                                '<label>'+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
 
                             $("#unreg_crane_2").append('<input type="checkbox" name="crane" id="unreg_checkbox'+result.Con[s-1].che_name+'" value="'+result.Con[s-1].che_name+'" class="unreg_crane" />'+
-                                                                '<label>STS '+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
+                                                                '<label>'+result.Con[s-1].che_name+'</label><span> </span><span> </span><br>');
                         }
 
                     }
@@ -155,7 +163,10 @@
                         $("#unreg_crane_dry").append('<input type="checkbox" name="crane" id="checkbox'+result.Dry[u-1].che_name+'" value="'+result.Dry[u-1].che_name+'" class="crane" />'+
                                                             '<label>'+result.Dry[u-1].che_name+'</label><span> </span><span> </span><br>');
                     }
-                }       
+                },
+                error: function(request, textStatus, errorThrown) {
+                    alert(request.responseJSON.message);
+                }
             });
 
             $("#planing_manager").empty();
@@ -176,7 +187,10 @@
                     for (x = 1; x < planner.length+1; ++x) {
                         $("#berth_planner").append('<option value="'+planner[x-1].nama+'">'+planner[x-1].nama+'</option>');  
                     } 
-                } 
+                } ,
+                error: function(request, textStatus, errorThrown) {
+                    alert(request.responseJSON.message);
+                }
             });
 
 
@@ -304,6 +318,9 @@
             async : false,
             success : function(result){
                 m_vessel_all = result;
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
             }
         });
     }
@@ -317,6 +334,9 @@
             async : false,
             success : function(result){
                 m_kade_all = result;
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
             }
         });
 
@@ -397,6 +417,9 @@
             success : function(result){
                 m_arus = result;
                 loadArusAll();
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
             }
         });
 
@@ -414,6 +437,9 @@
             success : function(result){
                 m_holiday = result;
                 loadMHolidayAll();
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
             }
         });
 
@@ -434,9 +460,6 @@
         }
 
         m_dermaga_current = der;
-        // m_vessel_removed = [];
-
-        
     }
 
 function drawSysdate() {
@@ -479,20 +502,36 @@ function borang(param) {
 }
 
 function getColor(param) {
-    var green = '#a9d18e';
-    var blue = '#9dc3e6';
-    var yellow = '#ffe699';
+    var departed = '#5eebeb';
+    var berth = '#F5E89A';
+    var commit = '#BDE992';
+    var tentatif = '#c7d6c7';
 
     if(param == 0)
-        return green;
+        return berth;
     else if(param == 1)
-        return blue;
+        return commit;
     else if(param == 2)
-        return yellow;
+        return tentatif;
+    else if(param == 3)
+        return departed;
+}
+
+function getGenerateColor(str) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  var colour = '#';
+  for (var i = 0; i < 3; i++) {
+    var value = (hash >> (i * 8)) & 0xFF;
+    colour += ('00' + value.toString(16)).substr(-2);
+  }
+  return colour;
 }
 
 
-  function refreshTableVesNotYet() {
+  function refreshTableVesNotYet(status=-2) {
     $('#table_ves_not_input').DataTable({
         "filter": true,
         "destroy": true,
@@ -503,22 +542,43 @@ function getColor(param) {
         "responsive":false,
         "orderCellsTop": true,
         "fixedHeader": true,
+        "order": [[ 5, "desc" ]],
         pageLength: 5,
         lengthMenu: [5, 10, 25, 50],
-        ajax: "{{url('VesselBerthPlan3/ves_not_yet_json')}}",
+        ajax: "{{url('VesselBerthPlan3/ves_not_yet_json')}}/"+status,
         columns: [
           { data: 'ves_id', name: 'ves_id' },
           { data: 'ves_name', name: 'ves_name' },
           { data: 'est_pilot_ts', name: 'est_pilot_ts' },
-          { data: 'est_berth_ts', name: 'est_berth_ts' },
-          { data: 'loa', name: 'loa' },
+          { data: 'est_disc', name: 'est_disc' },
+          { data: 'est_load', name: 'est_load' },
+          { data: 'created_date', name: 'created_date' },
           { 
             "data": "ves_id",
             "render": function ( data, type, row ) {
               if(row.is_done == 0) {
-                return "<button class='badge badge-success' onclick=\"prepareAdd('"+row.ves_id+"', '"+row.ves_code+"', '"+row.ves_name+"', '"+row.mdm_kode_kapal+"', '"+row.call_sign+"', '"+row.est_pilot_ts+"', '"+row.req_berth_ts+"', '"+row.est_berth_ts+"', '"+row.est_dep_ts+"', '"+row.est_load+"', '"+row.est_disc+"', '"+row.loa+"', '"+row.berth_fr_metre+"', '"+row.dest_port+"', '"+row.btoa_side+"', '"+row.ves_type+"', '"+row.status+"')\">"+
-                          "<i class='fa fa-check'></i>"+
-                        "</button>";
+                $html = '';
+                if(row.status != '-1') {
+                    $html += "<button class='badge badge-info' onclick=\"detailVesNotInput('"+row.id+"', '"+row.ves_id+"', '"+row.ves_code+"', '"+row.ves_name+"', '"+row.mdm_kode_kapal+"', '"+row.voy_no_cust+"', '"+row.call_sign+"', '"+row.est_pilot_ts+"', '"+row.req_berth_ts+"', '"+row.est_berth_ts+"', '"+row.est_dep_ts+"', '"+row.closing_cargo_date+"', '"+row.est_load+"', '"+row.est_disc+"', '"+row.loa+"', '"+row.berth_fr_metre+"', '"+row.dest_port+"', '"+row.dest_port_name+"', '"+row.next_port+"', '"+row.next_port_name+"', '"+row.btoa_side+"', '"+row.ves_type+"', '"+row.draft+"', '"+row.remark+"', '"+row.status+"', '"+row.created_by+"')\">"+
+                              "<i class='fa fa-eye'></i>"+
+                            "</button> ";
+                }
+
+                if(row.status != '1') {
+                    $html += "<button class='badge badge-success' onclick=\"prepareAdd('"+row.id+"', '"+row.ves_id+"', '"+row.ves_code+"', '"+row.ves_name+"', '"+row.mdm_kode_kapal+"', '"+row.call_sign+"', '"+row.est_pilot_ts+"', '"+row.req_berth_ts+"', '"+row.est_berth_ts+"', '"+row.est_dep_ts+"', '"+row.est_load+"', '"+row.est_disc+"', '"+row.loa+"', '"+row.berth_fr_metre+"', '"+row.dest_port+"', '"+row.dest_port_name+"', '"+row.next_port+"', '"+row.next_port_name+"', '"+row.btoa_side+"', '"+row.ves_type+"', '"+row.status+"')\">"+
+                              "<i class='fa fa-check'></i>"+
+                            "</button> ";
+
+                }
+
+                if(row.status != '-1') {
+                    $html += "<button class='badge badge-danger' onclick=\"deleteVesNotInput('"+row.id+"', '"+
+                                row.ves_id+"', '"+row.status+"')\">"+
+                              "<i class='fa fa-trash'></i>"+
+                            "</button> ";
+                }
+
+                return $html;
               } else {
                 return "";
               }
@@ -527,16 +587,27 @@ function getColor(param) {
         ],
         "createdRow": function( row, data, dataIndex){
             if(data.status == '0'){
-                $(row).css("background", "#7dffa4");
+                $(row).css("background", "#78beff");
             } else if(data.status == '1') {
                 $(row).css("background", "#ffccfb");
             } else if(data.status == '2') {
                 $(row).css("background", "#ffc6c2");
+            } else if(data.status == '-1'){
+                $(row).css("background", "#7dffa4");
             }
         }
     });
   }
 
+$('.btn_edit').on('click', function() {
+    m_id_req_berth = null;
+})
+$('#btn_modal_add_vessel').on('click', function() {
+    m_id_req_berth = null;
+})
+$('#btn_modal_unreg_vessel').on('click', function() {
+    m_id_req_berth = null;
+})
 $('#vessel2').on('change', function() {
     getVessel();
 })
@@ -550,6 +621,10 @@ $('#btn_add_note').on('click', function() {
     m_note_index++;
 
 });
+
+$('.legend_2').on('click', function () {
+    refreshTableVesNotYet($(this).attr('status'));
+})
 
 
 // function reqBerth(id, index) {
@@ -654,45 +729,50 @@ $('#btn_add_note').on('click', function() {
 // }
 
 function addBoxNote(index, time, text, left, top, width, height, isToAdd=false, is_edited=0) {
-    if(time != null) {
+    // console.log('is_edited', is_edited);
+    // if(is_edited != null) {
 
-        $("#wrap_sw").append(
-            '<div id="box_note_'+index+'" code="'+time+'" urutan="'+index+'" class="box_note draggable">'+
-                '<div class="widget-inner">'+
-                    '<div id="text_note_'+index+'" class="text_detail">'+
-                        text+
-                        '<br><button onclick="toDeleteNote('+index+')" class="btn_delete_note" id="btn_delete_note_'+index+'"><i class="fa fa-trash"></i></button>'+
-                        '<button onclick="toSaveNote('+(index)+')" class="btn_save badge badge-success '+(is_edited==0?'this_hide':'')+'" id="btn_save_note_'+i+'"><i class="fa fa-check"></i></button><br>'+
+        if(time != null) {
+
+            $("#wrap_sw").append(
+                '<div id="box_note_'+index+'" code="'+time+'" urutan="'+index+'" class="box_note draggable">'+
+                    '<div class="widget-inner">'+
+                        '<div id="text_note_'+index+'" class="text_detail">'+
+                            text+
+                            '<br><button onclick="toDeleteNote('+index+')" class="btn_delete_note" id="btn_delete_note_'+index+'"><i class="fa fa-trash"></i></button>'+
+                            '<button onclick="toSaveNote('+(index)+')" class="btn_save badge badge-success '+(is_edited==0?'this_hide':'')+'" id="btn_save_note_'+i+'"><i class="fa fa-check"></i></button><br>'+
+                        '</div>'+
                     '</div>'+
-                '</div>'+
-            '</div>');
+                '</div>');
 
-        convertToDragNote(index);
+            convertToDragNote(index);
 
-        $("#box_note_"+index).css("left", left+"px");
-        $("#box_note_"+index).css("top", top+"px");
-        $("#box_note_"+index).css("width", width+"px");
-        $("#box_note_"+index).css("height", height+"px");
-        $("#box_note_"+index).css("background-color", "#ff968f");
+            $("#box_note_"+index).css("left", left+"px");
+            $("#box_note_"+index).css("top", top+"px");
+            $("#box_note_"+index).css("width", width+"px");
+            $("#box_note_"+index).css("height", height+"px");
+            $("#box_note_"+index).css("background-color", "#ff968f");
 
-        if(isToAdd) {
+            if(isToAdd) {
+                console.log()
 
-            var newdate = new Date();
-            const format90 = "YYYY-MM-DD HH:mm:ss"
-            var start_date = moment(newdate).format(format90);
+                var newdate = new Date();
+                const format90 = "YYYY-MM-DD HH:mm:ss"
+                var start_date = moment(newdate).format(format90);
 
-            m_note.push({
-                code : time,
-                height : height,
-                ocean_interisland : m_dermaga_current,
-                start_date : start_date,
-                text : text,
-                width : width,
-                x : left,
-                y : top,
-            });
+                m_note.push({
+                    code : time,
+                    height : height,
+                    ocean_interisland : m_dermaga_current,
+                    start_date : start_date,
+                    text : text,
+                    width : width,
+                    x : left,
+                    y : top,
+                });
+            }
         }
-    }
+    // }
 }
 
 function autofillCon() {
@@ -803,6 +883,61 @@ $('#btn_sync').on('click', function () {
                         });
                     location.reload();
                 }
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
+        });
+    }
+})
+
+// $('#btn_export').on('click', function () {
+//     $.ajax({  
+//         url : "{{ url('print/export') }}",
+//         type : "post",
+//         data : {
+//             "_token": "{{ csrf_token() }}",
+//             'start_date' : $('#export_start').val(),
+//             'end_date' : $('#export_end').val(),
+//         },
+//         dataType : "json",
+//         async : true,
+//         success : function(result){
+//             if(result.success) {
+//                 swal({
+//                     title: "Synchronization success",
+//                     text: "Synchronization success",
+//                     icon: "success",
+//                     button: "Oke",
+//                     });
+//                 location.reload();
+//             }
+//         },
+//         error: function(request, textStatus, errorThrown) {
+//             alert(request.responseJSON.message);
+//         }
+//     });
+// })
+
+$('#btn_resend_pdf').on('click', function () {
+    if(confirm('Are you sure to resend pdf?')) {
+        $.ajax({  
+            url : "https://tower.teluklamong.co.id/index.php/service/notif_viera_pdf",
+            type : "get",
+            dataType : "json",
+            async : true,
+            success : function(result){
+                if(result.success) {
+                    swal({
+                        title: "Resend success",
+                        text: "Resend Success",
+                        icon: "success",
+                        button: "Oke",
+                    });
+                }
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
             }
         });
     }
@@ -914,7 +1049,6 @@ $(document).keypress(function(e) {
     }
 });
 
-m_index_box_keypress = null;
 
 function prepare(i) {
     m_index_box_keypress = i;
@@ -922,6 +1056,7 @@ function prepare(i) {
 }
 
 function prepareAdd(
+    id,
     ves_id, 
     ves_code, 
     ves_name, 
@@ -936,10 +1071,16 @@ function prepareAdd(
     loa, 
     berth_fr_metre, 
     dest_port, 
+    dest_port_name, 
+    next_port, 
+    next_port_name, 
     btoa_side, 
     ves_type, 
     status) {
-    if(status == '0' || status == '1') {
+    if(status == '0' || status == '1' || status == '-1') {
+        if(status != '-1')
+            m_id_req_berth = id;
+
         $('#vessel_unregistered').modal('show');
         $('#unreg_vessel_id').val(ves_id);
         $('#unreg_vessel_code').val(ves_code);
@@ -950,6 +1091,7 @@ function prepareAdd(
         $('#unreg_rbt').val((req_berth_ts != 'null' ? req_berth_ts:''));
         $('#unreg_etb').val((est_berth_ts != 'null' ? est_berth_ts:''));
         $('#unreg_etd').val((est_dep_ts != 'null' ? est_dep_ts:''));
+        $('#unreg_nextp').val(next_port).trigger('change');
         $('#unreg_deshp').val(dest_port).trigger('change');
         $('#unreg_disc').val(est_disc);
         $('#unreg_load').val(est_load);
@@ -968,6 +1110,8 @@ function prepareAdd(
         }
     } else if(status == '2') {
         dermaga = '';
+        if(status != '-1')
+            m_id_req_berth = id;
         if(confirm('Apakah anda yakin ingin menghapus data ini?')) {
             $.each(m_vessel_all.Intern, function( index, val ) {
                 if(val.ves_id == ves_id) {
@@ -989,6 +1133,91 @@ function prepareAdd(
             });
             refreshTableVesNotYet();
         }
+    }
+}
+
+
+function detailVesNotInput(
+    id,
+    ves_id, 
+    ves_code, 
+    ves_name, 
+    mdm_kode_kapal, 
+    voy_no_cust,
+    call_sign, 
+    est_pilot_ts, 
+    req_berth_ts, 
+    est_berth_ts, 
+    est_dep_ts, 
+    closing_cargo_date,
+    est_load, 
+    est_disc, 
+    loa, 
+    berth_fr_metre, 
+    dest_port, 
+    dest_port_name,
+    next_port,
+    next_port_name,
+    btoa_side, 
+    ves_type, 
+    draft,
+    remark,
+    status,
+    created_by) {
+    console.log(voy_no_cust);
+
+    $('#modal_detail').modal('show');
+
+    $('#detail_id').val(id);
+    $('#detail_ves_code_str').val(ves_name+" ("+ves_code+")");
+    $('#detail_ves_id').val(ves_id);
+    $('#detail_ves_code').val(ves_code);
+    $('#detail_ves_name').val(ves_name);
+    $('#detail_call_sign').val(call_sign);
+    $('#detail_loa').val(loa);
+    $('#detail_voy_no_cust').val(voy_no_cust);
+    $('#detail_rbt').val(req_berth_ts);
+    $('#detail_eta').val(est_pilot_ts);
+    $('#detail_est_load').val(est_load);
+    $('#detail_est_disc').val(est_disc);
+
+    if(next_port != 'null') {
+        $('#detail_next_port_str').val(next_port_name);
+        $('#detail_next_port').val(next_port);
+        $('#detail_next_port_name').val(next_port_name);
+    }
+
+    if(dest_port != 'null') {
+        $('#detail_dest_port_str').val(dest_port_name);
+        $('#detail_dest_port').val(dest_port);
+        $('#detail_dest_port_name').val(dest_port_name);
+    }
+
+    $('#detail_draft').val(draft);
+    $('#detail_closing_cargo_date').val(closing_cargo_date);
+    $('#detail_remark').val((remark != 'null' ? remark : ''));
+    $('#detail_created_by').val(created_by);
+}
+
+function deleteVesNotInput(id, ves_id, status) {
+    if(confirm('apakah anda yakin ingin menghapus data ini?')) {
+        $.ajax({
+            url : "{{ url('VesselBerthPlan3/delete_ves_not_input') }}",
+            type : "post",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                id : id
+            },
+            dataType : "json",
+            async : false,
+            success : function(result){
+                m_id_req_berth = null;
+                refreshTableVesNotYet();
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
+        });
     }
 }
 
@@ -1138,8 +1367,6 @@ function getVessel() {
     else
         vessid = document.getElementById("vessel3").value;
 
-    console.log(vessid);
-
    $.ajax({  
         url : "{{ url('VesselBerthPlan3/addvessel') }}",
         type : "post",
@@ -1151,6 +1378,9 @@ function getVessel() {
         async : false,
         success : function(result){
             vesselCurrent = result[0];
+        },
+        error: function(request, textStatus, errorThrown) {
+            alert(request.responseJSON.message);
         }
     });
 } 
@@ -1186,8 +1416,7 @@ function reloadNote() {
         var note = m_note[i];
 
         if(m_dermaga_current == note.ocean_interisland) {
-            // console.log(note);
-            addBoxNote(i, note.code, note.text, note.x, note.y, note.width, note.height, note.is_edited);
+            addBoxNote(i, note.code, note.text, note.x, note.y, note.width, note.height, false, note.is_edited);
             m_note_index=i;
         }
 
@@ -1224,12 +1453,17 @@ function setVesselBoxPosition(vees, i) {
     var btoa = vees.btoa_side;
     var rand = "";
 
-    if(vees.act_berth_ts != null)
-        rand = getColor(0);
-    else if(vees.tentatif == "1")
+    if(vees.act_berth_ts != null) {
+        if(vees.est_end_date != null) {
+            rand = getColor(0);
+        } else {
+            rand = getColor(3);
+        }
+    } else if(vees.tentatif == 1) {
         rand = getColor(2);
-    else if(vees.tentatif == "0")
+    } else if(vees.tentatif == 0) {
         rand = getColor(1);
+    }
 
     var left = getLeft(vees.berth_fr_metre, vees.width);
 
@@ -1274,12 +1508,14 @@ function getVesselContent(vees, i, craneloopload=null) {
     }
 
     var margin_top_crane = parseInt(vees.height)/3;
+    var color_code = getGenerateColor(vees.ves_name);
 
     var content = '<div id="box'+i+'" urutan="'+i+'" class="box draggable">'+
             '<div class="widget-inner" onclick="prepare('+i+')">'+
                 '<div id="text_detail'+i+'" class="text_detail" style="font-size:'+font_size+'">'+
                     (vees.is_unreg == 0 && vees.img != null ? 
                     '<img id="ims'+i+'" src = "{{asset('/img/')}}/'+vees.image+'" style= "width: 50px; height: 50px; position:absolute; right: 25px;"/>':'')+
+                    '<circle2 style="background:'+color_code+'; position:absolute; right: 25px;"></circle2>'+
                     '<div class="row">'+
                     '<div class="col-sm-8">'+
                         '<span class="text_title"> MV. '+vees.ves_name+' ('+ vees.ves_id + ')</span><br>'+
@@ -1308,21 +1544,19 @@ function getVesselContent(vees, i, craneloopload=null) {
                     '<div class="col-sm-4" style="margin-top:'+margin_top_crane+'px">'+
                         '<div style="margin-left:-30px">'+
                             (vees.date_labuh_str != null ? 
-                                '<a href="#" class="badge badge-default" title="PMH Labuh : '+vees.date_labuh_str+'">'+
+                                '<span class="badge badge-default" title="PMH Labuh : '+vees.date_labuh_str+'">'+
                                     '<span class="fa fa-anchor" style="font-size:10px"></span>'+
-                                '</a>' : '')+
-                            (vees.act_berth_ts == null ? 
-                                (vees.date_pandu_str != null ? 
-                                '<a href="#" class="badge badge-default" title="PMH Pandu : '+vees.date_pandu_str+'">'+
+                                '</span>' : '')+
+                            (vees.date_pandu_str != null ? 
+                                '<span class="badge badge-success" title="PMH Pandu Masuk : '+vees.date_pandu_str+'">'+
                                     '<span class="fa fa-book" style="font-size:10px"></span>'+
-                                '</a>' : '') :
-                                (vees.date_pandu_2_str != null ? 
-                                '<a href="#" class="badge badge-default" title="PMH Pandu : '+vees.date_pandu_2_str+'">'+
+                                '</span>' : '')+
+                            (vees.date_pandu_2_str != null ? 
+                                '<span class="badge badge-primary" title="PMH Pandu Keluar : '+vees.date_pandu_2_str+'">'+
                                     '<span class="fa fa-book" style="font-size:10px"></span>'+
-                                '</a>' : '')
-                            )+
+                                '</span>' : '')+
                             (vees.date_pandu_asg_str != null ? 
-                                '<a href="#" title="Assigment Pandu : '+vees.date_pandu_asg_str+'"><img src=\'{{asset("img/pilot.png")}}\' width="30"/></a>' : '')+
+                                '<span title="Assigment Pandu : '+vees.date_pandu_asg_str+'"><img src=\'{{asset("img/pilot.png")}}\' width="25"/></a>' : '')+
                             (vees.date_pandu_2_str != null || vees.date_pandu_str != null || vees.date_labuh_str != null ? '<br><br>' : '')+
                             ' <circle><span class="kade_box_'+i+'">'+parseInt(vees.berth_fr_metre_ori)+' On '+parseInt(vees.berth_to_metre_ori)+'</span></circle><br>'+
                             craneloopload+
@@ -1485,8 +1719,10 @@ function toEdit(index) {
     $('#edit_ves_service').append('<option value="'+vees.ves_service+'">'+vees.ves_service+'</option>');
     $('#edit_ves_service').val(vees.ves_service).trigger('change');
 
+    console.log('bsh',vees.bsh);
+    console.log('bch',vees.bch);
     $('#edit_bsh').val(vees.bsh);
-    $('#edit_tgh').val(vees.bch);
+    $('#edit_tgh').val(vees.bsh);
     // $(m_dermaga_current == 'C' ? '#edit_tgh' : '#edit_bsh').val(m_dermaga_current == 'C' ? vees.bch : vees.bsh);
     $('#edit_nextp').val(vees.next_port).trigger('change');
     $('#edit_deshp').val(vees.dest_port).trigger('change');
@@ -1556,10 +1792,10 @@ function toEdit(index) {
 
         if(crane.ocean_interisland == 'D') {
             $("#edit_crane").append('<input type="checkbox" name="edit_crane" id="checkbox'+m_crane_con[s-1].che_name+'" value="'+m_crane_con[s-1].che_name+'" class="edit_crane" '+(checked?"checked":"")+' />'+
-                '<label>STS '+m_crane_con[s-1].che_name+'</label><span> </span><span> </span><br>');
+                '<label>'+m_crane_con[s-1].che_name+'</label><span> </span><span> </span><br>');
         } else {
             $("#edit_crane_2").append('<input type="checkbox" name="edit_crane" id="checkbox'+m_crane_con[s-1].che_name+'" value="'+m_crane_con[s-1].che_name+'" class="edit_crane" '+(checked?"checked":"")+' />'+
-                '<label>STS '+m_crane_con[s-1].che_name+'</label><span> </span><span> </span><br>');
+                '<label>'+m_crane_con[s-1].che_name+'</label><span> </span><span> </span><br>');
         }
     }
 
@@ -1600,7 +1836,10 @@ function toDelete(index) {
                     icon: result.success ? "success" : 'warning',
                     button: "Oke",
                 });
-            } 
+            } ,
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
         });
     }
 
@@ -1629,23 +1868,23 @@ function toDeleteNote(index) {
                     icon: result.success ? "success" : 'warning',
                     button: "Oke",
                 });
-            } 
+            } ,
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
         });
     }
 
 }
 
 function deleteVesNotYet(vees, index, dermaga) {
-    console.log("gateliii");
-    console.log(vees);
-    console.log(index);
-    console.log(dermaga);
     $.ajax({  
         url : "{{ url('VesselBerthPlan3/delete_one') }}",
         data: {
             "_token": "{{ csrf_token() }}",
             vessel : vees,
             ocean_interisland : dermaga,
+            id_req_berth : m_id_req_berth,
         },
         type : "post",
         dataType : "json",
@@ -1669,7 +1908,10 @@ function deleteVesNotYet(vees, index, dermaga) {
                 icon: result.success ? "success" : 'warning',
                 button: "Oke",
             });
-        } 
+        } ,
+        error: function(request, textStatus, errorThrown) {
+            alert(request.responseJSON.message);
+        }
     });
 }
 
@@ -1693,6 +1935,8 @@ function toSave(index) {
                     vessel[index].is_edited = 0;
                     vessel[index].ves_id_old = vessel[index].ves_id;
 
+                    m_id_req_berth = null;
+
                     refreshTableVesNotYet();
                 }
                 swal({
@@ -1701,7 +1945,10 @@ function toSave(index) {
                     icon: result.success ? "success" : 'warning',
                     button: "Oke",
                 });
-            } 
+            } ,
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
         });
     }
 }
@@ -1729,7 +1976,10 @@ function toSaveNote(index) {
                     icon: result.success ? "success" : 'warning',
                     button: "Oke",
                 });
-            } 
+            } ,
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
         });
     }
 }
@@ -2044,6 +2294,7 @@ function addvessel(){
                             ves_type:ves_type,
                             info: info.replace("\n", '<br>'),
                             bsh:bsh,
+                            bch:bsh,
                             next_port:next_port,
                             dest_port:dest_port,
                             est_discharge:jum_bongkar,
@@ -2112,6 +2363,9 @@ function addvessel(){
                     });
                 }
                 
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
             }
         });
         
@@ -2154,6 +2408,7 @@ function editvessel() {
     vees.ves_service    = $('#edit_ves_service').val();
     vees.btoa_side      = $('input[class=edit_side]:checked').val();
     vees.bsh            = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
+    vees.bch            = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
     vees.next_port      = $('#edit_nextp').val();
     vees.dest_port      = $('#edit_deshp').val();
     vees.est_disch      = $('#edit_disc').val();
@@ -2337,7 +2592,7 @@ function unregvessel() {
             ves_id_old     : '',
             ves_name       : $('#unreg_vessel_name').val(),
             ves_type       : unreg_type == 'DRY_BULK' ? 'GC' : 'CT',
-            ves_code       : $('#unreg_vessel_name').val().substring(0,3),
+            ves_code       : $('#unreg_vessel_code').val(),
             ves_service    : $('#unreg_ves_service').val(),
             ocean_interisland : m_dermaga_current,
             ocean_interisland_fake : m_dermaga_current,
@@ -2376,7 +2631,8 @@ function unregvessel() {
             is_unreg        : 1,
             call_sign       : '-',
             mdm_kode_kapal  : '',
-            crane_density  : $('#unreg_crane_density').val(),
+            crane_density   : $('#unreg_crane_density').val(),
+            id_req_berth    : m_id_req_berth,
         }
 
         vessel.push(vees);
@@ -2789,7 +3045,7 @@ function syncDragNote(component) {
     m_note[urutan].height   =  parseInt(height);
     m_note[urutan].is_edited   =  1;
 
-    // reloadNote();
+    reloadNote();
 }
 
 
@@ -2955,31 +3211,34 @@ function saveBox() {
     // });
 
     $.ajax({  
-            url : "{{ url('VesselBerthPlan3/save') }}",
-            data: {
-                "_token": "{{ csrf_token() }}",
-                param_vess : m_vessel_all,
-                param_vess_removed : m_vessel_removed
-            },
-            type : "post",
-            dataType : "json",
-            async : false,
-            success : function(result){
-                if(result["sukses"] == true) {
-                    swal({
-                        title: "Data Berhasil Diubah!",
-                        text: "You clicked the button!",
-                        icon: "success",
-                        button: "Oke",
-                        });
+        url : "{{ url('VesselBerthPlan3/save') }}",
+        data: {
+            "_token": "{{ csrf_token() }}",
+            param_vess : m_vessel_all,
+            param_vess_removed : m_vessel_removed
+        },
+        type : "post",
+        dataType : "json",
+        async : false,
+        success : function(result){
+            if(result["sukses"] == true) {
+                swal({
+                    title: "Data Berhasil Diubah!",
+                    text: "You clicked the button!",
+                    icon: "success",
+                    button: "Oke",
+                    });
 
-                    saveDone();
-                    
-                } else {
-                    alert ("Data Gagal Diubah !!");
-                }
+                saveDone();
+                
+            } else {
+                alert ("Data Gagal Diubah !!");
+            }
 
-            } 
+        } ,
+        error: function(request, textStatus, errorThrown) {
+            alert(request.responseJSON.message);
+        }
     });
 }
 
@@ -3049,33 +3308,36 @@ function updatebox() {
     });
 
     $.ajax({  
-            url : "{{ url('VesselBerthPlan3/updatevessel') }}",
-            data: {
-                "_token": "{{ csrf_token() }}",
-                param_vess:vessel,
-                param_ocean : thisocean,
-                param_crane : crane,
-                param_note : arr_note,
-                param_vess_removed : m_vessel_removed
-            },
-            type : "post",
-            dataType : "json",
-            async : false,
-            success : function(result){
-                if(result["sukses"] == true) {
-                   
-                    swal({
-                        title: "Data Berhasil Diubah!",
-                        text: "You clicked the button!",
-                        icon: "success",
-                        button: "Oke",
-                        });
-                    
-                } else {
-                    alert ("Data Gagal Diubah !!");
-                }
+        url : "{{ url('VesselBerthPlan3/updatevessel') }}",
+        data: {
+            "_token": "{{ csrf_token() }}",
+            param_vess:vessel,
+            param_ocean : thisocean,
+            param_crane : crane,
+            param_note : arr_note,
+            param_vess_removed : m_vessel_removed
+        },
+        type : "post",
+        dataType : "json",
+        async : false,
+        success : function(result){
+            if(result["sukses"] == true) {
+               
+                swal({
+                    title: "Data Berhasil Diubah!",
+                    text: "You clicked the button!",
+                    icon: "success",
+                    button: "Oke",
+                    });
+                
+            } else {
+                alert ("Data Gagal Diubah !!");
+            }
 
-            } 
+        } ,
+        error: function(request, textStatus, errorThrown) {
+            alert(request.responseJSON.message);
+        }
     });
 }
 

@@ -44,7 +44,8 @@
             "database/factories"
         ],
         "files": [
-            "app/Helpers/helpers.php"
+            "app/Helpers/helpers.php",
+            "vendor/PHPExcel/PHPExcel.php"
         ]
     },
     "autoload-dev": {

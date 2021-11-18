@@ -197,12 +197,29 @@ class Home3Controller extends Controller
 
     }
 
+    private function updateReqBerthPlanned($vessel)
+    {
+        if(isset($vessel['id_req_berth'])) {
+            if($vessel['id_req_berth'] != null || $vessel['id_req_berth'] != '' || $vessel['id_req_berth'] != 'null') {
+                DB::table('CBSLAM.VIER_REQ_BERTH')
+                ->where('ID', $vessel['id_req_berth'])
+                ->update([
+                    'IS_PLANNED'    => 1,
+                    'UPDATED_BY'    => 'SYSTEM',
+                ]);
+            }
+        }
+    }
+
     public function delete_one(Request $request)
     {
         $vessel = $request->vessel;
         $isSuccess = DB::table('CBSLAM.VESSEL_DETAILS_SIM')
             ->where('ves_id', $vessel['ves_id_old'] ? $vessel['ves_id_old'] : '')
             ->delete();
+
+        if($isSuccess) $this->updateReqBerthPlanned($vessel);
+
         return response()->json([
             'success' => true,
             'message' => 'Delete success'
@@ -216,7 +233,6 @@ class Home3Controller extends Controller
         $vessel = $request->vessel;
 
         $isSuccess = false;
-
 
         if(isset($vessel['is_inserted'])) {
             if($vessel['is_inserted'] == 1) {
@@ -307,13 +323,7 @@ class Home3Controller extends Controller
             }
         }
 
-
-
-        // if(isset($vessel['is_req_berth'])) {
-        //     if($vessel['is_req_berth'] == 1) {
-        //         DB::table('CBSLAM.VIER_REQ_BERTH')->where('ID', $vessel['ves_id_old'])->update(['IS_DONE' => 1]);
-        //     }
-        // }
+        if($isSuccess) $this->updateReqBerthPlanned($vessel);
 
         return response()->json([
             'success' => $isSuccess,
@@ -330,7 +340,7 @@ class Home3Controller extends Controller
             'CODE'              => $note['code'], 
             'HEIGHT'            => $note['height'], 
             'OCEAN_INTERISLAND' => $note['ocean_interisland'], 
-            'START_DATE'        => $note['start_date'], 
+            'START_DATE'        => date('Y-m-d'), 
             'TEXT'              => $note['text'], 
             'WIDTH'             => $note['width'], 
             'X'                 => $note['x'], 
@@ -737,11 +747,27 @@ class Home3Controller extends Controller
         return response()->json($result);
     }
 
-    public function ves_not_yet_json(){
+    public function delete_ves_not_input(Request $request) 
+    {
+        $isSuccess = DB::table('CBSLAM.VIER_REQ_BERTH')
+            ->where('id', $request->id)
+            ->update(['IS_PLANNED' => '1']);
+            // ->delete();
+        return response()->json([
+            'success' => $isSuccess,
+            'message' => ($isSuccess?'Delete success':'Delete failed')
+        ]);
+    }
+
+    public function ves_not_yet_json($status){
+        $where_addition = '';
+        if($status != -2) {
+            $where_addition = "WHERE STATUS='{$status}' ";
+        }
         return DataTables::of(
             DB::select("SELECT * FROM CBSLAM.VIERV_VES_NOT_YET
-                WHERE TO_DATE(EST_BERTH_TS, 'YYYY-MM-DD HH24:MI')>=TRUNC(SYSDATE-7)
-                ORDER BY EST_BERTH_TS DESC")
+                {$where_addition} 
+                ORDER BY CREATED_DATE DESC")
         )->make(true);
     }
 

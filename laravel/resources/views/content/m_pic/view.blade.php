@@ -36,6 +36,7 @@
               <thead>
                 <th>Tipe</th>
                 <th>Agent</th>
+                <th>Nama PIC</th>
                 <th>HP</th>
                 <th>Email</th>
                 <th>Action</th>
@@ -64,14 +65,27 @@
               <option value="">-- Pilih Tipe --</option>
               <option value="0">PIC Vessel</option>
               <option value="1">Dinas Luar</option>
+              <option value="2">Pandu</option>
             </select>
             <!-- <input type="text" class="form-control" id="tipe" name="tipe"> -->
           </div>
+          <div id="div_agent">
+            <div class="form-group">
+              <label class="col-form-label">Agent </label>
+              <select id="agent" name="agent" class="form-control" style="width:100%;">
+              </select>
+              <input type="hidden" class="form-control" id="agent_name" name="agent_name">
+            </div>
+          </div>
+          <div id="div_pandu">
+            <div class="form-group">
+              <label class="col-form-label">Call Sign Pandu </label>
+              <input type="text" class="form-control" id="callsign_pandu" name="callsign_pandu">
+            </div>
+          </div>
           <div class="form-group">
-            <label class="col-form-label">Agent </label>
-            <select id="agent" name="agent" class="form-control" style="width:100%;">
-            </select>
-            <input type="hidden" class="form-control" id="agent_name" name="agent_name">
+            <label class="col-form-label">Nama </label>
+            <input type="text" class="form-control" id="nama" name="nama">
           </div>
           <div class="form-group">
             <label class="col-form-label">HP </label>
@@ -100,6 +114,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     refreshTable();
+    $('#div_pandu').hide();
   });
 
   function refreshTable() {
@@ -117,6 +132,7 @@
         columns: [
           { data: 'tipe_name', name: 'tipe_name' },
           { data: 'agent_name', name: 'agent_name' },
+          { data: 'nama', name: 'nama' },
           { data: 'hp', name: 'hp' },
           { data: 'email', name: 'email' },
           { 
@@ -125,7 +141,7 @@
                 return "<button class='btn ripple-btn-round btn-3d btn-danger' onclick=\"remove('"+data+"')\">"+
                           "<i class='fa fa-trash'></i>"+
                         "</button>"+
-                        " <button class='btn ripple-btn-round btn-3d btn-warning' onclick=\"prepareUpdate(true, '"+data+"', '"+row.tipe+"', '"+row.agent+"', '"+row.agent_name+"', '"+row.hp+"', '"+row.email+"')\" data-toggle='modal' data-target='#modal_add' >"+
+                        " <button class='btn ripple-btn-round btn-3d btn-warning' onclick=\"prepareUpdate(true, '"+data+"', '"+row.tipe+"', '"+row.agent+"', '"+row.agent_name+"', '"+row.hp+"', '"+row.email+"', '"+row.nama+"')\" data-toggle='modal' data-target='#modal_add' >"+
                           "<i class='fa fa-pencil'></i>"+
                         "</button>";
                 // return "";
@@ -151,8 +167,9 @@
           "_token": "{{ csrf_token() }}",
           id : mCurId,
           tipe : $('#tipe').val(),
-          agent : $('#agent').val(),
-          agent_name : $('#agent_name').val(),
+          nama : $('#nama').val(),
+          agent : $('#tipe').val() != 2 ? $('#agent').val() : $('#callsign_pandu').val(),
+          agent_name : $('#tipe').val() != 2 ? $('#agent_name').val() : $('#nama').val(),
           hp : $('#hp').val(),
           email : $('#email').val(),
         },
@@ -184,11 +201,19 @@
   })
 
   function validateForm() {
-    if($('#agent').val() != '' &&
-      $('#hp').val() != '' &&
-      $('#email').val() != '' &&
-      $('#tipe').val() != '') {
-      return true;
+    if($('#tipe').val() != 2) {
+      if($('#agent').val() != '' &&
+        $('#hp').val() != '' &&
+        $('#nama').val() != '' &&
+        $('#tipe').val() != '') {
+        return true;
+      }
+    } else {
+      if($('#hp').val() != '' &&
+        $('#nama').val() != '' &&
+        $('#tipe').val() != '') {
+        return true;
+      }
     }
     return false;
   }
@@ -196,6 +221,9 @@
   function clearForm() {
     $('#agent').val('');
     $('#agent_name').val('');
+    $('#nama').val('');
+    $('#callsign_pandu').val('');
+    $('#nama').val('');
     $('#hp').val('');
     $('#email').val('');
     $('#tipe').val('');
@@ -228,16 +256,23 @@
     }
   }
 
-  function prepareUpdate(state, id, tipe, agent, agent_name, hp, email) {
+  function prepareUpdate(state, id, tipe, agent, agent_name, hp, email, nama) {
     mIsUpdate = state;
     mCurId = id;
+    changeDiv(tipe);
     $('#tipe').val(tipe);
-    $('#agent').val(agent);
-    $('#agent_name').val(agent_name);
+    if(tipe == 2) {
+      $('#callsign_pandu').val(agent);
+      $('#nama').val(agent_name);
+    } else {
+      $('#agent').val(agent);
+      $('#agent_name').val(agent_name);
+      $('#agent').append('<option value="'+agent+'">'+agent_name+'</option>');
+      $('#agent').val(agent).trigger('change');
+      $('#nama').val(nama);
+    }
     $('#hp').val(hp);
     $('#email').val(email);
-    $('#agent').append('<option value="'+agent+'">'+agent_name+'</option>');
-    $('#agent').val(agent).trigger('change');
   }
 
   $("#agent").select2({
@@ -267,6 +302,20 @@
   $('#agent').on('change', function () {
     $('#agent_name').val($("#agent option:selected").text());
   })
+
+  $('#tipe').on('change', function() {
+    changeDiv($(this).val());
+  });
+
+  function changeDiv(tipe) {
+    if(tipe == 2) {
+      $('#div_agent').hide();
+      $('#div_pandu').show();
+    } else {
+      $('#div_agent').show();
+      $('#div_pandu').hide();
+    }
+  }
 
 </script>
 @endsection

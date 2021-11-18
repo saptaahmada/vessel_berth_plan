@@ -114,11 +114,12 @@ class LoginController extends Controller
                     ]);
 
                 session(['berhasil_login'=>true]);
-                session(['data'=> $mpic->agent_name]);
-                session(['agent'=> $mpic->agent]);
-                session(['id'=> $mpic->id]);
-                session(['email'=> $mpic->email]);
-                session(['hp'=> $mpic->hp]);
+                session(['data'=> $mpic->email]);
+                session(['data_pic'=> $arr_mpic]);
+                // session(['agent'=> $mpic->agent]);
+                // session(['id'=> $mpic->id]);
+                // session(['email'=> $mpic->email]);
+                // session(['hp'=> $mpic->hp]);
                 session(['role'=> 'CUSTOMER']);
                 return response()->json([
                     'success'   => true,

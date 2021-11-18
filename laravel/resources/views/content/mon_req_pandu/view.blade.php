@@ -61,13 +61,14 @@
     $('#table').DataTable({
         "filter": true,
         "destroy": true,
-        "ordering": false,
+        "ordering": true,
         "processing": true, 
         "serverSide": true, 
         "searching": true, 
-        "responsive":true,
+        "responsive":false,
         "orderCellsTop": true,
         "fixedHeader": true,
+        "order": [[ 12, "desc" ]],
         ajax: "{{url('MonReqPandu/json')}}/"+param,
         columns: [
           { data: 'no_pkk', name: 'no_pkk' },
@@ -91,6 +92,8 @@
                 return "<div class='badge badge-primary'>"+row.tipe_pandu_name+"</div>";
               else if(row.tipe==1 && row.tipe_pandu == 1)
                 return "<div class='badge badge-info'>"+row.tipe_pandu_name+"</div>";
+              else if(row.tipe==1 && row.tipe_pandu == 2)
+                return "<div class='badge badge-danger'>"+row.tipe_pandu_name+"</div>";
               else 
                 return "<div class='badge badge-success'>LABUH</div>";
             }
