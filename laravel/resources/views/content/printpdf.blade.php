@@ -330,9 +330,8 @@
 }
 .ims{
     float:right;
-    width: 20%;
+    width: 25%;
     height: 20%;
-    padding-top: 8px;
 
 /* position: absolute; */
 }
@@ -419,16 +418,11 @@ circle span {
     width: 100%;
 }
 circle {
-    /* float:right; */
     background: #000;
     width: 25px;
     height: 9px;
-    /* border-radius: 50%; */
     display: inline-block;
     text-align: center;
-    /* margin-top: 10%; */
-    margin-right: 5px;
-
     position: relative;
     z-index:-1;
 }
@@ -449,12 +443,30 @@ circle2 {
     border-radius: 50%;
     display: inline-block;
     text-align: center;
-    /* margin-top: 10%; */
-    margin-right: 5px;
-
     position: relative;
     z-index:-1;
 }
+
+circle3 span {
+    position: absolute;
+    color: black;
+    font-size:4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+circle3 {
+    /* float:right; */
+    background: white;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    z-index:-1;
+}
+
 #ttd1 {
     width: 46px;
     height: 70px;
@@ -657,6 +669,13 @@ circle2 {
         /* box-shadow: 4px 4px 5px  #313131; */
         -webkit-print-color-adjust: exact; 
     }
+    .note {
+        background: rgb(255, 150, 143);
+        -webkit-print-color-adjust: exact; 
+    } 
+    .legend_berthing {
+        -webkit-print-color-adjust: exact; 
+    }
 
     .hari1{
         color: white !important;
@@ -705,6 +724,8 @@ circle2 {
 
 </style>
 <link rel="shortcut icon" href="{{asset('/img/icon.png')}}">
+<!-- <link rel="stylesheet" type="text/css" href="{{asset('asset/css/css/bootstrap.min.css')}}"> -->
+<link rel="stylesheet" type="text/css" href="{{asset('asset/css/plugins/font-awesome.min.css')}}"/>
 <script src="{{asset('asset/js/jquery.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js" type="text/javascript"></script>
 
@@ -719,43 +740,51 @@ circle2 {
     <?php
         setlocale(LC_TIME, 'id_ID.utf8');
 
-        $hari1prin = new DateTime();
+        $datenow = isset($data['datestart']) ? $data['datestart'] : date('Y-m-d H:i');
+        
+        $hari1prin = new DateTime($datenow);
         $day1 = $hari1prin->format('l');
         $hari1= strftime('%A', $hari1prin->getTimestamp());
         $tgl1 = strftime('%d %B %Y', $hari1prin->getTimestamp());
 
-        $hari2prin = new DateTime('now +1 day');
+        $hari2prin = new DateTime($datenow);
+        $hari2prin->add(new DateInterval('P1D'));
         $day2 = $hari2prin->format('l');
         $hari2 =strftime('%A', $hari2prin->getTimestamp());
         $tgl2 = strftime('%d %B %Y', $hari2prin->getTimestamp());
 
-        $hari3prin = new DateTime('now +2 day');
+        $hari3prin = new DateTime($datenow);
+        $hari3prin->add(new DateInterval('P2D'));
         $day3 = $hari3prin->format('l');
         $hari3 =strftime('%A', $hari3prin->getTimestamp());
         $tgl3 = strftime('%d %B %Y', $hari3prin->getTimestamp());
 
-        $hari4prin = new DateTime('now +3 day');
+        $hari4prin = new DateTime($datenow);
+        $hari4prin->add(new DateInterval('P3D'));
         $day4 = $hari4prin->format('l');
         $hari4 =strftime('%A', $hari4prin->getTimestamp());
         $tgl4 = strftime('%d %B %Y', $hari4prin->getTimestamp());
 
-        $hari5prin = new DateTime('now +4 day');
+        $hari5prin = new DateTime($datenow);
+        $hari5prin->add(new DateInterval('P4D'));
         $day5 = $hari5prin->format('l');
         $hari5 =strftime('%A', $hari5prin->getTimestamp());
         $tgl5 = strftime('%d %B %Y', $hari5prin->getTimestamp());
 
-        $hari6prin = new DateTime('now +5 day');
+        $hari6prin = new DateTime($datenow);
+        $hari6prin->add(new DateInterval('P5D'));
         $day6 = $hari6prin->format('l');
         $hari6 =strftime('%A', $hari6prin->getTimestamp());
         $tgl6 = strftime('%d %B %Y', $hari6prin->getTimestamp());
 
-        $hari7prin = new DateTime('now +6 day');
+        $hari7prin = new DateTime($datenow);
+        $hari7prin->add(new DateInterval('P6D'));
         $day7 = $hari7prin->format('l');
         $tgl7 = strftime('%d %B %Y', $hari7prin->getTimestamp());
         $hari7 =strftime('%A', $hari7prin->getTimestamp());
 
     ?>
-   
+
     <img src="{{asset('/img/vessel_print_650_new-new.jpg')}}" style="width:1377px; height: 1257.333333333333px; position:absolute;" >
     <!-- <img src="{{asset('/img/vessel_print2.jpg')}}" style="width:1050px; height: 1093.484262838211px; position:absolute;" > -->
     
@@ -822,6 +851,45 @@ circle2 {
         <div class = "grup_detail" id="3g"><p class="grup_text"> III / B</p></div> -->
     </div>
     <div id="print_at">
+    </div>
+
+    <div id="legend">
+
+        <div class="legend_berthing" 
+        style="position:absolute; 
+        border: 1px solid;
+        width:53px; 
+        height: 14px; 
+        background:#F5E89A;
+        top:1155px;
+        left: 245px"></div>
+
+        <div class="legend_berthing" 
+        style="position:absolute; 
+        border: 1px solid;
+        width:53px; 
+        height: 14px; 
+        background:#BDE992;
+        top:1170px;
+        left: 245px"></div>
+
+        <div class="legend_berthing" 
+        style="position:absolute; 
+        border: 1px solid;
+        width:53px; 
+        height: 15px; 
+        background:#c7d6c7;
+        top:1185px;
+        left: 245px"></div>
+
+        <div class="legend_berthing" 
+        style="position:absolute; 
+        border: 1px solid;
+        width:53px; 
+        height: 15px; 
+        background:#d64d27;
+        top:1201px;
+        left: 245px"></div>
     </div>
 
     <div id="ttd1">
@@ -973,14 +1041,13 @@ circle2 {
 
         if (typeof data_url.param11 !== 'undefined') {
 
-            console.log(data_url);
-
             $.ajax({  
                 url : (data_url.is_required ? "{{route('print_getvessel')}}" : "{{route('getvessel')}}"),
                 type : "post",
                 data : {
                     "_token": "{{ csrf_token() }}",
-                    "code" : (data_url.is_required ? data_url.code : '')
+                    "code" : (data_url.is_required ? data_url.code : ''),
+                    "datenow" : '<?=$datenow?>'
                 },
                 dataType : "json",
                 async : false,
@@ -993,22 +1060,120 @@ circle2 {
                     note_i = result.note_i;
                     note_c = result.note_c;
 
+                    console.log(result.note_d);
+                    console.log(result.note_i);
+                    console.log(result.note_c);
+
                     var min_height = 180;
 
                     // var left_right_int = m_kade_all.int[0].param5;
                     // var left_right_dom = m_kade_all.dom[0].param5;
                     // var left_right_cur = m_kade_all.cur[0].param5;
 
+                    runLoop(vessel, 'intern', 'zone');
 
+                    
                     for (i = 1; i < vessel.length+1; ++i) {
-                        var crane =  vessel[i-1].crane;
+                        var vees = vessel[i-1];
+
+                        if(vees.act_berth_ts != null) {
+                            if(vees.est_end_date != null) {
+                                rand = getColor(0);
+                            } else {
+                                rand = getColor(3);
+                            }
+                        } else if(vees.tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vees.tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                        
+                        var left = vees.berth_fr_metre_ori /10 *7.611111111111111;;
+                        var top = vees.y_awal/20 * 5.1875;;
+                        var width = vees.width_ori/10 *7.611111111111111;;
+                        var height = vees.height/20 * 5.1875;;
+                        var along_sidein = vees.btoa_side;
+
+                        if(along_sidein == "P"){
+                            $("#zone"+i).css("left", left+"px");
+                            $("#zone"+i).css("width", width+"px");
+                            $("#zone"+i).css("top", top +"px");
+                            $("#zone"+i).css("height", height+"px");
+                            $("#text_judulzone"+i).css("padding-left", "20%");
+                            $("#text_detailzone"+i).css("padding-left", "18%");
+                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        } else if (along_sidein == "S") {
+                            $("#zone"+i).css("left", left+"px");
+                            $("#zone"+i).css("width", width+"px");
+                            $("#zone"+i).css("top", top +"px");
+                            $("#zone"+i).css("height", height+"px");
+                            $("#text_judulzone"+i).css("padding-left", "5px");
+                            $("#text_detailzone"+i).css("padding-left", "5px");
+                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                            // $("#text_judul"+i+".text_judul").css("padding-left", "5px");
+                            // $("#text_judul"+i+".text_judul").css("padding-top", "5px");
+                            // $("#text_detail"+i+".text_detail").css("padding-left", "5px");
+                        }
+                    }
+
+                    runLoop(vesseldom, 'domes', 'dom');
+
+                    for (i = 1; i < vesseldom.length+1; ++i) {
+                        var vees = vesseldom[i-1];
+
+                        if(vees.act_berth_ts != null) {
+                            if(vees.est_end_date != null) {
+                                rand = getColor(0);
+                            } else {
+                                rand = getColor(3);
+                            }
+                        } else if(vees.tentatif == 1) {
+                            rand = getColor(2);
+                        } else if(vees.tentatif == 0) {
+                            rand = getColor(1);
+                        }
+                        
+                        
+                        var left = vees.berth_fr_metre_ori/10 *7.611111111111111; // done
+                        var top = vees.y_awal/20 * 5.1875; // done
+                        var width = vees.width_ori/10 *7.611111111111111;
+                        var height = vees.height/20 * 5.1875;
+                        var along_side = vees.btoa_side;
+                        
+                        // console.log(height);
+                        if(along_side == "S"){ //kiri star
+                        $("#dom"+i).css("left", left+"px");
+                        $("#dom"+i).css("width", width+"px");
+                        $("#dom"+i).css("top", top +"px");
+                        $("#dom"+i).css("height", height+"px");
+                        $("#text_juduldom"+i).css("padding-left", "20%");
+                        $("#text_detaildom"+i).css("padding-left", "18%");
+                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                        }else if (along_side == "S") {
+                        $("#dom"+i).css("left", left+"px");
+                        $("#dom"+i).css("width", width+"px");
+                        $("#dom"+i).css("top", top +"px");
+                        $("#dom"+i).css("height", height+"px");
+                        $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
+                        $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
+                        
+
+                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                        }
+                    }
+
+                    for (a = 1; a < vesselcur.length+1; ++a) {
+                        var vees = vesselcur[a-1];
+
+                        var crane =   vees.crane;
                         var uncrane=[];
                         if (crane==null)
                         uncrane=[];
                         else
                         uncrane = crane.split(',');
 
-                        var pot= vessel[i-1].dest_port;
+
+                        var pot= vees.dest_port;
                         if (pot == null)
                             pod = "-";
                         else 
@@ -1022,270 +1187,81 @@ circle2 {
 
                         var act_berth_ts = null;
 
-                        if(vessel[i-1].act_berth_ts != null)
-                            act_berth_ts = moment(vessel[i-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
-
-                        var est_pilot_ts = moment(vessel[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
-                        var req_berth_ts = moment(vessel[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_berth_ts = moment(vessel[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_dep_ts = moment(vessel[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vessel[i-1].info != null ? vessel[i-1].info.replace("\n", "<br>") : '';
-                        var height = parseInt(vessel[i-1].height);
-
-                        $("#intern").append(
-                            '<div id="zone'+i+'" class="zone">'+
-                                '<div id="img'+i+'">'+
-                                    '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vessel[i-1].image+'"/>'+
-                                '</div>'+
-                                '<div id="text_judul'+i+'" class="text_judul" val="'+vessel[i-1].ves_id+'">'+
-                                    'MV. '+vessel[i-1].ves_name+' ('+vessel[i-1].ves_id+")"+
-                                '</div>'+
-                                '<div id="text_detail'+i+'" class="text_detail">'+
-                                    (vessel[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
-                                    (height >= min_height ?
-                                    (vessel[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
-                                    (act_berth_ts != null ? 
-                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
-                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
-                                    )+
-                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
-                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vessel[i-1].est_discharge+'/'+vessel[i-1].est_load+' BOX</div>'+
-                                    '<div style="margin:1px;">LOA : '+vessel[i-1].width_ori+' M</div>'+
-                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
-                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
-                                    '<div style="margin:1px;">WINDOW : '+(vessel[i-1].windows=='1'?'ON':'OFF')+'</div>'+
-                                    ' <circle><span>'+vessel[i-1].berth_fr_metre_ori+' On '+vessel[i-1].berth_to_metre_ori+'</span></circle>'+
-                                    craneloop+
-                                '</div>'+
-                            '</div>');
-                    }
-                    for (i = 1; i < vessel.length+1; ++i) {
-                        if(vessel[i-1].act_berth_ts != null) {
-                            rand = getColor(0);
-                        } else if(vessel[i-1].tentatif == 1) {
-                            rand = getColor(2);
-                        } else if(vessel[i-1].tentatif == 0) {
-                            rand = getColor(1);
-                        }
+                        if(vees.act_berth_ts != null)
+                            act_berth_ts = moment(vees.act_berth_ts).format('DD/MM/YYYY HH:mm');
                         
-                        var left = vessel[i-1].berth_fr_metre_ori /10 *7.611111111111111;;
-                        var top = vessel[i-1].y_awal/20 * 5.1875;;
-                        var width = vessel[i-1].width_ori/10 *7.611111111111111;;
-                        var height = vessel[i-1].height/20 * 5.1875;;
-                        var along_sidein = vessel[i-1].btoa_side;
-
-                        if(along_sidein == "P"){
-                            $("#zone"+i).css("left", left+"px");
-                            $("#zone"+i).css("width", width+"px");
-                            $("#zone"+i).css("top", top +"px");
-                            $("#zone"+i).css("height", height+"px");
-                            $("#text_judul"+i).css("padding-left", "20%");
-                            $("#text_detail"+i).css("padding-left", "18%");
-                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                        } else if (along_sidein == "S") {
-                            $("#zone"+i).css("left", left+"px");
-                            $("#zone"+i).css("width", width+"px");
-                            $("#zone"+i).css("top", top +"px");
-                            $("#zone"+i).css("height", height+"px");
-                            $("#text_judul"+i).css("padding-left", "5px");
-                            $("#text_detail"+i).css("padding-left", "5px");
-                            $("#zone"+i).append('<style>#zone'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                            // $("#text_judul"+i+".text_judul").css("padding-left", "5px");
-                            // $("#text_judul"+i+".text_judul").css("padding-top", "5px");
-                            // $("#text_detail"+i+".text_detail").css("padding-left", "5px");
-                        }
-                    }
-
-                    for (i = 1; i < vesseldom.length+1; ++i) {
-                        var cranedom =  vesseldom[i-1].crane;
-                        var uncranedom=[];
-                        if (cranedom==null)
-                        uncranedom=[];
-                        else
-                        uncranedom = cranedom.split(',');
-
-                        var pot= vesseldom[i-1].dest_port;
-                        if (pot == null)
-                            pod = "-";
-                        else 
-                            pod = pot;
-
-                        // console.log(uncrane);
-                        var craneloopdom = "";
-                        for (var x = 0; x < uncranedom.length; x++) { //Move the for loop from here
-                            craneloopdom += '<circle2><span>'+uncranedom[x]+'</span></circle2>';
-                        };
-
-                        var act_berth_ts = null;
-
-                        if(vesseldom[i-1].act_berth_ts != null)
-                            act_berth_ts = moment(vesseldom[i-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
-
-                        var est_pilot_ts = moment(vesseldom[i-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
-                        var req_berth_ts = moment(vesseldom[i-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_berth_ts = moment(vesseldom[i-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_dep_ts = moment(vesseldom[i-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vesseldom[i-1].info != null ? vesseldom[i-1].info.replace("\n", "<br>") : '';
-                        var height = parseInt(vesseldom[i-1].height);
-                        
-                        $("#domes").append(
-                            '<div id="dom'+i+'" class="zone">'+
-                                '<div id="img'+i+'">'+
-                                    '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesseldom[i-1].image+'"/>'+
-                                '</div>'+
-                                '<div id="text_juduldom'+i+'" class="text_judul" val="'+vesseldom[i-1].ves_id+'">'+
-                                    'MV. '+vesseldom[i-1].ves_name+' ('+vesseldom[i-1].ves_id+')'+
-                                '</div>'+
-                                '<div id="text_detaildom'+i+'" class="text_detail">'+
-                                    (vesseldom[i-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
-                                    (height >= min_height ?
-                                    (vesseldom[i-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
-                                    (act_berth_ts != null ? 
-                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
-                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
-                                    )+
-                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
-                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesseldom[i-1].est_discharge+'/'+vesseldom[i-1].est_load+' BOX</div>'+
-                                    '<div style="margin:1px;">LOA : '+vesseldom[i-1].width_ori+' M</div>'+
-                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
-                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
-                                    '<div style="margin:1px;">WINDOW : '+(vesseldom[i-1].windows=='1'?'ON':'OFF')+'</div>'+
-                                    ' <circle><span>'+vesseldom[i-1].berth_fr_metre_ori+' On '+vesseldom[i-1].berth_to_metre_ori+'</span></circle>'+
-                                    craneloopdom+
-                                '</div>'+
-                            '</div>');
-                    }
-                    for (i = 1; i < vesseldom.length+1; ++i) {
-
-                        if(vesseldom[i-1].act_berth_ts != null) {
-                            rand = getColor(0);
-                        } else if(vesseldom[i-1].tentatif == 1) {
-                            rand = getColor(2);
-                        } else if(vesseldom[i-1].tentatif == 0) {
-                            rand = getColor(1);
-                        }
-                        
-                        
-                        var leftdom = vesseldom[i-1].berth_fr_metre_ori/10 *7.611111111111111; // done
-                        var topdom = vesseldom[i-1].y_awal/20 * 5.1875; // done
-                        var widthdom = vesseldom[i-1].width_ori/10 *7.611111111111111;
-                        var heightdom = vesseldom[i-1].height/20 * 5.1875;
-                        var along_sidedom = vesseldom[i-1].btoa_side;
-                        
-                        // console.log(height);
-                        if(along_sidedom == "S"){ //kiri star
-                        $("#dom"+i).css("left", leftdom+"px");
-                        $("#dom"+i).css("width", widthdom+"px");
-                        $("#dom"+i).css("top", topdom +"px");
-                        $("#dom"+i).css("height", heightdom+"px");
-                        $("#text_juduldom"+i).css("padding-left", "20%");
-                        $("#text_detaildom"+i).css("padding-left", "18%");
-                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                        }else if (along_sidedom == "S") {
-                        $("#dom"+i).css("left", leftdom+"px");
-                        $("#dom"+i).css("width", widthdom+"px");
-                        $("#dom"+i).css("top", topdom +"px");
-                        $("#dom"+i).css("height", heightdom+"px");
-                        $("#text_juduldom"+i+".text_judul").css("padding-left", "5px");
-                        $("#text_detaildom"+i+".text_detail").css("padding-left", "5px");
-                        
-
-                        $("#dom"+i).append('<style>#dom'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                        }
-                    }
-
-                    for (a = 1; a < vesselcur.length+1; ++a) {
-                        var cranecur =   vesselcur[a-1].crane;
-                        var uncranecur=[];
-                        if (cranecur==null)
-                        uncranecur=[];
-                        else
-                        uncranecur = cranecur.split(',');
-
-
-                        var pot= vesselcur[a-1].dest_port;
-                        if (pot == null)
-                            pod = "-";
-                        else 
-                            pod = pot;
-
-                        // console.log(uncrane);
-                        var craneloopcur = "";
-                        for (var x = 0; x < uncranecur.length; x++) { //Move the for loop from here
-                            craneloopcur += '<circle2><span>'+uncranecur[x]+'</span></circle2>';
-                        };
-
-                        var act_berth_ts = null;
-
-                        if(vesselcur[a-1].act_berth_ts != null)
-                            act_berth_ts = moment(vesselcur[a-1].act_berth_ts).format('DD/MM/YYYY HH:mm');
-                        
-                        var est_pilot_ts = moment(vesselcur[a-1].est_pilot_ts).format('DD/MM/YYYY HH:mm');
-                        var req_berth_ts = moment(vesselcur[a-1].req_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_berth_ts = moment(vesselcur[a-1].est_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_dep_ts = moment(vesselcur[a-1].est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vesselcur[a-1].info != null ? vesselcur[a-1].info.replace("\n", "<br>") : '';
-                        var height = parseInt(vesselcur[a-1].height);
+                        var est_pilot_ts = moment(vees.est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                        var req_berth_ts = moment(vees.req_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_berth_ts = moment(vees.est_berth_ts).format('DD/MM/YYYY HH:mm');
+                        var est_dep_ts = moment(vees.est_dep_ts).format('DD/MM/YYYY HH:mm');
+                        var info = vees.info != null ? vees.info.replace("\n", "<br>") : '';
+                        var height = parseInt(vees.height);
 
                         $("#curah").append(
                             '<div id="cur'+a+'" class="zone">'+
                                 '<div id="img'+a+'">'+
-                                    '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vesselcur[a-1].image+'"/>'+
+                                    '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vees.image+'"/>'+
                                 '</div>'+
-                                '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vesselcur[a-1].ves_id+'">'+
-                                    'MV. '+vesselcur[a-1].ves_name+' ('+vesselcur[a-1].ves_id+')'+
+                                '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vees.ves_id+'">'+
+                                    'MV. '+vees.ves_name+' ('+vees.ves_id+')'+
                                 '</div>'+
                                 '<div id="text_detailcur'+a+'" class="text_detail">'+
-                                    (vesselcur[a-1].est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                    (vees.est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
                                     (height >= min_height ?
-                                    (vesselcur[a-1].req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                    (vees.req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
                                     (act_berth_ts != null ? 
                                         ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
                                         ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
                                     )+
                                     '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
-                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vesselcur[a-1].est_discharge+' MT</div>'+
-                                    '<div style="margin:1px;">LOA : '+vesselcur[a-1].width_ori+' M</div>'+
+                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vees.est_discharge+' MT</div>'+
+                                    '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
                                     (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
                                     (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
-                                    '<div style="margin:1px;">WINDOW : '+(vesselcur[a-1].windows=='1'?'ON':'OFF')+'</div>'+
-                                    ' <circle><span>'+vesselcur[a-1].berth_fr_metre_ori+' On '+vesselcur[a-1].berth_to_metre_ori+'</span></circle>'+
-                                    craneloopcur+
+                                    '<div style="margin:1px;">WINDOW : '+(vees.windows=='1'?'ON':'OFF')+'</div>'+
+                                    ' <circle><span>'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
+                                    craneloop+
                                 '</div>'+
                             '</div>');
                     }
                     for (i = 1; i < vesselcur.length+1; ++i) {
-                        if(vesselcur[i-1].act_berth_ts != null) {
-                            rand = getColor(0);
-                        } else if(vesselcur[i-1].tentatif == 1) {
+                        var vees = vesselcur[i-1];
+
+                        if(vees.act_berth_ts != null) {
+                            if(vees.est_end_date != null) {
+                                rand = getColor(0);
+                            } else {
+                                rand = getColor(3);
+                            }
+                        } else if(vees.tentatif == 1) {
                             rand = getColor(2);
-                        } else if(vesselcur[i-1].tentatif == 0) {
+                        } else if(vees.tentatif == 0) {
                             rand = getColor(1);
                         }
                        
-                        var leftcur = (((250 - vesselcur[i-1].berth_to_metre_ori)/10)*7.611111111111111);
-                        var widthcur = (((250 - vesselcur[i-1].berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
+                        var leftcur = (((250 - vees.berth_to_metre_ori)/10)*7.611111111111111);
+                        var widthcur = (((250 - vees.berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
 
                         // console.log("left", leftcur);
 
-                        var topcur= vesselcur[i-1].y_awal/20 * 5.1875; // done
-                        var heightcur = vesselcur[i-1].height/20 * 5.1875;
-                        var along_sidecur = vesselcur[i-1].btoa_side;
+                        var top= vees.y_awal/20 * 5.1875; // done
+                        var height = vees.height/20 * 5.1875;
+                        var along_side = vees.btoa_side;
                         
                         // console.log(height);
-                        if(along_sidecur == "P"){ //kiri star
+                        if(along_side == "P"){ //kiri star
                         $("#cur"+i).css("left", leftcur+"px");
                         $("#cur"+i).css("width", widthcur+"px");
-                        $("#cur"+i).css("top", topcur +"px");
-                        $("#cur"+i).css("height", heightcur+"px");
+                        $("#cur"+i).css("top", top +"px");
+                        $("#cur"+i).css("height", height+"px");
                         $("#text_judulcur"+i).css("padding-left", "20%");
                         $("#text_detailcur"+i).css("padding-left", "18%");
                         $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                        }else if (along_sidecur == "S") {
+                        }else if (along_side == "S") {
                         $("#cur"+i).css("left", leftcur+"px");
                         $("#cur"+i).css("width", widthcur+"px");
-                        $("#cur"+i).css("top", topcur +"px");
-                        $("#cur"+i).css("height", heightcur+"px");
+                        $("#cur"+i).css("top", top +"px");
+                        $("#cur"+i).css("height", height+"px");
                         $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
                         $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
                         
@@ -1371,17 +1347,132 @@ circle2 {
 
     }
 
+    function runLoop(vessel, div, addition='') {
+        var min_height = 180;
+
+        for (i = 1; i < vessel.length+1; ++i) {
+            var vees = vessel[i-1];
+
+            if(vees.act_dep_ts == null || vees.act_berth_ts == null) {
+
+            var crane =  vees.crane;
+            var uncrane=[];
+            if (crane==null)
+            uncrane=[];
+            else
+            uncrane = crane.split(',');
+
+            var pot= vees.dest_port;
+            if (pot == null)
+                pod = "-";
+            else 
+                pod = pot;
+
+            // console.log(uncrane);
+            var craneloop = "";
+            for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
+                craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
+            };
+
+            var act_berth_ts = null;
+
+            if(vees.act_berth_ts != null)
+                act_berth_ts = moment(vees.act_berth_ts).format('DD/MM/YYYY HH:mm');
+
+            var est_pilot_ts = moment(vees.est_pilot_ts).format('DD/MM/YYYY HH:mm');
+            var req_berth_ts = moment(vees.req_berth_ts).format('DD/MM/YYYY HH:mm');
+            var est_berth_ts = moment(vees.est_berth_ts).format('DD/MM/YYYY HH:mm');
+            var est_dep_ts = moment(vees.est_dep_ts).format('DD/MM/YYYY HH:mm');
+            var info = vees.info != null ? vees.info.replace("\n", "<br>") : '';
+            var height = parseInt(vees.height);
+            var width_ori = parseInt(vees.width_ori);
+
+            var styleMarginTopIcon = '-25px';
+            var styleMarginTopIcon2 = '10px';
+            var styleWidthIcon = '30px';
+
+            if(width_ori>=150) {
+                styleMarginTopIcon = '0px';
+                styleWidthIcon = '50px';
+            } else if(width_ori <100) {
+                styleMarginTopIcon2 = '20px';
+            }
+            
+            $("#"+div).append(
+                '<div id="'+addition+i+'" class="zone">'+
+                    '<div id="img'+i+'">'+
+                        '<img id="ims'+i+'" class="ims" src = "{{asset('/img/customer/')}}/'+vees.image+'"/>'+
+                    '</div>'+
+                    '<div id="text_judul'+addition+i+'" class="text_judul" val="'+vees.ves_id+'">'+
+                        'MV. '+vees.ves_name+' ('+vees.ves_id+')'+
+                    '</div>'+
+                    '<div id="text_detail'+addition+i+'" class="text_detail">'+
+                        (vees.est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                        (height >= min_height ?
+                        (vees.req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                        (act_berth_ts != null ? 
+                            ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                            ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                        )+
+                        '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                        '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vees.est_discharge+'/'+vees.est_load+' BOX</div>'+
+                        '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
+                        (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                        (info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
+                        '<div style="margin:1px;">WINDOW : '+(vees.windows=='1'?'ON':'OFF')+'</div>'+
+                    '</div>'+
+                    '<div style="float:right; width: '+styleWidthIcon+'; height: 50px; margin-top:'+styleMarginTopIcon+'">'+
+                        '<div style="width: 50px; margin-left:'+styleMarginTopIcon2+'">'+
+                            (vees.date_labuh_str != null ? 
+                            '<span title="PMH Labuh : '+vees.date_labuh_str+'">'+
+                                '<circle3>'+
+                                    '<span class="fa fa-anchor" style="font-size:7px"></span>'+
+                                '</circle3>'+
+                            '</span>' : '')+
+                            (vees.date_pandu_str != null ? 
+                            '<span title="PMH Pandu Masuk : '+vees.date_pandu_str+'">'+
+                                '<circle3 style="background:green">'+
+                                    '<span class="fa fa-book" style="font-size:7px; color:white"></span>'+
+                                '</circle3>'+
+                            '</span>' : '') +
+                            '<div style="margin-top:-5px; margin-bottom:-5px">'+
+                            (vees.date_pandu_2_str != null ? 
+                            '<span title="PMH Pandu Keluar : '+vees.date_pandu_2_str+'">'+
+                                '<circle3 style="background:#1c84c6">'+
+                                    '<span class="fa fa-book" style="font-size:7px; color:white"></span>'+
+                                '</circle3>'+
+                            '</span>' : '') + 
+                            (vees.date_pandu_asg_str != null ? 
+                                '<a href="#" title="Assigment Pandu : '+vees.date_pandu_asg_str+'"><img src=\'{{asset("img/pilot.png")}}\' width="10"/></a>' : '')+
+                            '</div>'+
+                        '</div>'+
+                        '<div style="margin-top:-7px; margin-left:'+styleMarginTopIcon2+'">'+
+                            '<circle><span>'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
+                        '</div>'+
+                        '<div style="margin-top:-7px; margin-left:'+styleMarginTopIcon2+'; width:50px">'+
+                            craneloop+
+                        '</div>'+
+                    '</div>'+
+                '</div>');
+            }
+
+        }
+    }
+
     function getColor(param) {
-        var green = '#a9d18e';
-        var blue = '#9dc3e6';
-        var yellow = '#ffe699';
+        var departed = '#5eebeb';
+        var berth = '#F5E89A';
+        var commit = '#BDE992';
+        var tentatif = '#c7d6c7';
 
         if(param == 0)
-            return green;
+            return berth;
         else if(param == 1)
-            return blue;
+            return commit;
         else if(param == 2)
-            return yellow 
+            return tentatif;
+        else if(param == 3)
+            return departed;
     }
     function signature() {
         var data_url = <?=json_encode($data)?>;
@@ -1401,7 +1492,7 @@ circle2 {
     }
     function arusminus(){
 
-        var newdate = new Date();
+        var newdate = '<?=$datenow?>';
         var start_date = moment(newdate).format("YYYY-MM-DD");
         var end_date = moment(newdate).add(6,'d').format('YYYY-MM-DD');
         grup(start_date,end_date);

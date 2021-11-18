@@ -30,24 +30,27 @@
           </button></h3>
         </div>
         <div class="panel-body">
-          <div class="responsive-table">
-            <table id="table" class="table table-striped table-bordered" width="100%" cellspacing="0">
+          <div style="overflow-x: scroll;">
+          <!-- <div class="responsive-table"> -->
+            <table id="table" class="table table-striped table-hover dt-responsive display nowrap" cellspacing="0">
               <thead>
+                <th>Ves ID</th>
                 <th>Ves Code</th>
                 <th>Ves Name</th>
                 <th>LOA</th>
                 <th>Voy No</th>
                 <th>RBT</th>
                 <th>ETA</th>
-                <th>ETB</th>
                 <th>Est Load</th>
                 <th>Est Disc</th>
+                <th>Next Port</th>
                 <th>Dest Port</th>
                 <th>Draft</th>
                 <th>Closing Cargo</th>
                 <th>Status</th>
                 <th>Remark</th>
-                <th>Cancel</th>
+                <th>Created</th>
+                <th>Aksi</th>
                 <!-- <th>Action</th> -->
               </thead>
             </table>
@@ -62,7 +65,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add REQ BERTH</h5>
+        <h5 class="modal-title" id="modal_title_add">Add REQ BERTH</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -71,21 +74,34 @@
         <div class="row">
         <div class="col-md-4">
           <div class="form-group">
+            <label class="col-form-label">Status Request</label>
+            <select class="form-control" id="status" class="status">
+              <option value="">-- Pilih Status Request --</option>
+              <option value="0">Request Vessel Berth</option>
+              <option value="1">Update Vessel Berth</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="col-form-label">Ves Code</label>
             <select id="ves_code" name="ves_code" class="form-control" style="width:100%;">
             </select>
+            <input type="hidden" class="form-control" id="id" name="id">
             <input type="hidden" class="form-control" id="ves_id" name="ves_id">
+            <input type="hidden" class="form-control" id="agent" name="agent">
             <input type="hidden" class="form-control" id="ves_name" name="ves_name">
             <input type="hidden" class="form-control" id="ves_code_mdm" name="ves_code_mdm">
             <input type="hidden" class="form-control" id="call_sign" name="call_sign">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">LOA </label>
-            <input type="number" class="form-control" id="loa" name="loa">
+            <input type="hidden" class="form-control" id="loa" name="loa">
           </div>
           <div class="form-group">
             <label class="col-form-label">Voy No </label>
             <input type="text" class="form-control" id="voy_no_cust" name="voy_no_cust">
+          </div>
+          <div class="form-group">
+            <label class="col-form-label">Next Port</label>
+            <select id="next_port" name="next_port" class="form-control" style="width:100%;">
+            </select>
+            <input type="hidden" class="form-control" id="next_port_name" name="next_port_name">
           </div>
           <div class="form-group">
             <label class="col-form-label">Dest Port</label>
@@ -114,15 +130,6 @@
               </div>
           </div>
           <div class="form-group">
-              <label class="col-form-label">ETB : </label>
-              <div class="input-group date form_datetime bs-datetime">
-                  <input type="text" id="etb" size="16" class="form-control">
-                  <span class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                  </span>
-              </div>
-          </div>
-          <div class="form-group">
             <label class="col-form-label">Closing Cargo</label>
               <div class="input-group date form_datetime bs-datetime">
                   <input type="text" id="closing_cargo_date" size="16" class="form-control">
@@ -131,16 +138,16 @@
                   </span>
               </div>
           </div>
-        </div>
-        <div class="col-md-4">
           <div class="form-group">
             <label class="col-form-label">Est Load</label>
-            <input type="text" class="form-control" id="est_load" name="est_load">
+            <input type="number" class="form-control" id="est_load" name="est_load">
           </div>
           <div class="form-group">
             <label class="col-form-label">Est Disc</label>
-            <input type="text" class="form-control" id="est_disc" name="est_disc">
+            <input type="number" class="form-control" id="est_disc" name="est_disc">
           </div>
+        </div>
+        <div class="col-md-4">
           <div class="form-group">
             <label class="col-form-label">Draft</label>
             <input type="text" class="form-control" id="draft" name="draft">
@@ -148,14 +155,6 @@
           <div class="form-group">
             <label class="col-form-label">Remark</label>
             <textarea class="form-control" id="remark" name="remark"></textarea>
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">Status Request</label>
-            <select class="form-control" id="status" class="status">
-              <option value="">-- Pilih Status Request --</option>
-              <option value="0">Request Vessel Berth</option>
-              <option value="1">Update Vessel Berth</option>
-            </select>
           </div>
         </div>
         </div>
@@ -176,7 +175,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">CANCEL REQ BERTH</h5>
+        <h5 class="modal-title" id="modal_title_cancel">CANCEL REQ BERTH</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -189,18 +188,22 @@
               <label class="col-form-label">Ves Code</label>
               <input type="text" class="form-control" id="cancel_ves_code_str" readonly="">
               <input type="hidden" class="form-control" id="cancel_ves_id">
+              <input type="hidden" class="form-control" id="cancel_agent">
               <input type="hidden" class="form-control" id="cancel_ves_code">
               <input type="hidden" class="form-control" id="cancel_ves_name">
               <input type="hidden" class="form-control" id="cancel_ves_code_mdm">
               <input type="hidden" class="form-control" id="cancel_call_sign">
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">LOA </label>
-              <input type="number" class="form-control" id="cancel_loa" readonly="">
+              <input type="hidden" class="form-control" id="cancel_loa" readonly="">
             </div>
             <div class="form-group">
               <label class="col-form-label">Voy No </label>
               <input type="text" class="form-control" id="cancel_voy_no_cust" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Next Port</label>
+              <input type="text" class="form-control" id="cancel_next_port_str" readonly="">
+              <input type="hidden" id="cancel_next_port">
+              <input type="hidden" class="form-control" id="cancel_next_port_name">
             </div>
             <div class="form-group">
               <label class="col-form-label">Dest Port</label>
@@ -219,23 +222,19 @@
                 <input type="text" class="form-control" id="cancel_eta" readonly="">
             </div>
             <div class="form-group">
-                <label class="col-form-label">ETB : </label>
-                <input type="text" class="form-control" id="cancel_etb" readonly="">
-            </div>
-            <div class="form-group">
               <label class="col-form-label">Closing Cargo</label>
               <input type="text" class="form-control" id="cancel_closing_cargo_date" readonly="">
             </div>
-          </div>
-          <div class="col-md-4">
             <div class="form-group">
               <label class="col-form-label">Est Load</label>
-              <input type="text" class="form-control" id="cancel_est_load" readonly="">
+              <input type="number" class="form-control" id="cancel_est_load" readonly="">
             </div>
             <div class="form-group">
               <label class="col-form-label">Est Disc</label>
-              <input type="text" class="form-control" id="cancel_est_disc" readonly="">
+              <input type="number" class="form-control" id="cancel_est_disc" readonly="">
             </div>
+          </div>
+          <div class="col-md-4">
             <div class="form-group">
               <label class="col-form-label">Draft</label>
               <input type="text" class="form-control" id="cancel_draft" readonly="">
@@ -269,6 +268,7 @@
   });
 
   var selectedRow = null;
+  // var m_is_update = false;
 
   $(".form_datetime").datetimepicker({
     autoclose: !0,
@@ -286,32 +286,41 @@
         "processing": true, 
         "serverSide": true, 
         "searching": true, 
-        "responsive":false,
+        "responsive":true,
         "orderCellsTop": true,
         "fixedHeader": true,
+        "order": [[ 14, "desc" ]],
         ajax: "{{url('ReqBerth/json')}}",
         columns: [
+          { data: 'ves_id', name: 'ves_id' },
           { data: 'ves_code', name: 'ves_code' },
           { data: 'ves_name', name: 'ves_name' },
           { data: 'loa', name: 'loa' },
           { data: 'voy_no_cust', name: 'voy_no_cust' },
           { data: 'rbt_str', name: 'rbt_str' },
           { data: 'eta_str', name: 'eta_str' },
-          { data: 'etb_str', name: 'etb_str' },
+          // { data: 'etb_str', name: 'etb_str' },
           { data: 'est_load', name: 'est_load' },
           { data: 'est_disc', name: 'est_disc' },
+          { data: 'next_port', name: 'next_port' },
           { data: 'dest_port', name: 'dest_port' },
           { data: 'draft', name: 'draft' },
           { data: 'closing_cargo_date_str', name: 'closing_cargo_date_str' },
           { data: 'status_str', name: 'status_str' },
           { data: 'remark', name: 'remark' },
+          { data: 'created_date', name: 'created_date' },
           { 
             "data": "id",
             "render": function ( data, type, row ) {
               if(row.is_cancel == 0) {
-                return "<button class='btn ripple-btn-round btn-3d btn-danger' onclick=\"prepareCancel('"+data+"', '"+row.ves_id+"', '"+row.ves_code+"', '"+row.ves_name+"', '"+row.ves_code_mdm+"', '"+row.call_sign+"', '"+row.loa+"', '"+row.voy_no_cust+"', '"+row.rbt_str+"', '"+row.eta_str+"', '"+row.etb_str+"', '"+row.est_load+"', '"+row.est_disc+"', '"+row.dest_port+"', '"+row.dest_port_name+"', '"+row.draft+"', '"+row.closing_cargo_date_str+"', '"+row.status+"')\">"+
-                          "<i class='fa fa-times'></i> cancel"+
+                $html = "<button class='btn ripple-btn-round btn-3d btn-warning' onclick=\"prepareUpdate('"+data+"', '"+row.ves_id+"', '"+row.ves_code+"', '"+row.ves_name+"', '"+row.ves_code_mdm+"', '"+row.call_sign+"', '"+row.agent+"', '"+row.loa+"', '"+row.voy_no_cust+"', '"+row.rbt_str+"', '"+row.eta_str+"', '"+row.etb_str+"', '"+row.est_load+"', '"+row.est_disc+"', '"+row.next_port+"', '"+row.next_port_name+"', '"+row.dest_port+"', '"+row.dest_port_name+"', '"+row.draft+"', '"+row.remark+"', '"+row.closing_cargo_date_str+"', '"+row.status+"')\">"+
+                          "<i class='fa fa-times'></i> update"+
                         "</button>";
+                $html += "<button class='btn ripple-btn-round btn-3d btn-danger' onclick=\"prepareCancel('"+data+"', '"+row.ves_id+"', '"+row.ves_code+"', '"+row.ves_name+"', '"+row.ves_code_mdm+"', '"+row.call_sign+"', '"+row.agent+"', '"+row.loa+"', '"+row.voy_no_cust+"', '"+row.rbt_str+"', '"+row.eta_str+"', '"+row.etb_str+"', '"+row.est_load+"', '"+row.est_disc+"', '"+row.next_port+"', '"+row.next_port_name+"', '"+row.dest_port+"', '"+row.dest_port_name+"', '"+row.draft+"', '"+row.closing_cargo_date_str+"', '"+row.status+"')\">"+
+                          "<i class='fa fa-times'></i> cancel"+
+                        "</button> ";
+
+                return $html;
               } else {
                 return "";
               }
@@ -334,29 +343,33 @@
   mCurId = '';
 
   $('#btn_add').on('click', function() {
-      mIsUpdate = false;
+      // mIsUpdate = false;
+    $('#modal_title_add').text('Insert Req Berth');
       clearForm();
   })
 
   $('#submit_add').on('click', function() {
     if(validateForm()) {
       $.ajax({  
-        url : (!mIsUpdate?"{{ url('ReqBerth/add') }}":"{{ url('ReqBerth/update') }}"),
+        url : "{{ url('ReqBerth/add') }}",
         data: {
           "_token": "{{ csrf_token() }}",
-          id : mCurId,
+          id : $('#id').val(),
           ves_id : $('#ves_id').val(),
           ves_code : $('#ves_code').val(),
           ves_name : $('#ves_name').val(),
           ves_code_mdm : $('#ves_code_mdm').val(),
+          agent : $('#agent').val(),
           call_sign : $('#call_sign').val(),
           loa : $('#loa').val(),
           voy_no_cust : $('#voy_no_cust').val(),
           rbt : $('#rbt').val(),
           eta : $('#eta').val(),
-          etb : $('#etb').val(),
+          // etb : $('#etb').val(),
           est_load : $('#est_load').val(),
           est_disc : $('#est_disc').val(),
+          next_port : $('#next_port').val(),
+          next_port_name : $('#next_port_name').val(),
           dest_port : $('#dest_port').val(),
           dest_port_name : $('#dest_port_name').val(),
           draft : $('#draft').val(),
@@ -402,14 +415,17 @@
           ves_code : $('#cancel_ves_code').val(),
           ves_name : $('#cancel_ves_name').val(),
           ves_code_mdm : $('#cancel_ves_code_mdm').val(),
+          agent : $('#cancel_agent').val(),
           call_sign : $('#cancel_call_sign').val(),
           loa : $('#cancel_loa').val(),
           voy_no_cust : $('#cancel_voy_no_cust').val(),
           rbt : $('#cancel_rbt').val(),
           eta : $('#cancel_eta').val(),
-          etb : $('#cancel_etb').val(),
+          // etb : $('#cancel_etb').val(),
           est_load : $('#cancel_est_load').val(),
           est_disc : $('#cancel_est_disc').val(),
+          next_port : $('#cancel_next_port').val(),
+          next_port_name : $('#cancel_next_port_name').val(),
           dest_port : $('#cancel_dest_port').val(),
           dest_port_name : $('#cancel_dest_port_name').val(),
           draft : $('#cancel_draft').val(),
@@ -447,10 +463,11 @@
     if($('#ves_code').val() != '' &&
       $('#loa').val() != '' &&
       $('#voy_no_cust').val() != '' &&
-      $('#dest_port').val() != '' &&
+      // $('#next_port').val() != '' &&
+      // $('#dest_port').val() != '' &&
       $('#rbt').val() != '' &&
       $('#eta').val() != '' &&
-      $('#etb').val() != '' &&
+      // $('#etb').val() != '' &&
       $('#est_load').val() != '' &&
       $('#est_disc').val() != '' &&
       $('#draft').val() != '' &&
@@ -465,10 +482,11 @@
       $('#cancel_id').val() != '' &&
       $('#cancel_loa').val() != '' &&
       $('#cancel_voy_no_cust').val() != '' &&
-      $('#cancel_dest_port').val() != '' &&
+      // $('#cancel_next_port').val() != '' &&
+      // $('#cancel_dest_port').val() != '' &&
       $('#cancel_rbt').val() != '' &&
       $('#cancel_eta').val() != '' &&
-      $('#cancel_etb').val() != '' &&
+      // $('#cancel_etb').val() != '' &&
       $('#cancel_est_load').val() != '' &&
       $('#cancel_est_disc').val() != '' &&
       $('#cancel_draft').val() != '' &&
@@ -479,6 +497,7 @@
   }
 
   function clearForm() {
+    $('#id').val('');
     $('#ves_code').val('');
     $('#ves_code').val('').trigger('change');
     $('#ves_id').val('');
@@ -489,9 +508,12 @@
     $('#voy_no_cust').val('');
     $('#rbt').val('');
     $('#eta').val('');
-    $('#etb').val('');
+    // $('#etb').val('');
     $('#est_load').val('');
     $('#est_disc').val('');
+    $('#next_port').val('');
+    $('#next_port').val('').trigger('change');
+    $('#next_port_name').val('');
     $('#dest_port').val('');
     $('#dest_port').val('').trigger('change');
     $('#dest_port_name').val('');
@@ -499,6 +521,8 @@
     $('#closing_cargo').val('');
     $('#remark').val('');
     $('#status').val('');
+    mIsUpdate = false;
+    // m_is_update = false;
   }
 
   function clearFormCancel() {
@@ -512,9 +536,11 @@
     $('#cancel_voy_no_cust').val('');
     $('#cancel_rbt').val('');
     $('#cancel_eta').val('');
-    $('#cancel_etb').val('');
+    // $('#cancel_etb').val('');
     $('#cancel_est_load').val('');
     $('#cancel_est_disc').val('');
+    $('#cancel_next_port').val('');
+    $('#cancel_next_port_name').val('');
     $('#cancel_dest_port').val('');
     $('#cancel_dest_port_name').val('');
     $('#cancel_draft').val('');
@@ -549,9 +575,9 @@
     // }
   }
 
-  function prepareCancel(id, ves_id, ves_code, ves_name, ves_code_mdm, call_sign, loa, voy_no_cust, 
+  function prepareCancel(id, ves_id, ves_code, ves_name, ves_code_mdm, call_sign, agent, loa, voy_no_cust, 
     rbt_str, eta_str, etb_str, est_load, est_disc,
-    dest_port, dest_port_name, draft, closing_cargo_date_str, status) {
+    next_port, next_port_name, dest_port, dest_port_name, draft, closing_cargo_date_str, status) {
 
     // if(id != null) {
       $('#modal_cancel').modal('show');
@@ -561,22 +587,85 @@
       $('#cancel_ves_code').val(ves_code);
       $('#cancel_ves_name').val(ves_name);
       $('#cancel_ves_code_mdm').val(ves_code_mdm);
+      $('#cancel_agent').val(agent);
       $('#cancel_call_sign').val(call_sign);
       $('#cancel_loa').val(loa);
       $('#cancel_voy_no_cust').val(voy_no_cust);
       $('#cancel_rbt').val(rbt_str);
       $('#cancel_eta').val(eta_str);
-      $('#cancel_etb').val(etb_str);
+      // $('#cancel_etb').val(etb_str);
       $('#cancel_est_load').val(est_load);
       $('#cancel_est_disc').val(est_disc);
-      $('#cancel_dest_port_str').val(dest_port_name);
-      $('#cancel_dest_port').val(dest_port);
-      $('#cancel_dest_port_name').val(dest_port_name);
+
+      if(next_port != 'null') {
+        $('#cancel_next_port_str').val(next_port_name);
+        $('#cancel_next_port').val(next_port);
+        $('#cancel_next_port_name').val(next_port_name);
+      }
+
+      if(dest_port != 'null') {
+        $('#cancel_dest_port_str').val(dest_port_name);
+        $('#cancel_dest_port').val(dest_port);
+        $('#cancel_dest_port_name').val(dest_port_name);
+      }
+
       $('#cancel_draft').val(draft);
       $('#cancel_closing_cargo_date').val(closing_cargo_date_str);
       $('#cancel_remark').val();
       $('#cancel_status').val('2');
     // }
+  }
+
+  function prepareUpdate(id, ves_id, ves_code, ves_name, ves_code_mdm, call_sign, agent, loa, voy_no_cust, 
+    rbt_str, eta_str, etb_str, est_load, est_disc,
+    next_port, next_port_name, dest_port, dest_port_name, draft, remark, closing_cargo_date_str, status) {
+    $('#modal_add').modal('show');
+
+    $('#modal_title_add').text('Update Req Berth');
+
+    $('#ves_id').val(ves_id);
+    $('#id').val(id);
+    if(ves_code != 'null') {
+      $('#ves_code').val(ves_code);
+      $('#ves_code').append('<option value="'+ves_code+'">'+ves_name+' ('+ves_code+')</option>');
+      $('#ves_code').val(ves_code).trigger('change');
+    }
+    $('#ves_name').val(ves_name);
+    $('#ves_code_mdm').val(ves_code_mdm);
+    $('#agent').val(agent);
+    $('#call_sign').val(call_sign);
+    $('#loa').val(loa);
+    $('#voy_no_cust').val(voy_no_cust);
+    $('#rbt').val(rbt_str);
+    $('#eta').val(eta_str);
+    // $('#etb').val(etb_str);
+    $('#est_load').val(est_load);
+    $('#est_disc').val(est_disc);
+
+    if(next_port != 'null') {
+      $('#next_port').val(next_port);
+      $('#next_port_name').val(next_port_name);
+      $('#next_port').append('<option value="'+next_port+'">'+next_port_name+'</option>');
+      $('#next_port').val(next_port).trigger('change');
+    }
+
+    // $('#next_port_name').val(next_port_name);
+
+    if(dest_port != 'null') {
+      $('#dest_port').val(dest_port);
+      $('#dest_port_name').val(dest_port_name);
+      $('#dest_port').append('<option value="'+dest_port+'">'+dest_port_name+'</option>');
+      $('#dest_port').val(dest_port).trigger('change');
+    }
+
+
+    // $('#dest_port_name').val(dest_port_name);
+    $('#draft').val(draft);
+    $('#closing_cargo_date').val(closing_cargo_date_str);
+    $('#remark').val(remark);
+    $('#status').val(1);
+
+    // m_is_update = true;
   }
 
   $("#ves_code").select2({
@@ -627,6 +716,30 @@
     // minimumInputLength: 3
   });
 
+  $("#next_port").select2({
+    ajax: {
+      url: "{{ url('GeneralService/get_port_json') }}",
+      type: "post",
+      dataType: 'json',
+      delay: 250,
+      data: function(params) {
+        return {
+          keyword: params.term,
+          _token: "{{ csrf_token() }}"
+        };
+      },
+      processResults: function(response) {
+        return {
+          results: response
+        };
+      },
+      cache: true
+    },
+    placeholder: "Select..",
+    allowClear: true,
+    // minimumInputLength: 3
+  });
+
   $('#ves_code').on('change', function () {
     $.ajax({  
       url : "{{ url('GeneralService/get_vessel_det_by_ves_code') }}",
@@ -640,11 +753,12 @@
       success : function(result) {
         if(result.success) {
           if(result.data != null) {
-            $('#ves_id').val(result.data.ves_id);
+            $('#ves_id').val(result.data.ves_id_next);
             $('#ves_name').val(result.data.ves_name);
             $('#ves_code_mdm').val(result.data.mdm_kode_kapal);
             $('#call_sign').val(result.data.call_sign);
             $('#loa').val(result.data.ves_len);
+            $('#agent').val(result.data.agent);
           }
         }
       }
@@ -652,9 +766,14 @@
     // $('#ves_name').val($("#ves_code option:selected").text());
   })
 
+  $('#next_port').on('change', function () {
+    $('#next_port_name').val($("#next_port option:selected").text());
+  });
+
   $('#dest_port').on('change', function () {
     $('#dest_port_name').val($("#dest_port option:selected").text());
-  })
+  });
+
 
 </script>
 @endsection

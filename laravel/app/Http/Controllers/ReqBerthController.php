@@ -16,10 +16,19 @@ class ReqBerthController extends Controller
 
     public function add(Request $request)
     {
+        $data_pic = session('data_pic');
+        $pic_no = '';
+        $pic_nama = '';
+
+        if(count($data_pic) > 0) {
+            $pic_no = $data_pic[0]['hp'];
+            $pic_nama = $data_pic[0]['nama'];
+        }
+
         $closing_cargo_date = getDefaultDate($request->closing_cargo_date);
         $rbt = getDefaultDate($request->rbt);
         $eta = getDefaultDate($request->eta);
-        $etb = getDefaultDate($request->etb);
+        // $etb = getDefaultDate($request->etb);
 
         $result = DB::table('CBSLAM.VIER_REQ_BERTH')
         ->insert([
@@ -32,18 +41,28 @@ class ReqBerthController extends Controller
             'VOY_NO_CUST'   => $request->voy_no_cust,
             'RBT'           => $rbt,
             'ETA'           => $eta,
-            'ETB'           => $etb,
             'EST_LOAD'      => $request->est_load,
             'EST_DISC'      => $request->est_disc,
+            'NEXT_PORT'     => $request->next_port,
+            'NEXT_PORT_NAME'=> $request->next_port_name,
             'DEST_PORT'     => $request->dest_port,
             'DEST_PORT_NAME'=> $request->dest_port_name,
             'DRAFT'         => $request->draft,
             'CLOSING_CARGO_DATE' => $closing_cargo_date,
             'REMARK'        => $request->remark,
-            'CREATED_BY'    => session('agent'),
+            'AGENT'         => $request->agent,
+            'CREATED_BY'    => $pic_nama,
+            'CREATED_BY_HP' => $pic_no,
             'STATUS'        => $request->status,
             'IS_CANCEL'     => ($request->status==2?1:0)
         ]);
+        if($request->id != null && $request->id != ''){
+            $result = DB::table('CBSLAM.VIER_REQ_BERTH')
+                ->where('ID', $request->id)
+                ->update([
+                    'IS_CANCEL' => 1
+                ]);
+        }
         return [
             'success'   => $result,
             'message'   => ($result?'Success':'Failed')
@@ -85,12 +104,15 @@ class ReqBerthController extends Controller
     }
 
     public function json(){
-        return DataTables::of(
-            DB::table('CBSLAM.VIERV_REQ_BERTH')
-                ->where('CREATED_BY', session('agent'))
-                ->orderBy('CREATED_DATE', 'DESC')
-                ->get()
-        )->make(true);
+        $data_pic = session('data_pic');
+
+        $data = DB::table('CBSLAM.VIERV_REQ_BERTH');
+        foreach ($data_pic as $key => $val) {
+            $data->orWhere('AGENT', $val['agent']);
+        }
+        $data->orderBy('CREATED_DATE', 'DESC');
+
+        return DataTables::of($data->get())->make(true);
     }
 
     public function getAll(Request $request)

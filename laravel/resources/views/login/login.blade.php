@@ -473,7 +473,7 @@
             async : false,
             success : function(result){
                 if(result.success) {
-                    window.location = "{{url('Dashboard')}}";
+                    window.location = "{{url('ReqBerth')}}";
                 }
                 $('#div_message').html(result.message);
             }

@@ -23,13 +23,19 @@ hr{
                 <div class="col-md-12">
                   <div class="panel">
                     <div class="panel-heading">
-                      <h3>Data Arus <button class="btn ripple-btn-round btn-3d btn-success right" id="btn_add"  data-toggle="modal" data-target="#modal_add" >
-                        <i class='fa fa-plus '></i> Tambah
-                      </button></h3>
+                      <h3>Data Arus 
+                        <button class="btn ripple-btn-round btn-3d btn-success right" id="btn_add"  data-toggle="modal" data-target="#modal_add" >
+                          <i class='fa fa-plus '></i> Tambah
+                        </button>
+                        <button class="btn ripple-btn-round btn-3d btn-info right" data-toggle="modal" data-target="#modal_import" >
+                          <i class='fa fa-plus '></i> Import
+                        </button>
+                      </h3>
 
                     </div>
                     <div class="panel-body">
                       <div class="responsive-table">
+                        {!!session('message')!!}
                       <table id="table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                             
                                 <thead>
@@ -47,6 +53,40 @@ hr{
               </div>
     </div>
 
+<div class="modal fade" id="modal_import" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Import Arus</h4>
+            </div>
+            <form method="POST" class="form-horizontal" action="{{ url('Arus/import') }}" enctype="multipart/form-data">
+            <div class="modal-body">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label col-md-6">
+                                UNGGAH FILE EXCEL<br>
+                                <a href="{{asset('format/arus.xlsx')}}" target="_blank">download format</a>
+                            </label>
+                            <div class="col-md-6">
+                                <input type="file" name="file" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">UPLOAD</button>
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <!-- Modal Edit Customer -->
 
 <div class="modal fade" id="modal_add"  role="dialog">
@@ -70,11 +110,11 @@ hr{
             <div class="col-md-9">
                   <div class="form-group">
                     <label class="col-form-label">Start Date </label>
-                    <input type="datetime-local" class="form-control start"  name="param4">
+                    <input type="datetime-local" class="form-control start" value="{{date('Y-m-d')}}T{{date('H')}}:00" name="param4">
                   </div>
                   <div class="form-group">
                     <label class="col-form-label">End Date </label>
-                    <input type="datetime-local" class="form-control end"  name="param5">
+                    <input type="datetime-local" class="form-control end" value="{{date('Y-m-d')}}T{{date('H')}}:00" name="param5">
                   </div>
               
             </div>
@@ -114,6 +154,7 @@ function refreshTable(){
       "responsive":false,
       "orderCellsTop": true,
       "fixedHeader": true,
+      "order": [[ 1, "desc" ]],
       ajax: "{{url('Arus/json')}}",
       columns: [
         { data: 'arus_id', name: 'arus_id' },
@@ -140,11 +181,11 @@ $('#input_add').on('click', function() {
                   '<div class="col-md-9">'+
                         '<div class="form-group">'+
                           '<label class="col-form-label">Start Date </label>'+
-                          '<input type="datetime-local" class="form-control start"  name="param4">'+
+                          '<input type="datetime-local" class="form-control start" value="{{date('Y-m-d')}}T{{date('H')}}:00" name="param4">'+
                         '</div>'+
                         '<div class="form-group">'+
                           '<label class="col-form-label">End Date </label>'+
-                          '<input type="datetime-local" class="form-control end"  name="param5">'+
+                          '<input type="datetime-local" class="form-control end" value="{{date('Y-m-d')}}T{{date('H')}}:00" name="param5">'+
                         '</div>'+
                   '</div>'+
                   '<div class="col-md-3 ml-auto" >'+

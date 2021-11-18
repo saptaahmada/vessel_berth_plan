@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use DataTables;
 
+
 class DashboardController extends Controller
 {
     public function index()

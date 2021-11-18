@@ -24,6 +24,10 @@
     .small_margin {
         padding:3px !important;
     }
+    .legend_2  {
+         color: #787878; 
+         cursor:pointer;
+    }
 </style>
 
 
@@ -47,21 +51,27 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="well">
-                                <button type="button" class="btn ripple-infinite btn-round btn-3d btn-primary"  data-toggle="modal" data-target="#addVessel" style='margin:10px;'>
+                                <button type="button" class="btn ripple-infinite btn-round btn-3d btn-primary"  data-toggle="modal" data-target="#addVessel" style='margin:10px;' id="btn_modal_add_vessel">
                                 Add Vessel
                                 </button>
-                                <button type="button" class="btn ripple-infinite btn-round btn-3d btn-info"  data-toggle="modal" data-target="#vessel_unregistered" style='margin:10px;'>
+                                <button type="button" class="btn ripple-infinite btn-round btn-3d btn-info"  data-toggle="modal" data-target="#vessel_unregistered" style='margin:10px;' id="btn_modal_unreg_vessel">
                                 Add Vessel Unregistered
                                 </button>
                                 <button type="button" class="btn ripple-infinite btn-round btn-3d btn-danger"  data-toggle="modal" data-target="#modal_note" style='margin:10px;'>
                                 Add Note
                                 </button>
                                 <button type="button" class="btn ripple-infinite btn-round btn-3d btn-warning"  data-toggle="modal" data-target="#modal_print" style='margin:10px;'>
-                                Print Berthing Plan
+                                    Print Berthing Plan
+                                </button>
+                                <button type="button" class="btn ripple-infinite btn-round btn-3d btn-warning" data-toggle="modal" data-target="#modal_excel" style='margin:10px;'>
+                                    <i class="fa fa-file"></i> Export Excel
                                 </button>
                                 <button type="button" class="btn ripple-infinite btn-round btn-3d btn-default" id="btn_sync" style='margin:10px;'>
-                                Sync Now
+                                    <i class="fa fa-refresh"></i> Sync Now
                                 </button>
+                                <div class="btn ripple-infinite btn-round btn-3d btn-success" id="btn_resend_pdf" style='margin:10px;' target="_blank">
+                                    <i class="fa fa-send"></i> send PDF
+                                </div>
                                 <div>
                                     <input type="checkbox" id="cb_collision"> Vessel tumpuk diperbolehkan
                                 </div>
@@ -114,7 +124,40 @@
                                             </tr>
                                         </table>
                                     </div>
-                                    
+                                    <div class="col-md-3">
+                                        <table>
+                                            <tr>
+                                                <td class="small_margin">
+                                                    <a href="#" class="badge badge-default">
+                                                        <span class="fa fa-anchor" style="font-size:10px"></span>
+                                                    </a>
+                                                </td>
+                                                <td class="small_margin">PMH Labuh</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="small_margin">
+                                                    <a href="#" class="badge badge-success">
+                                                        <span class="fa fa-book" style="font-size:10px"></span>
+                                                    </a>
+                                                </td>
+                                                <td class="small_margin">PMH Pandu Masuk</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="small_margin">
+                                                    <a href="#" class="badge badge-primary">
+                                                        <span class="fa fa-book" style="font-size:10px"></span>
+                                                    </a>
+                                                </td>
+                                                <td class="small_margin">PMH Pandu Keluar</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="small_margin">
+                                                    <img src='{{asset("img/pilot.png")}}' width="20"/>
+                                                </td>
+                                                <td class="small_margin">Assignment Pandu</td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
 
                                 
@@ -125,18 +168,20 @@
                                     <h4>VESSEL BELUM DI INPUT</h4>
                                     <div>
                                       Legend : 
-                                      <!-- <button class="badge" onclick="" style="background: #000; color: #FFF">All</button> -->
-                                      <div class="badge" style="background: #7dffa4; color: #787878">Insert</div>
-                                      <div class="badge" style="background: #ffccfb; color: #787878">Update</div>
-                                      <div class="badge" style="background: #ffc6c2; color: #787878">Cancel</div>
+                                      <div class="badge legend_2" status="-2" style="background: #ebe534;">ALL</div>
+                                      <div class="badge legend_2" status="-1" style="background: #7dffa4;">CTOS</div>
+                                      <div class="badge legend_2" status="0" style="background: #78beff;">Cust Insert</div>
+                                      <div class="badge legend_2" status="1" style="background: #ffccfb;">Cust Update</div>
+                                      <div class="badge legend_2" status="2" style="background: #ffc6c2;">Cust Cancel</div>
                                     </div><br>
                                     <table class="table table-bordered" id="table_ves_not_input">
                                         <thead>
                                             <th>Ves ID</th>
                                             <th>Ves Name</th>
                                             <th>ETA</th>
-                                            <th>ETB</th>
-                                            <th>LOA</th>
+                                            <th>Disc</th>
+                                            <th>Load</th>
+                                            <th>Created</th>
                                             <th>Action</th>
                                         </thead>
                                         <tbody>
@@ -319,7 +364,7 @@
 
                                                         <div class="form-group">
                                                             <label class="col-form-label">Crane Density :</label>
-                                                            <input id="craneDensityDry" type="text" class="form-control">
+                                                            <input id="craneDensityDry" type="number" value="1" class="form-control">
                                                         </div>
 
                                                         <div class="form-group">
@@ -497,7 +542,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="col-form-label">Crane Density :</label>
-                                                            <input id="craneDensity" type="text" class="form-control">
+                                                            <input id="craneDensity" type="number" value="1" class="form-control">
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="col-form-label">BSH :</label>
@@ -717,7 +762,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="col-form-label">Crane Density :</label>
-                                                            <input id="edit_crane_density" type="text" class="form-control">
+                                                            <input id="edit_crane_density" type="number" value="1" class="form-control">
                                                         </div>
                                                         <div class="form-group" id="edit_div_tgh">
                                                             <label class="col-form-label">TGH :</label>
@@ -953,7 +998,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="col-form-label">Crane Density :</label>
-                                                            <input id="unreg_crane_density" type="text" class="form-control">
+                                                            <input id="unreg_crane_density" type="number" value="1" class="form-control">
                                                         </div>
                                                         <div class="form-group" id="unreg_div_bsh">
                                                             <label class="col-form-label">BSH :</label>
@@ -1123,6 +1168,47 @@
                                     </div>
                                 </div>
 
+                                <div class="modal fade" id="modal_excel"  role="dialog">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Export To Excel</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form class="form-horizontal" action="{{ url('print/export') }}" method="get" target="_blank">
+                                        <div class="modal-body">
+                                            <!-- <div class="form-horizontal"> -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Start Date</label>
+                                                        <div class="col-md-7">
+                                                            <input class="form-control" id="export_start" name="export_start" type="date"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">End Date</label>
+                                                        <div class="col-md-7">
+                                                            <input class="form-control" id="export_end" name="export_end" type="date"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Export</button>
+                                        </div>
+                                        </form>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="modal fade" id="modal_note"  role="dialog">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -1147,10 +1233,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                    <!-- Modal Edit Customer End-->
-
-
                         </div>
                     </div>
                 </div>
@@ -1158,6 +1240,98 @@
         </div>
     </div>
 
+</div>
+
+  
+<div class="modal fade" id="modal_detail"  role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_title_detail">DETAIL REQ BERTH</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <input type="hidden" class="form-control" id="detail_id">
+              <label class="col-form-label">Ves Code</label>
+              <input type="text" class="form-control" id="detail_ves_code_str" readonly="">
+              <input type="hidden" class="form-control" id="detail_ves_id">
+              <input type="hidden" class="form-control" id="detail_agent">
+              <input type="hidden" class="form-control" id="detail_ves_code">
+              <input type="hidden" class="form-control" id="detail_ves_name">
+              <input type="hidden" class="form-control" id="detail_ves_code_mdm">
+              <input type="hidden" class="form-control" id="detail_call_sign">
+              <input type="hidden" class="form-control" id="detail_loa" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Voy No </label>
+              <input type="text" class="form-control" id="detail_voy_no_cust" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Next Port</label>
+              <input type="text" class="form-control" id="detail_next_port_str" readonly="">
+              <input type="hidden" id="detail_next_port">
+              <input type="hidden" class="form-control" id="detail_next_port_name">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Dest Port</label>
+              <input type="text" class="form-control" id="detail_dest_port_str" readonly="">
+              <input type="hidden" id="detail_dest_port">
+              <input type="hidden" class="form-control" id="detail_dest_port_name">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+                <label class="col-form-label">Request Berth Time : </label>
+                <input type="text" class="form-control" id="detail_rbt" readonly="">
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">ETA : </label>
+                <input type="text" class="form-control" id="detail_eta" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Closing Cargo</label>
+              <input type="text" class="form-control" id="detail_closing_cargo_date" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Est Load</label>
+              <input type="number" class="form-control" id="detail_est_load" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Est Disc</label>
+              <input type="number" class="form-control" id="detail_est_disc" readonly="">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="col-form-label">Draft</label>
+              <input type="text" class="form-control" id="detail_draft" readonly="">
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Remark</label>
+              <textarea class="form-control" id="detail_remark" readonly=""></textarea>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Created BY</label>
+              <input type="text" class="form-control" id="detail_created_by" readonly="">
+            </div>
+            <input type="hidden" id="detail_status" value="1">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <!-- <button type="submit" id="submit_detail" class="btn btn-primary">Cancel Request Berth</button> -->
+        </div>
+
+      </div>
+     
+    </div>
+  </div>
 </div>
 
 @include('cssjs.script3')

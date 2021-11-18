@@ -82,7 +82,8 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan_Logo','Home3Controller@logo')->name('logo3');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
     Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
-    Route::get('/VesselBerthPlan3/ves_not_yet_json', 'Home3Controller@ves_not_yet_json')->name('ves_not_yet_json');
+    Route::get('/VesselBerthPlan3/ves_not_yet_json/{status}', 'Home3Controller@ves_not_yet_json')->name('ves_not_yet_json');
+    Route::post('/VesselBerthPlan3/delete_ves_not_input', 'Home3Controller@delete_ves_not_input');
     
     Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     Route::get('/Dermaga','DermagaController@index')->name('dermaga');
@@ -142,6 +143,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/Arus/remove','ArusController@remove')->name('arusRemove');
     Route::get('/Arus/json','ArusController@json');
     Route::post('/Arus/getAll','ArusController@getAll')->name('getAllArus');
+    Route::post('/Arus/import','ArusController@import');
 
 
     Route::get('/MHoliday','MHolidayController@index')->name('arus');
@@ -170,6 +172,17 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     
     Route::get('/logout',  'LoginController@logout')->name('logout');
     
+
+    Route::get('/Research','ResearchController@index');
+    Route::get('/EquipmentPlan','EquipmentPlanController@index');
+    Route::post('/EquipmentPlan/getVesBerth','EquipmentPlanController@getVesBerth');
+    Route::post('/EquipmentPlan/getNodes','EquipmentPlanController@getNodes');
+    Route::post('/EquipmentPlan/getCrane','EquipmentPlanController@getCrane');
+    Route::post('/EquipmentPlan/getTruck','EquipmentPlanController@getTruck');
+    Route::post('/EquipmentPlan/getEqPlanHour','EquipmentPlanController@getEqPlanHour');
+    Route::post('/EquipmentPlan/save','EquipmentPlanController@save');
+    
+    Route::get('/print/export','PrintController@export');
 });
 
 Route::get('/print','PrintController@print')->name('print');

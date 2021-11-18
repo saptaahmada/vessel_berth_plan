@@ -45,13 +45,13 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="col-form-label">Date From</label>
-                                <input type="date" class="form-control" id="date_from" name="est_disc">
+                                <input type="date" class="form-control" id="date_from" name="date_from">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="col-form-label">Date To</label>
-                                <input type="date" class="form-control" id="date_to" name="est_disc">
+                                <input type="date" class="form-control" id="date_to" name="date_to">
                             </div>
                         </div>
                         <div class="col-md-2">
