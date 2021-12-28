@@ -891,6 +891,34 @@ $('#btn_sync').on('click', function () {
     }
 })
 
+$('#btn_send_to_tos').on('click', function () {
+    if(confirm('Are you sure to sync data?, before it, you have to make sure to save your plan')) {
+        $.ajax({  
+            url : "{{route('send_to_tos')}}",
+            type : "post",
+            data : {
+                "_token": "{{ csrf_token() }}"
+            },
+            dataType : "json",
+            async : true,
+            success : function(result){
+                if(result) {
+                    swal({
+                        title: "Synchronization success",
+                        text: "Synchronization success",
+                        icon: "success",
+                        button: "Oke",
+                        });
+                    location.reload();
+                }
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
+        });
+    }
+})
+
 // $('#btn_export').on('click', function () {
 //     $.ajax({  
 //         url : "{{ url('print/export') }}",
@@ -927,19 +955,25 @@ $('#btn_resend_pdf').on('click', function () {
             dataType : "json",
             async : true,
             success : function(result){
-                if(result.success) {
-                    swal({
-                        title: "Resend success",
-                        text: "Resend Success",
-                        icon: "success",
-                        button: "Oke",
-                    });
-                }
+                swal({
+                    title: result.message,
+                    text: result.message,
+                    icon: result.success ? "success" : "danger",
+                    button: "Oke",
+                });
             },
             error: function(request, textStatus, errorThrown) {
                 alert(request.responseJSON.message);
             }
         });
+        setTimeout(function () {
+            swal({
+                title: 'Sukses',
+                text: 'Sukses',
+                icon: "success",
+                button: "Oke",
+            });
+        }, 2000)
     }
 })
 
@@ -1708,6 +1742,7 @@ function toEdit(index) {
 
     $('#editVessel').modal('show');
     $('#edit_vessel').val(vees.ves_id);
+    $('#edit_ves_code').val(vees.ves_code);
     $('#edit_vessel_name').val(vees.ves_name);
     $('#edit_eta').val((vees.est_pilot_ts != null ? vees.est_pilot_ts.substring(0,16) : ''));
     $('#edit_rbt').val((vees.req_berth_ts != null ? vees.req_berth_ts.substring(0,16) : ''));
@@ -2405,6 +2440,7 @@ function editvessel() {
     vees.est_berth_ts   = $('#edit_etb').val().replace('T', ' ')+":00";
     vees.est_dep_ts     = $('#edit_etd').val().replace('T', ' ')+":00";
     vees.ves_id         = $('#edit_vessel').val();
+    vees.ves_code       = $('#edit_ves_code').val();
     vees.ves_service    = $('#edit_ves_service').val();
     vees.btoa_side      = $('input[class=edit_side]:checked').val();
     vees.bsh            = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();

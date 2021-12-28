@@ -72,6 +72,9 @@
                                 <div class="btn ripple-infinite btn-round btn-3d btn-success" id="btn_resend_pdf" style='margin:10px;' target="_blank">
                                     <i class="fa fa-send"></i> send PDF
                                 </div>
+                                <div class="btn ripple-infinite btn-round btn-3d btn-info" id="btn_send_to_tos" style='margin:10px;' target="_blank">
+                                    <i class="fa fa-send"></i> send to TOS
+                                </div>
                                 <div>
                                     <input type="checkbox" id="cb_collision"> Vessel tumpuk diperbolehkan
                                 </div>
@@ -689,6 +692,10 @@
                                                             <input id="edit_vessel" class="form-control">
                                                         </div>
                                                         <div class="form-group">
+                                                            <label class="col-form-label">Vessel Code: </label>
+                                                            <input id="edit_ves_code" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label class="col-form-label">Vessel Name: </label>
                                                             <input id="edit_vessel_name" class="form-control">
                                                         </div>
@@ -917,9 +924,12 @@
                                                         <div class="form-group">
                                                             <label class="col-form-label">Vessel ID : </label>
                                                             <input id="unreg_vessel_id" class="form-control">
-                                                            <input id="unreg_vessel_code" type="hidden">
                                                             <input id="unreg_vessel_code_mdm" type="hidden">
                                                             <input id="unreg_call_sign" type="hidden">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Vessel CODE : </label>
+                                                            <input class="form-control" id="unreg_vessel_code" type="text">
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="col-form-label">Vessel Name : </label>
