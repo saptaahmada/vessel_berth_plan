@@ -69,12 +69,6 @@
 
  <body id="mimin" class="dashboard">
 
-    <div class="preloader">
-      <div class="loading">
-        <img src="{{asset('img/ajax-loader.gif')}}">
-      </div>
-    </div>
-
       <!-- start: Header -->
       @include('home.topbar')
       <!-- end: Header -->

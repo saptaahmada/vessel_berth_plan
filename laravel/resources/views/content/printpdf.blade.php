@@ -1228,7 +1228,7 @@ circle3 {
                         var vees = vesselcur[i-1];
 
                         if(vees.act_berth_ts != null) {
-                            if(vees.est_end_date != null) {
+                            if(vees.time_remain_label != null) {
                                 rand = getColor(0);
                             } else {
                                 rand = getColor(3);
@@ -1238,6 +1238,8 @@ circle3 {
                         } else if(vees.tentatif == 0) {
                             rand = getColor(1);
                         }
+
+                        console.log(vees);
                        
                         var leftcur = (((250 - vees.berth_to_metre_ori)/10)*7.611111111111111);
                         var widthcur = (((250 - vees.berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done

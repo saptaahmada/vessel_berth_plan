@@ -79,6 +79,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/VesselBerthPlan3/save_note_one', 'Home3Controller@save_note_one')->name('save_note_one');
     Route::post('/VesselBerthPlan3/save2', 'Home3Controller@save2')->name('save2');
     Route::post('/VesselBerthPlan3/sync_prod', 'Home3Controller@sync_prod')->name('sync_prod');
+    Route::post('/VesselBerthPlan3/send_to_tos', 'Home3Controller@send_to_tos')->name('send_to_tos');
     Route::get('/VesselBerthPlan_Logo','Home3Controller@logo')->name('logo3');
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
     Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');

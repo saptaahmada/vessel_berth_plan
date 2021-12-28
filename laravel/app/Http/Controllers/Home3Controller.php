@@ -747,6 +747,16 @@ class Home3Controller extends Controller
         return response()->json($result);
     }
 
+    public function send_to_tos(Request $request)
+    {
+        $procedureName = 'CBSLAM.SEND_VIERA_TOS';
+
+        $result = DB::executeProcedure($procedureName);
+
+        return response()->json($result);
+    }
+
+
     public function delete_ves_not_input(Request $request) 
     {
         $isSuccess = DB::table('CBSLAM.VIER_REQ_BERTH')

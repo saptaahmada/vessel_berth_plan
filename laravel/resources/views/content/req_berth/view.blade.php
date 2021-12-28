@@ -753,7 +753,7 @@
       success : function(result) {
         if(result.success) {
           if(result.data != null) {
-            $('#ves_id').val(result.data.ves_id_next);
+            $('#ves_id').val(result.data.ves_id);
             $('#ves_name').val(result.data.ves_name);
             $('#ves_code_mdm').val(result.data.mdm_kode_kapal);
             $('#call_sign').val(result.data.call_sign);
