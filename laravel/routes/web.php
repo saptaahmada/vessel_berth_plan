@@ -84,6 +84,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/VesselBerthPlan_Logo/updatelogo/{customer}','Home3Controller@updatelogo')->name('updatelogo3');
     Route::post('/VesselBerthPlan3/getvessel', 'Home3Controller@getvessel')->name('getvessel');
     Route::get('/VesselBerthPlan3/ves_not_yet_json/{status}', 'Home3Controller@ves_not_yet_json')->name('ves_not_yet_json');
+    Route::get('/VesselBerthPlan3/ves_bsh_history_json/{ves_code}', 'Home3Controller@ves_bsh_history_json');
     Route::post('/VesselBerthPlan3/delete_ves_not_input', 'Home3Controller@delete_ves_not_input');
     
     Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
@@ -178,11 +179,17 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/EquipmentPlan','EquipmentPlanController@index');
     Route::post('/EquipmentPlan/getVesBerth','EquipmentPlanController@getVesBerth');
     Route::post('/EquipmentPlan/getNodes','EquipmentPlanController@getNodes');
-    Route::post('/EquipmentPlan/getCrane','EquipmentPlanController@getCrane');
-    Route::post('/EquipmentPlan/getTruck','EquipmentPlanController@getTruck');
+    Route::post('/EquipmentPlan/getEq','EquipmentPlanController@getEq');
+    Route::post('/EquipmentPlan/getEqGroup','EquipmentPlanController@getEqGroup');
     Route::post('/EquipmentPlan/getEqPlanHour','EquipmentPlanController@getEqPlanHour');
+    Route::post('/EquipmentPlan/getEqTruckReady','EquipmentPlanController@getEqTruckReady');
     Route::post('/EquipmentPlan/save','EquipmentPlanController@save');
+    Route::post('/EquipmentPlan/saveTruck','EquipmentPlanController@saveTruck');
     
+    Route::get('/EquipmentPlanAsg','EquipmentPlanAsgController@index');
+    Route::post('/EquipmentPlanAsg/getData','EquipmentPlanAsgController@getData');
+    Route::post('/EquipmentPlanAsg/save','EquipmentPlanAsgController@save');
+
     Route::get('/print/export','PrintController@export');
 });
 

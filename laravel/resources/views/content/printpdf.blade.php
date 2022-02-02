@@ -1173,7 +1173,7 @@ circle3 {
                         uncrane = crane.split(',');
 
 
-                        var pot= vees.dest_port;
+                        var pot= vees.next_port;
                         if (pot == null)
                             pod = "-";
                         else 
@@ -1364,7 +1364,7 @@ circle3 {
             else
             uncrane = crane.split(',');
 
-            var pot= vees.dest_port;
+            var pot= vees.next_port;
             if (pot == null)
                 pod = "-";
             else 

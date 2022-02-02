@@ -42,9 +42,12 @@
             @elseif (session('role') === "CUSTOMER")
             <!-- <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li> -->
             <li class="ripple"><a href="{{ url('ReqBerth') }}"><span class="fa-home fa"></span>Req Vessel Berth</a></li>
+            @elseif (session('role') === "PIC PDS")
+            <!-- <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li> -->
+            <li class="ripple"><a href="{{ url('EquipmentPlanAsg') }}"><span class="fa-home fa"></span>Equipment</a></li>
             @else 
             <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li>
-            <li class="ripple"><a href="{{ url('Monitoring/0') }}"><span class="fa fa-inbox"></span>Monitoring Berth Plan</a></li>
+            <!-- <li class="ripple"><a href="{{ url('Monitoring/0') }}"><span class="fa fa-inbox"></span>Monitoring Berth Plan</a></li> -->
             @endif
 
            

@@ -47,6 +47,7 @@ class LoginController extends Controller
                 session(['hak_akses'=> $response->HAKAKSES_DESC]);
                 session(['data'=> $response->NAMA]);
                 session(['id'=> $response->IDUSER]);
+                session(['nipp'=> $response->USERNAME]);
                 session(['email'=> $response->EMAIL]);
                 session(['hp'=> $response->HP]);
                 return redirect('/role');

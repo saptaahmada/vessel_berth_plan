@@ -452,15 +452,18 @@
                                                     </div>
                                                     <div class="col-md-6 well" style="background: #feffb0">
                                                         <div>
-                                                        <h4>Arus Minus</h4>
-                                                        <table class="table table-bordered" id="dry_table_arus" style="background: white">
+                                                        <h4>BSH History</h4>
+                                                        <table class="table table-bordered" id="dry_bsh_history" style="background: white">
                                                             <thead>
-                                                                <th>Start</th>
-                                                                <th>End</th>
+                                                                <th>Ves Id</th>
+                                                                <th>ATB</th>
+                                                                <th>ATD</th>
+                                                                <th>BSH</th>
                                                             </thead>
-                                                            <tbody id="dry_tbody_arus"></tbody>
+                                                            <tbody></tbody>
                                                         </table>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -642,13 +645,15 @@
                                                     </div>
                                                     <div class="col-md-6 well">
                                                         <div>
-                                                        <h4>Arus Minus</h4>
-                                                        <table class="table table-bordered" id="table_arus" style="background: white">
+                                                        <h4>BSH History</h4>
+                                                        <table class="table table-bordered" id="con_bsh_history" style="background: white">
                                                             <thead>
-                                                                <th>Start</th>
-                                                                <th>End</th>
+                                                                <th>Ves Id</th>
+                                                                <th>ATB</th>
+                                                                <th>ATD</th>
+                                                                <th>BSH</th>
                                                             </thead>
-                                                            <tbody id="tbody_arus"></tbody>
+                                                            <tbody></tbody>
                                                         </table>
                                                         </div>
                                                     </div>
@@ -873,15 +878,16 @@
 
                                                     </div>
                                                     <div class="col-md-6 well">
-
                                                         <div>
-                                                        <h4>Arus Minus</h4>
-                                                        <table class="table table-bordered" id="edit_table_arus" style="background: white">
+                                                        <h4>BSH History</h4>
+                                                        <table class="table table-bordered" id="edit_bsh_history" style="background: white">
                                                             <thead>
-                                                                <th>Start</th>
-                                                                <th>End</th>
+                                                                <th>Ves Id</th>
+                                                                <th>ATB</th>
+                                                                <th>ATD</th>
+                                                                <th>BSH</th>
                                                             </thead>
-                                                            <tbody id="edit_tbody_arus"></tbody>
+                                                            <tbody></tbody>
                                                         </table>
                                                         </div>
 
@@ -1104,23 +1110,9 @@
 
                                                 <div class="row">
                                                     <div class="col-md-6">
-
                                                         <div class="form-group">
                                                             <label class="col-form-label">Info : </label>
                                                             <textarea style="resize: none;" rows="5" class="form-control" id="unreg_info"></textarea>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-md-6 well">
-                                                        <div>
-                                                        <h4>Arus Minus</h4>
-                                                        <table class="table table-bordered" id="unreg_table_arus" style="background: white">
-                                                            <thead>
-                                                                <th>Start</th>
-                                                                <th>End</th>
-                                                            </thead>
-                                                            <tbody id="unreg_tbody_arus"></tbody>
-                                                        </table>
                                                         </div>
                                                     </div>
                                                 </div>

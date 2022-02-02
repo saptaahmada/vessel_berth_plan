@@ -781,4 +781,15 @@ class Home3Controller extends Controller
         )->make(true);
     }
 
+    public function ves_bsh_history_json($ves_code)
+    {
+        return DataTables::of(
+            DB::select("SELECT * FROM (
+                SELECT * FROM CBSLAM.VIERV_EXPORT_MONTHLY
+                WHERE VES_CODE='{$ves_code}'
+                ORDER BY TO_DATE(ACT_DEP_TS, 'DD/MM/YYYY HH24:MI') DESC)
+                WHERE ROWNUM<=3")
+        )->make(true);
+    }
+
 }
