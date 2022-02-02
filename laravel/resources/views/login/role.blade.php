@@ -392,25 +392,14 @@
     });
 
     function getrole(aksesparam) {
-        // console.log(aksesparam);
-        var session =""
-        if (aksesparam == "ADMIN") {
-           session ="ADMIN"
-            }
-        else if (aksesparam == "VESSEL PLANNER") {
-           session ="VESSEL PLANNER"
-            }
-        else {
-           session =" "
-            } 
-
+       
 
     $.ajax({  
         url : "{{route('rolesession')}}",
         type : "post",
         data: {
             "_token": "{{ csrf_token() }}",
-            param_role:session
+            param_role:aksesparam
             },
         dataType : "json",
         async : false,

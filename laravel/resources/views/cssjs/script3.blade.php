@@ -42,8 +42,6 @@
 
         $(document).ready(function () {
 
-            // setMinMaxDate();
-
             $('#unreg_crane_dry').hide();
             $('#unreg_div_tgh').hide();
 
@@ -599,6 +597,33 @@ function getGenerateColor(str) {
     });
   }
 
+
+  function refreshTableBshHistory(table_id, ves_code) {
+    console.log("cok", ves_code);
+    console.log("cok 2", table_id);
+    $('#'+table_id).DataTable({
+        "filter": true,
+        "destroy": true,
+        "ordering": true,
+        "processing": true, 
+        "serverSide": true, 
+        "searching": true, 
+        "responsive":false,
+        "orderCellsTop": true,
+        "fixedHeader": true,
+        "order": [[ 0, "desc" ]],
+        // pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+        ajax: "{{url('VesselBerthPlan3/ves_bsh_history_json')}}/"+ves_code,
+        columns: [
+          { data: 'ves_id', name: 'ves_id' },
+          { data: 'act_berth_ts', name: 'act_berth_ts' },
+          { data: 'act_dep_ts', name: 'act_dep_ts' },
+          { data: 'bsh_bt', name: 'bsh_bt' },
+        ],
+    });
+  }
+
 $('.btn_edit').on('click', function() {
     m_id_req_berth = null;
 })
@@ -829,38 +854,38 @@ function autofillCon() {
    }
 }
 
-function changeAlongside(etb, side_s, side_p, tbody, allow_selected=true) {
+function changeAlongside(etb, side_s, side_p, allow_selected=true) {
     const format    = "YYYY-MM-DD";
     etb_date_str    = moment($('#'+etb).val()).format(format);
     etb_date        = new Date($('#'+etb).val()).getTime();
     m_cur_arus = [];
-    var html = "";
+    // var html = "";
 
-    for(var i=0; i<m_arus.length; i++) {
-        if(m_arus[i].tanggal == etb_date_str) {
-            var start_date   = new Date(m_arus[i].start_date).getTime();
-            var end_date     = new Date(m_arus[i].end_date).getTime();
-            var style = '';
+    // for(var i=0; i<m_arus.length; i++) {
+    //     if(m_arus[i].tanggal == etb_date_str) {
+    //         var start_date   = new Date(m_arus[i].start_date).getTime();
+    //         var end_date     = new Date(m_arus[i].end_date).getTime();
+    //         var style = '';
 
-    console.log("masuk2");
+    // console.log("masuk2");
 
 
-            if(start_date <= etb_date && end_date >= etb_date) {
-                if(allow_selected) {
-                    if(m_dermaga_current == 'D')
-                        $("#"+side_s).prop("checked", true);
-                    else
-                        $("#"+side_p).prop("checked", true);
-                }
+    //         if(start_date <= etb_date && end_date >= etb_date) {
+    //             if(allow_selected) {
+    //                 if(m_dermaga_current == 'D')
+    //                     $("#"+side_s).prop("checked", true);
+    //                 else
+    //                     $("#"+side_p).prop("checked", true);
+    //             }
 
-                style = "style='background:#bfffbf'";
-            }
+    //             style = "style='background:#bfffbf'";
+    //         }
 
-            html += "<tr "+style+"><td>"+m_arus[i].start_time+"</td><td>"+m_arus[i].end_time+"</td></tr>";
-            m_cur_arus.push(m_arus[i]);
-        }
-    }
-    $('#'+tbody).html(html);
+    //         html += "<tr "+style+"><td>"+m_arus[i].start_time+"</td><td>"+m_arus[i].end_time+"</td></tr>";
+    //         m_cur_arus.push(m_arus[i]);
+    //     }
+    // }
+    // $('#'+tbody).html(html);
 }
 
 $('#btn_sync').on('click', function () {
@@ -978,11 +1003,11 @@ $('#btn_resend_pdf').on('click', function () {
 })
 
 $('#etBDry').on('change', function () {
-    changeAlongside('etBDry', 'dry_side_s', 'dry_side_p', 'dry_tbody_arus');
+    changeAlongside('etBDry', 'dry_side_s', 'dry_side_p');
 });
 
 $('#etB').on('change', function () {
-    changeAlongside('etB', 'side_s', 'side_p', 'tbody_arus');
+    changeAlongside('etB', 'side_s', 'side_p');
 });
 
 $('#unreg_start').on('change', function () {
@@ -991,7 +1016,7 @@ $('#unreg_start').on('change', function () {
 })
 $('#unreg_etb').on('change', function () {
     changeUnregETD();
-    changeAlongside('unreg_etb', 'unreg_side_s', 'unreg_side_p', 'unreg_tbody_arus');
+    changeAlongside('unreg_etb', 'unreg_side_s', 'unreg_side_p');
 })
 $('#unreg_bsh').on('change', function () {
     changeUnregETD();
@@ -1012,7 +1037,7 @@ $('#unreg_start').on('change', function () {
 $('#edit_etb').on('change', function () {
     changeEditETD();
     console.log("masuk1");
-    changeAlongside('edit_etb', 'edit_side_s', 'edit_side_p', 'edit_tbody_arus', false);
+    changeAlongside('edit_etb', 'edit_side_s', 'edit_side_p', false);
 })
 $('#edit_bsh').on('change', function () {
     changeEditETD();
@@ -1086,7 +1111,7 @@ $(document).keypress(function(e) {
 
 function prepare(i) {
     m_index_box_keypress = i;
-    console.log(m_index_box_keypress);
+    // console.log(m_index_box_keypress);
 }
 
 function prepareAdd(
@@ -1412,6 +1437,11 @@ function getVessel() {
         async : false,
         success : function(result){
             vesselCurrent = result[0];
+            if($("#con").is(':checked'))
+                refreshTableBshHistory('con_bsh_history', vesselCurrent.ves_code);
+            // else
+            //     refreshTableBshHistory('dry_bsh_history', vesselCurrent.ves_code);
+
         },
         error: function(request, textStatus, errorThrown) {
             alert(request.responseJSON.message);
@@ -1754,8 +1784,6 @@ function toEdit(index) {
     $('#edit_ves_service').append('<option value="'+vees.ves_service+'">'+vees.ves_service+'</option>');
     $('#edit_ves_service').val(vees.ves_service).trigger('change');
 
-    console.log('bsh',vees.bsh);
-    console.log('bch',vees.bch);
     $('#edit_bsh').val(vees.bsh);
     $('#edit_tgh').val(vees.bsh);
     // $(m_dermaga_current == 'C' ? '#edit_tgh' : '#edit_bsh').val(m_dermaga_current == 'C' ? vees.bch : vees.bsh);
@@ -1845,6 +1873,8 @@ function toEdit(index) {
         $("#edit_crane_dry").append('<input type="checkbox" name="edit_crane_dry" id="checkbox'+m_crane_dry[s-1].che_name+'" value="'+m_crane_dry[s-1].che_name+'" class="edit_crane_dry" '+(checked?"checked":"")+' />'+
                                         '<label>'+m_crane_dry[s-1].che_name+'</label><span> </span><span> </span>');
     }
+
+    refreshTableBshHistory('edit_bsh_history', vees.ves_code);
 }
 
 function toDelete(index) {

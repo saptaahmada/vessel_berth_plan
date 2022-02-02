@@ -29,6 +29,11 @@
         </div>
         <div class="panel-body">
 
+          <div class="controls">
+            <button id="load" class="button button--primary button--blue">Load data</button>&nbsp;
+            <button id="save" class="button button--primary button--blue">Save data</button>
+          </div><br><br>
+
           <div id="div_legend"></div>
 
           <table class="table table-bordered">
@@ -40,33 +45,14 @@
             </tbody>
           </table>
 
-          <div class="controls">
-            <button id="load" class="button button--primary button--blue">Load data</button>&nbsp;
-            <button id="save" class="button button--primary button--blue">Save data</button>
-          </div>
 
           <h3 id="title"></h3>
-          <ul class="nav nav-tabs">
-              <li class="active">
-                  <a href="#tab_crane" data-toggle="tab"> CRANE </a>
-              </li>
-              <li>
-                  <a href="#tab_truck" data-toggle="tab"> TRUCK </a>
-              </li>
-          </ul>
 
-          <div class="tab-content">
-              <div class="tab-pane fade active in" id="tab_crane">
-                <div class="well" style="background: #d1ffdd">
-                  <div id="div_crane"></div>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="tab_truck">
-                <div class="well" style="background: #fbd4ff">
-                  <div id="div_truck"></div>
-                </div>
-              </div>
-          </div>
+          <div id="div_vessel"></div>
+          <br><br>
+          <div id="div_eq_group_crane"></div>
+          <br>
+          <div id="div_truck"></div>
 
         </div>
       </div>
@@ -76,61 +62,62 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  getNodes();
+  getNodes(0, 'CRANE');
+  getNodes(1, 'TRUCK');
   getVesBerth();
-  getCrane();
-  getTruck();
+  getEq();
   getEqPlanHour();
   initialHot();
-  initialHotTruck();
+  getEqGroup('CRANE');
+
+  // getNodes(0)
 });
 
 
-const div_crane = document.querySelector('#div_crane');
-const div_truck = document.querySelector('#div_truck');
+const con_vessel    = document.querySelector('#div_vessel');
+const con_truck     = document.querySelector('#div_truck');
+const load          = document.querySelector('#load');
+var hot             = null;
+var hot_truck       = null;
 
-var hot           = null;
-var hot_truck     = null;
-var m_vessel      = [];
-var m_ves         = null;
-var m_start_rows  = 0;
-var m_start_rows_truck = 0;
-var m_start_cols  = 49;
-var m_equipment   = [];
-var m_equipment_str = [];
-var m_equipment_truck   = [];
-var m_equipment_truck_str = [];
-var m_hour        = [];
-var m_hour_str    = [];
-var m_tgl         = [];
+var m_vessel        = [];
+var m_ves           = null;
+var m_label_jam     = [];
+var m_start_rows    = 0;
+var m_start_cols    = 49;
+var m_crane         = [];
+var m_crane_str     = [];
+var m_hour          = [];
+var m_hour_str      = [];
+var m_tgl           = [];
 var m_nested_headers = [];
 var m_nested_headers_hidden = [];
-var m_allcell     = [];
-var m_allcell_truck = [];
-// ['1I', '2I', '3I', '4I', '5I', '1D', '2D', '3D', '4D', '5D']
-// getLabelJam();
+var m_allcell       = [];
+
+var m_truck             = [];
+var m_truck_str         = [];
+var m_start_rows_truck  = 0;
+var m_start_cols_truck  = 49;
+
+var m_eq_group      = [];
+var m_eq_cur        = [];
+
+getLabelJam();
 
 
-function getNodes() {
+function getNodes(eq_type, key='CRANE') {
   $.ajax({
       url :  "{{url('EquipmentPlan/getNodes')}}",
       type : "post",
       dataType : "json",
       data : {
-          "_token": "{{ csrf_token() }}"
+          "_token": "{{ csrf_token() }}",
+          eq_type: eq_type
       },
       async : false,
       success : function(result){
         if(result.success) {
-          // console.log(result.data);
-          // m_allcell = result.data;
-          $.each(result.data, function (i,val) {
-            if(val.eq_type == 0) {
-              m_allcell.push(val);
-            } else if(val.eq_type == 1) {
-              m_allcell_truck.push(val);
-            }
-          })
+          m_allcell[key] = result.data;
         }
       }
   });
@@ -154,9 +141,9 @@ function getVesBerth() {
   });
 }
 
-function getCrane() {
+function getEq() {
   $.ajax({
-      url :  "{{url('EquipmentPlan/getCrane')}}",
+      url :  "{{url('EquipmentPlan/getEq')}}",
       type : "post",
       dataType : "json",
       data : {
@@ -165,26 +152,9 @@ function getCrane() {
       async : false,
       success : function(result){
         if(result.success) {
-          m_equipment = result.data;
-          getArrayCrane();
-        }
-      }
-  });
-}
-
-function getTruck() {
-  $.ajax({
-      url :  "{{url('EquipmentPlan/getTruck')}}",
-      type : "post",
-      dataType : "json",
-      data : {
-          "_token": "{{ csrf_token() }}"
-      },
-      async : false,
-      success : function(result){
-        if(result.success) {
-          m_equipment_truck = result.data;
-          getArrayTruck();
+          m_crane = result.data_crane;
+          m_truck = result.data_truck;
+          getArrayEq();
         }
       }
   });
@@ -209,6 +179,43 @@ function getEqPlanHour() {
   });
 }
 
+function getEqGroup(key = 'CRANE') {
+  $.ajax({
+    url :  "{{url('EquipmentPlan/getEqGroup')}}",
+    type : "post",
+    dataType : "json",
+    data : {
+        "_token": "{{ csrf_token() }}",
+        eq_type: getEqTypeByKey(key),
+    },
+    async : false,
+    success : function(result){
+      if(result.success) {
+        m_eq_group[key] = result.data;
+        generateEqGroup(key);
+      }
+    }
+  });
+}
+
+function generateEqGroup(key = 'CRANE') {
+  $('#div_eq_group_crane').empty();
+  var html = "";
+  $.each(m_eq_group[key], function (j, row) {
+    row.color = getGenerateColor(row.ves_name);
+    row.color_eq = getGenerateColor(row.ves_name+row.eq_id);
+    html += '<div class="badge legend'+key+'" '+
+          'data_ves_id="'+row.ves_id+'" '+
+          'data_urutan="'+j+'" '+
+          'data_color="'+row.color+'" '+
+          'style="background: '+row.color+'; cursor:pointer;">'+
+            row.ves_id+' <span class="badge" style="background:'+row.color_eq+'">('+row.eq_id+')</span>'+
+          '</div>';
+  });
+  $('#div_eq_group_crane').append(html);
+  initialClickCustomLegend(key);
+}
+
 function generateLegendColor() {
   var data = [];
 
@@ -223,7 +230,7 @@ function generateLegendColor() {
     var html = "<tr>"+"<td>"+val.tgl_str+"</td><td>";
     $.each(m_vessel, function (j, row) {
       row.color = getGenerateColor(row.ves_name);
-      row.cells = [];
+      // row.cells = [];
       // console.log(val.tgl_str, row.est_berth_str);
       if(val.tgl_str == row.est_berth_str) {
         html += '<div class="badge legend" '+
@@ -242,20 +249,20 @@ function generateLegendColor() {
   initialClick();
 }
 
-function getArrayCrane() {
-  m_equipment_str = [];
-  $.each(m_equipment, function (i, val) {
-    m_equipment_str.push(val.che_id);
+function getArrayEq() {
+  m_crane_str = [];
+  $.each(m_crane, function (i, val) {
+    m_crane_str.push(val.kode_alat);
   });
-  m_start_rows = m_equipment.length;
-}
+  m_start_rows = m_crane.length;
 
-function getArrayTruck() {
-  m_equipment_truck_str = [];
-  $.each(m_equipment_truck, function (i, val) {
-    m_equipment_truck_str.push(val.che_id);
+
+  m_truck_str = [];
+  $.each(m_truck, function (i, val) {
+    m_truck_str.push(val.kode_alat);
   });
-  m_start_rows_truck = m_equipment_truck.length;
+  m_start_rows_truck = m_truck.length;
+
 }
 
 function getArrayHour() {
@@ -285,6 +292,7 @@ function getArrayHour() {
   m_nested_headers_hidden.push(nested_tgl_2);
 
   m_start_cols = nested_jam_id.length;
+  m_start_cols_truck = nested_jam_id.length;
 
 }
 
@@ -301,6 +309,16 @@ function getGenerateColor(str) {
   return colour;
 }
 
+function getLabelJam() {
+  m_label_jam = [''];
+  for (var i = 0; i < 24; i++) {
+    m_label_jam.push((i<10 ? '0'+i : ''+i));
+  }
+  for (var i = 0; i < 24; i++) {
+    m_label_jam.push((i<10 ? '0'+i : ''+i));
+  }
+}
+
 function initialClick() {
   $('.legend').on('click', function () {
     var urutan = $(this).attr('data_urutan');
@@ -315,22 +333,55 @@ function initialClick() {
   })
 }
 
-function getAllCells() {
+function initialClickCustomLegend(key) {
+  $('.legend'+key).on('click', function () {
+    var urutan = $(this).attr('data_urutan');
+    var ves_id = $(this).attr('data_ves_id');
+    console.log("urutan", urutan);
+    if(parseInt(urutan)>= 0) {
+      m_ves         = m_vessel[getIndexVessel(ves_id)];
+      m_eq_cur[key] = m_eq_group[urutan];
+      console.log("test");
+      // $('#title').text('Draw : '+m_ves.ves_name+" ("+m_ves.ves_id+")")
+    }
+    else {
+      m_ves = null;
+      // $('#title').text('Hapus')
+    }
+  })
+}
+
+function getIndexVessel(ves_id) {
+  var index = 0;
+  $.each(m_vessel, function(i, val) {
+    if(val.ves_id == ves_id) {
+      index = i;
+      return;
+    }
+  });
+  return index;
+}
+
+function getAllCells(key = 'CRANE') {
   var allcell = [];
-  for(var row=0; row<m_start_rows; row++) {
-    for(var col=0; col<m_start_cols; col++) {
-      var cell = hot.getCell(row, col);
+  var cur_hot = getHotByKey(key);
+  var eq_type = getEqTypeByKey(key);
+  var count_row = getCountRowByKey(key);
+  var count_col = getCountColByKey(key);
+  for(var row=0; row<count_row; row++) {
+    for(var col=0; col<count_col; col++) {
+      var cell = cur_hot.getCell(row, col);
       if(cell != null) {
         if(cell.style.ves_id != null) {
           var plan_date = getDateByCol(col);
           var plan_time = getTimeByCol(col);
-          var eq_id = getEqByRow(row);
+          var eq_id = getEqByRow(row, key);
           allcell.push({
             y: row, 
             x: col, 
             ves_id: cell.style.ves_id,
             eq_id: eq_id,
-            eq_type: 0,
+            eq_type: eq_type,
             plan_date: plan_date,
             plan_date_str: plan_date,
             plan_time: plan_time,
@@ -340,53 +391,14 @@ function getAllCells() {
       }
     }
   }
-  m_allcell = allcell;
+  m_allcell[key] = allcell;
   return allcell;
 }
 
-function getAllCellsTruck() {
-  var allcell_truck = [];
-  for(var row=0; row<m_start_rows_truck; row++) {
-    for(var col=0; col<m_start_cols; col++) {
-      var cell = hot_truck.getCell(row, col);
-      if(cell != null) {
-        if(cell.style.ves_id != null) {
-          var plan_date = getDateByCol(col);
-          var plan_time = getTimeByCol(col);
-          var eq_id = getEqTruckByRow(row);
-          allcell_truck.push({
-            y: row, 
-            x: col, 
-            ves_id: cell.style.ves_id,
-            eq_id: eq_id,
-            eq_type: 1,
-            plan_date: plan_date,
-            plan_date_str: plan_date,
-            plan_time: plan_time,
-            color_code: cell.style.color_code,
-          });
-        }
-      }
-    }
-  }
-  m_allcell_truck = allcell_truck;
-  return allcell_truck;
-}
-
-function getEqByRow(row) {
+function getEqByRow(row, key = 'CRANE') {
   var value = '';
-  $.each(m_equipment_str, function (i, val) {
-    if(row == i) {
-      value = val;
-      return;
-    }
-  })
-  return value;
-}
-
-function getEqTruckByRow(row) {
-  var value = '';
-  $.each(m_equipment_truck_str, function (i, val) {
+  var eq_str = getEqStrByKey(key);
+  $.each(eq_str, function (i, val) {
     if(row == i) {
       value = val;
       return;
@@ -413,8 +425,8 @@ function getDateByCol(col) {
 
 $('#save').on('click', function() {
   var nodes = getAllCells();
-  nodes = nodes.concat(getAllCellsTruck());
-  console.log(nodes);
+  nodes.push(...getAllCells('TRUCK'));
+  // console.log(nodes);
   $.ajax({
       url :  "{{url('EquipmentPlan/save')}}",
       type : "post",
@@ -438,15 +450,13 @@ $('#save').on('click', function() {
 });
 
 $('#load').on('click', function() {
-  updateColor();
-  updateColorTruck();
+  updateColor('CRANE');
 });
 
-
-function initialHot() {
-  hot = new Handsontable(div_crane, {
+function initHotCrane() {
+  hot = new Handsontable(con_vessel, {
     colHeaders: false,
-    rowHeaders: m_equipment_str,
+    rowHeaders: m_crane_str,
     height: 'auto',
     startRows: m_start_rows,
     startCols: m_start_cols,
@@ -467,7 +477,7 @@ function initialHot() {
   });
 
   hot.addHook('afterOnCellMouseUp', function(e,coords){
-    console.log(coords);
+    // console.log(coords);
     if(coords.row >= 0 && coords.col >= 0) {
       data = hot.getSelected()[0];
 
@@ -499,32 +509,20 @@ function initialHot() {
           b1 = (x1 < x2 ? x1 : x2);
         }
       }
+    } else {
     }
   });
 
-  updateColor();
-
+  updateColor('CRANE');
 }
 
-function updateColor() {
-  $.each(m_allcell, function (i, val) {
-    var cell = hot.getCell(parseInt(val.y), parseInt(val.x));
-    cell.style.background = val.color_code; 
-    cell.style.color_code = val.color_code;
-    cell.style.ves_id = val.ves_id;
-  });
-
-}
-
-
-
-function initialHotTruck() {
-  hot_truck = new Handsontable(div_truck, {
+function initHotTruck() {
+  hot_truck = new Handsontable(con_truck, {
     colHeaders: false,
-    rowHeaders: m_equipment_truck_str,
+    rowHeaders: m_truck_str,
     height: 'auto',
     startRows: m_start_rows_truck,
-    startCols: m_start_cols,
+    startCols: m_start_cols_truck,
     manualColumnResize: true,
     manualRowResize: true,
     nestedHeaders: m_nested_headers,
@@ -542,7 +540,7 @@ function initialHotTruck() {
   });
 
   hot_truck.addHook('afterOnCellMouseUp', function(e,coords){
-    console.log(coords);
+    // console.log(coords);
     if(coords.row >= 0 && coords.col >= 0) {
       data = hot_truck.getSelected()[0];
 
@@ -560,6 +558,9 @@ function initialHotTruck() {
         for (a1=a1; a1<=a2; a1++) {
           for(b1=b1; b1<=b2; b1++) {
             if(b1 != 0) {
+              if (m_eq_cur['TRUCK'] != null) {
+                hot_truck.setDataAtCell(a1, b1, m_eq_cur['TRUCK'].eq_id);
+              }
               var cell = hot_truck.getCell(a1,b1); 
               if(m_ves != null) {
                 cell.style.background = m_ves.color;
@@ -569,28 +570,86 @@ function initialHotTruck() {
                 cell.style.background = null;
                 cell.style.ves_id = null;
               }
+              // cell.setText("A");
             }
           }
           b1 = (x1 < x2 ? x1 : x2);
         }
       }
+    } else {
+
     }
   });
 
-  // setInterval(function () {
-  // }, 2000)
-
-  console.log("mnasuk");
+  updateColor('TRUCK');
 
 }
 
-function updateColorTruck() {
-  $.each(m_allcell_truck, function (i, val) {
-    var cell = hot_truck.getCell(parseInt(val.y), parseInt(val.x));
+function initialHot() {
+  initHotCrane();
+  initHotTruck();
+}
+
+function updateColor(key='CRANE') {
+  var cur_hot = getHotByKey(key);
+  $.each(m_allcell[key], function (i, val) {
+    var cell = cur_hot.getCell(parseInt(val.y), parseInt(val.x));
     cell.style.background = val.color_code; 
     cell.style.color_code = val.color_code;
     cell.style.ves_id = val.ves_id;
   });
+
+}
+
+
+function getHotByKey(key = 'CRANE') {
+  var cur_hot = null;
+  if(key == 'CRANE') {
+    cur_hot = hot;
+  } else if(key == 'TRUCK') {
+    cur_hot = hot_truck;
+  }
+  return cur_hot;
+}
+
+function getEqTypeByKey(key = 'CRANE') {
+  var eq_type = 0;
+  if(key == 'CRANE') {
+    eq_type = 0;
+  } else if(key == 'TRUCK') {
+    eq_type = 1;
+  }
+  return eq_type;
+}
+
+function getEqStrByKey(key = 'CRANE') {
+  var eq_str = [];
+  if(key == 'CRANE') {
+    eq_str = m_crane_str;
+  } else if(key == 'TRUCK') {
+    eq_str = m_truck_str;
+  }
+  return eq_str;
+}
+
+function getCountRowByKey(key = 'CRANE') {
+  var row = 0;
+  if(key == 'CRANE') {
+    row = m_start_rows;
+  } else if(key == 'TRUCK') {
+    row = m_start_rows_truck;
+  }
+  return row;
+}
+
+function getCountColByKey(key = 'CRANE') {
+  var col = 0;
+  if(key == 'CRANE') {
+    col = m_start_cols;
+  } else if(key == 'TRUCK') {
+    col = m_start_cols_truck;
+  }
+  return col;
 }
 
 

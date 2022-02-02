@@ -248,11 +248,32 @@ class PrintController extends Controller
 
     public function export()
     {
-        $data = DB::table('CBSLAM.CBS_VESSEL_MONITORING')
-        ->where('EST_BERTH_TS', '>=', $_GET['export_start'])
-        ->where('EST_BERTH_TS', '<=', $_GET['export_end'])
-        ->orderBy('EST_BERTH_TS', 'DESC')
+        $date_from  = $_GET['export_start'];
+        $date_to    = $_GET['export_end'];
+        $data = DB::table('CBSLAM.VIERV_EXPORT_MONTHLY')
+        // ->where('ACT_DEP_TS', '>=', $_GET['export_start'])
+        // ->where('ACT_DEP_TS', '<=', $_GET['export_end'])
+        ->where(function($query) use ($date_from, $date_to){
+             $query->orWhereBetween('ATD',array($date_from, $date_to))
+             ->orWhereBetween('ATB',array($date_from, $date_to));
+        })
+        ->where('ET', '<>', '0')
+        ->orderBy('ATB', 'ASC')
         ->get();
+
+        $data_cuker = DB::table('CBSLAM.VIERV_EXPORT_MONTHLY')
+        ->where(function($query) use ($date_from, $date_to){
+             $query->orWhereBetween('ATD',array($date_from, $date_to))
+             ->orWhereBetween('ATB',array($date_from, $date_to));
+        })
+        ->where('VES_TYPE', 'GC')
+        ->orderBy('ATB', 'ASC')
+        ->get();
+
+        foreach ($data_cuker as $key => $val) {
+            $data[] = $val;
+        }
+
         return view('content.print.export', [
             "data"      => $data,
             "start_date"=> $_GET['export_start'],
