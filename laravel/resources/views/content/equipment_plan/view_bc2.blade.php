@@ -29,17 +29,43 @@
         </div>
         <div class="panel-body">
 
-          <div class="controls">
-            <button id="load" class="button button--primary button--blue">Load data</button>&nbsp;
-            <button id="save" class="button button--primary button--blue">Save data</button>
-          </div><br><br>
+          <div class="row">
+            <div class="col-md-6 controls">
+              <button type="button" class="btn ripple-infinite btn-round btn-3d btn-primary" id="save">
+                <i class="fa fa-save"></i> Save data
+              </button>
+              <button type="button" class="btn ripple-infinite btn-round btn-3d btn-warning" id="print">
+                <i class="fa fa-file"></i> Print PDF
+              </button>
+              <a href="{{url('EquipmentPlan/print_spk')}}" target="_blank" class="btn ripple-infinite btn-round btn-3d btn-warning" id="print_spk">
+                <i class="fa fa-file-text"></i> Print SPK
+              </a><br><br>
+              <button type="button" class="btn ripple-infinite btn-round btn-3d btn-success" id="btn_resend_pdf">
+                <i class="fa fa-send"></i> Send PDF
+              </button>
+              <button type="button" class="btn ripple-infinite btn-round btn-3d btn-info" id="btn_resend_spk">
+                <i class="fa fa-send"></i> Send SPK
+              </button>
+              <button type="button" class="btn ripple-infinite btn-round btn-3d btn-default" id="load">
+                <i class="fa fa-refresh"></i> Load Data
+              </button>
+            </div>
+            <div class="col-md-6">
+              Legend<br>
+              <span class='badge' style='background:red'>A</span> : Alongside<br>
+              <span class='badge' style='background:blue'>D</span> : Departed
+            </div>
+          </div>
+          <br><br>
 
           <div id="div_legend"></div>
 
           <table class="table table-bordered">
             <thead>
               <th>Tanggal</th>
-              <th>Vessel</th>
+              <th>International</th>
+              <th>Domestic</th>
+              <th>Dry Bulk</th>
             </thead>
             <tbody id="table_ves_tbody">
             </tbody>
@@ -48,13 +74,18 @@
 
           <h3 id="title"></h3>
 
-          <div id="div_vessel"></div>
-          <br><br>
+          <div id="div_vessel" style="width: 2000px"></div>
+          <br>
           <div class="controls">
-            <button id="load_truck" class="button button--primary button--blue">Load data</button>&nbsp;
-            <button id="save_truck" class="button button--primary button--blue">Save data</button>
+            <button type="button" class="btn ripple-infinite btn-round btn-3d btn-primary" id="save_truck">
+              <i class="fa fa-save"></i> Save Data
+            </button>
+            <button type="button" class="btn ripple-infinite btn-round btn-3d btn-default" id="load_truck" onclick="cellTruckRequired()">
+              <i class="fa fa-refresh"></i> Cek data
+            </button>
+            <b><span style="margin-left: 100px;" id="truck_cell_count">SUM : 0</span></b>
           </div><br>
-          <div id="div_truck"></div>
+          <div id="div_truck" style="width: 2000px"></div>
           <!-- <div id="div_eq_group_crane"></div> -->
           <!-- <br> -->
           <!-- <div id="div_truck"></div> -->
@@ -65,16 +96,56 @@
   </div>
 </div>
 
+<div class="modal fade" id="modal_print"  role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Choose Signature</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+            <!-- <form role="form" enctype="multipart/form-data"> -->
+            {{csrf_field()}}
+            <div class="form-group">
+                    <label class="col-form-label">Planning Manager: </label>
+                    <select  id="planing_manager" class="form-control " data-live-search="true">
+                            <!-- <option>-----------</option> -->
+                    </select>
+            </div>
+            <div class="form-group">
+                    <label class="col-form-label">Planner: </label>
+                    <select  id="berth_planner" class="form-control " data-live-search="true">
+                            <!-- <option>-----------</option> -->
+                    </select>
+            </div>
+        
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="print()">Print</button>
+            </div>
+            </form>
+        </div>
+        
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
+  $('.opener-left-menu').trigger('click');
   getNodes(0, 'CRANE');
-  // getNodes(1, 'TRUCK');
+  getNodes(1, 'TRUCK');
   getVesBerth();
   getEq();
   getEqPlanHour();
+  getEqTruckReady();
+  getShiftMinMax();
+  getSignature();
   initialHot();
-  getEqGroup('CRANE');
-
   // getNodes(0)
 });
 
@@ -95,18 +166,24 @@ var m_crane_str     = [];
 var m_hour          = [];
 var m_hour_str      = [];
 var m_tgl           = [];
+var m_tgl_vessel    = [];
 var m_nested_headers = [];
 var m_nested_headers_hidden = [];
 var m_allcell       = [];
+var m_shift_min_max = [];
 
 var m_truck             = [];
 var m_truck_str         = [];
 var m_start_rows_truck  = 7;
-var m_start_cols_truck  = 49;
+var m_start_cols_truck  = 50;
 var m_nested_headers_truck = [];
+// var m_truck  = [];
 
-var m_eq_group      = [];
+// var m_eq_group      = [];
+var m_eq_ready      = [];
 var m_eq_cur        = [];
+var m_data_truck    = [];
+var m_data_crane    = [];
 
 getLabelJam();
 
@@ -118,7 +195,8 @@ function getNodes(eq_type, key='CRANE') {
       dataType : "json",
       data : {
           "_token": "{{ csrf_token() }}",
-          eq_type: eq_type
+          eq_type: eq_type,
+          eq_key: key,
       },
       async : false,
       success : function(result){
@@ -139,6 +217,7 @@ function getVesBerth() {
       },
       async : true,
       success : function(result){
+        // console.log(result);
         if(result.success) {
           m_vessel = result.data;
           generateLegendColor();
@@ -147,7 +226,7 @@ function getVesBerth() {
   });
 }
 
-function getEq() {
+function getEq(key = "ALL") {
   $.ajax({
       url :  "{{url('EquipmentPlan/getEq')}}",
       type : "post",
@@ -159,7 +238,8 @@ function getEq() {
       success : function(result){
         if(result.success) {
           m_crane = result.data_crane;
-          m_truck = result.data_truck;
+          m_truck = result.row_header_truck;
+          m_allcell['TRUCK_DEF'] = result.data_truck;
           getArrayEq();
         }
       }
@@ -179,47 +259,69 @@ function getEqPlanHour() {
         if(result.success) {
           m_hour = result.data;
           m_tgl = result.data_tgl;
+          m_tgl_vessel = result.data_tgl_vessel;
           getArrayHour();
         }
       }
   });
 }
 
-function getEqGroup(key = 'CRANE') {
+function getEqTruckReady() {
   $.ajax({
-    url :  "{{url('EquipmentPlan/getEqGroup')}}",
-    type : "post",
-    dataType : "json",
-    data : {
-        "_token": "{{ csrf_token() }}",
-        eq_type: getEqTypeByKey(key),
-    },
-    async : false,
-    success : function(result){
-      if(result.success) {
-        m_eq_group[key] = result.data;
-        generateEqGroup(key);
+      url :  "{{url('EquipmentPlan/getEqTruckReady')}}",
+      type : "post",
+      dataType : "json",
+      data : {
+          "_token": "{{ csrf_token() }}"
+      },
+      async : false,
+      success : function(result){
+        if(result.success) {
+          m_eq_ready = result.data;
+        }
       }
-    }
   });
 }
 
-function generateEqGroup(key = 'CRANE') {
-  $('#div_eq_group_crane').empty();
-  var html = "";
-  $.each(m_eq_group[key], function (j, row) {
-    row.color = getGenerateColor(row.ves_name);
-    row.color_eq = getGenerateColor(row.ves_name+row.eq_id);
-    html += '<div class="badge legend'+key+'" '+
-          'data_ves_id="'+row.ves_id+'" '+
-          'data_urutan="'+j+'" '+
-          'data_color="'+row.color+'" '+
-          'style="background: '+row.color+'; cursor:pointer;">'+
-            row.ves_id+' <span class="badge" style="background:'+row.color_eq+'">('+row.eq_id+')</span>'+
-          '</div>';
+function getShiftMinMax() {
+  $.ajax({
+      url :  "{{url('EquipmentPlan/getShiftMinMax')}}",
+      type : "post",
+      dataType : "json",
+      data : {
+          "_token": "{{ csrf_token() }}"
+      },
+      async : true,
+      success : function(result){
+        if(result.success) {
+          m_shift_min_max = result.data;
+        }
+      }
   });
-  $('#div_eq_group_crane').append(html);
-  initialClickCustomLegend(key);
+}
+
+function getSignature() {
+  $("#planing_manager").empty();
+  $("#berth_planner").empty();
+  $.ajax({  
+      url : "{{route('getsignature')}}",
+      type : "get",
+      dataType : "json",
+      async : true,
+      success : function(result){
+          var manager=result.man;
+          var planner=result.plan;
+          for (s = 1; s < manager.length+1; ++s) {
+              $("#planing_manager").append('<option value="'+manager[s-1].nama+'">'+manager[s-1].nama+'</option>');  
+          }
+          for (x = 1; x < planner.length+1; ++x) {
+              $("#berth_planner").append('<option value="'+planner[x-1].nama+'">'+planner[x-1].nama+'</option>');  
+          } 
+      } ,
+      error: function(request, textStatus, errorThrown) {
+          alert(request.responseJSON.message);
+      }
+  });
 }
 
 function generateLegendColor() {
@@ -232,23 +334,55 @@ function generateLegendColor() {
     'data_color="none" '+
     'style="background: none; cursor:pointer; color:black">Hapus</button>');
 
-  $.each(m_tgl, function (i, val) {
-    var html = "<tr>"+"<td>"+val.tgl_str+"</td><td>";
+  $.each(m_tgl_vessel, function (i, val) {
+    html_inter = "";
+    html_domes = "";
+    html_cuker = "";
     $.each(m_vessel, function (j, row) {
       row.color = getGenerateColor(row.ves_name);
-      // row.cells = [];
-      // console.log(val.tgl_str, row.est_berth_str);
-      if(val.tgl_str == row.est_berth_str) {
-        html += '<div class="badge legend" '+
+      var ebt = row.est_berth_ts_str;
+      var arr_ebt = ebt.split(" ");
+
+      if(row.act_berth_ts != null && row.act_dep_ts_str == null) {
+        alongside = "<span class='badge' style='background:red'>A</span>";
+      } else if(row.act_dep_ts_str != null) {
+        alongside = "<span class='badge' style='background:blue'>D</span>";
+      } else {
+        alongside = "";
+      }
+
+      if(val.tgl_str == arr_ebt[0]) {
+        if(row.ocean_interisland_fake == "I" && row.ves_type == 'CT') {
+          html_inter += '<div class="badge legend" '+
+              'data_ves_id="'+row.ves_id+'" '+
+              'data_urutan="'+j+'" '+
+              'data_color="'+row.color+'" '+
+              'style="background: '+row.color+'; cursor:pointer;"> '+
+                row.ves_name+' ('+row.ves_id+') <span class="badge" style="background:white; color:black">'+row.gen_no+"</span> "+
+                alongside+
+              '</div>';
+        } else if(row.ocean_interisland_fake == "D" && row.ves_type == 'CT') {
+          html_domes += '<div class="badge legend" '+
               'data_ves_id="'+row.ves_id+'" '+
               'data_urutan="'+j+'" '+
               'data_color="'+row.color+'" '+
               'style="background: '+row.color+'; cursor:pointer;">'+
-                row.ves_name+' ('+row.ves_id+')'+
+                row.ves_name+' ('+row.ves_id+') <span class="badge" style="background:white; color:black">'+row.gen_no+"</span>"+
+                alongside+
               '</div>';
+        } else if(row.ves_type == 'GC') {
+          html_cuker += '<div class="badge legend" '+
+              'data_ves_id="'+row.ves_id+'" '+
+              'data_urutan="'+j+'" '+
+              'data_color="'+row.color+'" '+
+              'style="background: '+row.color+'; cursor:pointer;">'+
+                row.ves_name+' ('+row.ves_id+') <span class="badge" style="background:white; color:black">'+row.gen_no+"</span>"+
+                alongside+
+              '</div>';
+        }
       }
     })
-    html += "</td>";
+    var html = "<tr>"+"<td>"+val.tgl_str+"</td><td>"+html_inter+"</td><td>"+html_domes+"</td><td>"+html_cuker+"</td>";
     $('#table_ves_tbody').append(html);
   })
 
@@ -265,7 +399,7 @@ function getArrayEq() {
 
   m_truck_str = [];
   $.each(m_truck, function (i, val) {
-    m_truck_str.push(val.descr);
+    m_truck_str.push(val.eq_type);
   });
   m_start_rows_truck = m_truck.length;
 
@@ -298,11 +432,15 @@ function getArrayHour() {
   m_nested_headers_hidden.push(nested_tgl_2);
 
   m_start_cols = nested_jam_id.length;
-  m_start_cols_truck = nested_jam_id.length;
+  m_start_cols_truck = nested_jam_id.length+2;
 
   m_nested_headers_truck = JSON.parse(JSON.stringify(m_nested_headers));
 
-  m_nested_headers_truck[0][0] = "Armada";
+  // m_nested_headers_truck[0][0] = "Armada";
+  m_nested_headers_truck[0].splice(0,1);
+  m_nested_headers_truck[1].splice(0,1);
+  m_nested_headers_truck[0].splice(0, 0, "Jumlah");
+  m_nested_headers_truck[1].splice(0, 0, "");
   m_nested_headers_truck[0].splice(1, 0, "Kesiapan");
   m_nested_headers_truck[1].splice(1, 0, "");
 
@@ -336,7 +474,7 @@ function initialClick() {
     var urutan = $(this).attr('data_urutan');
     if(parseInt(urutan)>= 0) {
       m_ves = m_vessel[urutan];
-      $('#title').text('Draw : '+m_ves.ves_name+" ("+m_ves.ves_id+")")
+      $('#title').text('Draw : '+m_ves.ves_name+" ("+m_ves.ves_id+") - Remain B/M : "+m_ves.disc_remain+"/"+m_ves.load_remain);
     }
     else {
       m_ves = null;
@@ -345,23 +483,23 @@ function initialClick() {
   })
 }
 
-function initialClickCustomLegend(key) {
-  $('.legend'+key).on('click', function () {
-    var urutan = $(this).attr('data_urutan');
-    var ves_id = $(this).attr('data_ves_id');
-    console.log("urutan", urutan);
-    if(parseInt(urutan)>= 0) {
-      m_ves         = m_vessel[getIndexVessel(ves_id)];
-      m_eq_cur[key] = m_eq_group[urutan];
-      console.log("test");
-      // $('#title').text('Draw : '+m_ves.ves_name+" ("+m_ves.ves_id+")")
-    }
-    else {
-      m_ves = null;
-      // $('#title').text('Hapus')
-    }
-  })
-}
+// function initialClickCustomLegend(key) {
+//   $('.legend'+key).on('click', function () {
+//     var urutan = $(this).attr('data_urutan');
+//     var ves_id = $(this).attr('data_ves_id');
+//     console.log("urutan", urutan);
+//     if(parseInt(urutan)>= 0) {
+//       m_ves         = m_vessel[getIndexVessel(ves_id)];
+//       m_eq_cur[key] = m_eq_group[urutan];
+//       console.log("test");
+//       // $('#title').text('Draw : '+m_ves.ves_name+" ("+m_ves.ves_id+")")
+//     }
+//     else {
+//       m_ves = null;
+//       // $('#title').text('Hapus')
+//     }
+//   })
+// }
 
 function getIndexVessel(ves_id) {
   var index = 0;
@@ -436,68 +574,98 @@ function getDateByCol(col) {
 }
 
 $('#save').on('click', function() {
-  var nodes = getAllCells();
-  // nodes.push(...getAllCells('TRUCK'));
-  // console.log(nodes);
-  $.ajax({
-      url :  "{{url('EquipmentPlan/save')}}",
-      type : "post",
-      dataType : "json",
-      data : {
-          "_token": "{{ csrf_token() }}",
-          nodes : nodes,
-      },
-      async : true,
-      success : function(result){
-        if(result.success) {
-          swal({
-            title: result.success ? 'Success' : 'Failed',
-            text: result.message,
-            icon: result.success ? "success" : 'warning',
-            button: "Oke",
-          });
+  if(confirm('Apakah anda yakin ingin menyimpan data ini?')) {
+    var nodes = getAllCells();
+    // nodes.push(...getAllCells('TRUCK'));
+    // console.log(nodes);
+    $.ajax({
+        url :  "{{url('EquipmentPlan/save')}}",
+        type : "post",
+        dataType : "json",
+        data : {
+            "_token": "{{ csrf_token() }}",
+            nodes : nodes,
+        },
+        async : true,
+        success : function(result){
+          if(result.success) {
+            swal({
+              title: result.success ? 'Success' : 'Failed',
+              text: result.message,
+              icon: result.success ? "success" : 'warning',
+              button: "Oke",
+            });
+
+            // getNodes(1, 'TRUCK');
+            getEq();
+            // initHotTruck();
+            updateDataTruck();
+          }
         }
-      }
-  });
+    });
+  }
 });
 
 $('#load').on('click', function() {
+  getAllCells();
   updateColor('CRANE');
 });
 
+$('#print').on('click', function () {
+  $('#modal_print').modal('show');
+})
+
+function print() {
+  var planing_manager = $('#planing_manager').val();
+  var berth_planner = $('#berth_planner').val();
+  window.open("{{url('EquipmentPlan/print')}}/"+moment(new Date()).format('DD-MM-YYYY')+'/'+planing_manager+'/'+berth_planner, '_blank');
+}
+
 $('#save_truck').on('click', function () {
-  // console.log("testing");
-  var nest = m_nested_headers_truck[0];
-  var nested_date = [];
-  nested_date.push(nest[2]);
-  nested_date.push(nest[3]);
+  if(confirm('Apakah anda yakin ingin menyimpan data ini?')) {
+    var data = hot_truck.getData();
 
-  var nested_time = m_nested_headers_truck[1];
+    if(validateSaveTruck(data)) {
+      var nest = m_nested_headers_truck[0];
+      var nested_date = [];
+      nested_date.push(nest[2]);
+      nested_date.push(nest[3]);
 
-  console.log(nested_time);
+      var nested_time = m_nested_headers_truck[1];
 
-  $.ajax({
-    url :  "{{url('EquipmentPlan/saveTruck')}}",
-    type : "post",
-    dataType : "json",
-    data : {
-        "_token": "{{ csrf_token() }}",
-        nodes : hot_truck.getData(),
-        nested_date : nested_date,
-        nested_time : nested_time,
-    },
-    async : true,
-    success : function(result){
-      if(result.success) {
-        swal({
-          title: result.success ? 'Success' : 'Failed',
-          text: result.message,
-          icon: result.success ? "success" : 'warning',
-          button: "Oke",
-        });
-      }
+      $.ajax({
+        url :  "{{url('EquipmentPlan/saveTruck')}}",
+        type : "post",
+        dataType : "json",
+        data : {
+            "_token": "{{ csrf_token() }}",
+            nodes : data,
+            nested_date : nested_date,
+            nested_time : nested_time,
+            nested_row : m_truck_str,
+        },
+        async : true,
+        success : function(result){
+          if(result.success) {
+            swal({
+              title: result.success ? 'Success' : 'Failed',
+              text: result.message,
+              icon: result.success ? "success" : 'warning',
+              button: "Oke",
+            });
+          }
+        }
+      });
+    } else {
+      swal({
+        title: "Failed",
+        text: "Cek lagi plan anda, data tidak boleh minus",
+        icon: "warning",
+        button: "Oke",
+      });
     }
-  });
+  }
+
 })
 
 function initHotCrane() {
@@ -513,9 +681,9 @@ function initHotCrane() {
     licenseKey: 'non-commercial-and-evaluation',
     colWidths(index) {
       if(index>0)
-        return 30;
+        return 40;
       else 
-        return 100;
+        return 160;
     },
     rowHeights(index) {
       return 20;
@@ -556,19 +724,24 @@ function initHotCrane() {
           b1 = (x1 < x2 ? x1 : x2);
         }
       }
-    } else {
+
+      getAllCells();
+      updateColor();
     }
   });
 
-  updateColor('CRANE');
+  setTimeout(function () {
+    updateColor('CRANE');
+  }, 200)
+
 }
 
 function initHotTruck() {
 
   hot_truck = new Handsontable(con_truck, {
-    data:m_truck,
+    // data:m_data_truck,
     colHeaders: false,
-    // rowHeaders: m_truck_str,
+    rowHeaders: m_truck_str,
     height: 'auto',
     startRows: m_start_rows_truck,
     startCols: m_start_cols_truck,
@@ -577,10 +750,10 @@ function initHotTruck() {
     nestedHeaders: m_nested_headers_truck,
     licenseKey: 'non-commercial-and-evaluation',
     colWidths(index) {
-      if(index>0)
-        return 50;
+      if(index>1)
+        return 40;
       else 
-        return 100;
+        return 80;
     },
     rowHeights(index) {
       return 20;
@@ -588,49 +761,217 @@ function initHotTruck() {
     rowHeaderWidth:100,
   });
 
-  // hot_truck.addHook('afterOnCellMouseUp', function(e,coords){
-  //   // console.log(coords);
-  //   if(coords.row >= 0 && coords.col >= 0) {
-  //     data = hot_truck.getSelected()[0];
+  updateDataTruck();
 
-  //     var y1 = data[0];
-  //     var x1 = data[1];
-  //     var y2 = data[2];
-  //     var x2 = data[3];
+  hot_truck.addHook('afterChange', function(e,coords){
 
-  //     var a1 = (y1 < y2 ? y1 : y2);
-  //     var b1 = (x1 < x2 ? x1 : x2);
-  //     var a2 = (y1 > y2 ? y1 : y2);
-  //     var b2 = (x1 > x2 ? x1 : x2);
+    if(coords == 'edit' || coords == 'Autofill.fill') {
 
-  //     if(a1>=0 && a2>=0 && b1>=0 && b2>=0) {
-  //       for (a1=a1; a1<=a2; a1++) {
-  //         for(b1=b1; b1<=b2; b1++) {
-  //           if(b1 != 0) {
-  //             if (m_eq_cur['TRUCK'] != null) {
-  //               hot_truck.setDataAtCell(a1, b1, m_eq_cur['TRUCK'].eq_id);
-  //             }
-  //             var cell = hot_truck.getCell(a1,b1); 
-  //             if(m_ves != null) {
-  //               cell.style.background = m_ves.color;
-  //               cell.style.color_code = m_ves.color;
-  //               cell.style.ves_id = m_ves.ves_id;
-  //             } else {
-  //               cell.style.background = null;
-  //               cell.style.ves_id = null;
-  //             }
-  //             // cell.setText("A");
-  //           }
-  //         }
-  //         b1 = (x1 < x2 ? x1 : x2);
-  //       }
-  //     }
-  //   } else {
+        var arr_req = m_data_truck[m_idx_req];
 
-  //   }
-  // });
+        if(arr_req.length <= 1) {
+          for (i = 0; i < m_hour.length; i++) {
+            arr_req.push(0);
+          }
+        }
 
-  // updateColor('TRUCK');
+        if(e[0][1] == 1 && e[0][0] >=2 && e[0][0] <=5) {
+          var arr = m_data_truck[e[0][0]];
+          val = hot_truck.getDataAtCell(e[0][0], e[0][1]);
+          for(var i=0; i<m_hour.length; i++) {
+            arr[i+2] = val;
+          }
+          m_data_truck.splice(e[0][0], 1, arr);
+        }
+
+        $.each(e, function (i, val) {
+          ctt = m_data_truck[m_idx_ctt][val[1]];
+          ht = m_data_truck[m_idx_ht][val[1]];
+          tb = m_data_truck[m_idx_tb][val[1]];
+          tt = m_data_truck[m_idx_tt][val[1]];
+          tt_bds = hot_truck.getDataAtCell(m_idx_tt_bds, 1);
+          ht_bds = hot_truck.getDataAtCell(m_idx_ht_bds, 1);
+          req = hot_truck.getDataAtCell(m_idx_req, val[1]);
+          truck = hot_truck.getDataAtCell(1, val[1]);
+          bmc_ht = hot_truck.getDataAtCell(m_idx_tt_bds, val[1]);
+          h_bmc_ht = hot_truck.getDataAtCell(m_idx_bmc_ht, 1);
+          h_bst_ht = hot_truck.getDataAtCell(m_idx_bst_ht, 1);
+          h_bst_lowbed = hot_truck.getDataAtCell(m_idx_bst_lowbed, 1);
+
+          if(val[1] > 1 && val[0] >= 2 && val[0]<=5) {
+
+            ctt = parseInt(ctt ? ctt : 0);
+            ht = parseInt(ht ? ht : 0);
+            tb = parseInt(tb ? tb : 0);
+            tt = parseInt(tt ? tt : 0);
+            tt_bds = parseInt(tt_bds ? tt_bds : 0);
+            ht_bds = parseInt(ht_bds ? ht_bds : 0);
+            truck = parseInt(truck ? truck : 0);
+
+            jum = ctt+ht+tb+tt;
+            bds_tt = (truck-jum) <= tt_bds ? ((truck-jum) >= 0 ? (truck-jum) : 0) : tt_bds;
+            bds_ht = (truck-jum-bds_tt) <= ht_bds ? ((truck-jum-bds_tt) >= 0 ? (truck-jum-bds_tt) : 0) : ht_bds;
+            bds_req = (truck-jum-bds_tt-bds_ht) <= bds_tt+bds_ht ? ((truck-jum-bds_tt-bds_ht) >= 0 ? (truck-jum-bds_tt-bds_ht) : 0) : bds_tt+bds_ht;
+
+            // hot_truck.setDataAtCell(m_idx_req, val[1], req);
+
+            var arr = m_data_truck[m_idx_tt_bds];
+            arr.splice(val[1], 1, bds_tt);
+            m_data_truck.splice(m_idx_tt_bds, 1, arr);
+
+            var arr = m_data_truck[m_idx_ht_bds];
+            arr.splice(val[1], 1, bds_ht);
+            m_data_truck.splice(m_idx_ht_bds, 1, arr);
+
+            var arr = m_data_truck[m_idx_req];
+            arr.splice(val[1], 1, bds_req);
+            m_data_truck.splice(m_idx_req, 1, arr);
+
+            sisa_bds = truck-jum-tt_bds-ht_bds;
+            bmc_ht          = sisa_bds >= h_bmc_ht ? h_bmc_ht : sisa_bds;
+            sisa_bmc_ht     = sisa_bds - bmc_ht;
+            bst_ht          = sisa_bmc_ht >= h_bst_ht ? h_bst_ht : sisa_bmc_ht;
+            sisa_bst_ht     = sisa_bmc_ht - bst_ht;
+            bst_lowbed      = sisa_bst_ht >= h_bst_lowbed ? h_bst_lowbed : sisa_bst_ht;
+
+            bmc_ht          = bmc_ht>0 ? bmc_ht : 0;
+            bst_ht          = bst_ht>0 ? bst_ht : 0;
+            bst_lowbed      = bst_lowbed>0 ? bst_lowbed : 0;
+
+            var arr1 = m_data_truck[m_idx_bmc_ht];
+            arr1.splice(val[1], 1, bmc_ht);
+            m_data_truck.splice(m_idx_bmc_ht, 1, arr1);
+
+            var arr2 = m_data_truck[m_idx_bst_ht];
+            arr2.splice(val[1], 1, bst_ht);
+            m_data_truck.splice(m_idx_bst_ht, 1, arr2);
+
+            var arr3 = m_data_truck[m_idx_bst_lowbed];
+            arr3.splice(val[1], 1, bst_lowbed);
+            m_data_truck.splice(m_idx_bst_lowbed, 1, arr3);
+
+
+            var tot = parseInt(ctt) + 
+                      parseInt(ht) + 
+                      parseInt(tb) + 
+                      parseInt(tt) + 
+                      parseInt(req) + 
+                      parseInt(bmc_ht) + 
+                      parseInt(bst_ht) + 
+                      parseInt(bst_lowbed);
+
+            var arr4 = m_data_truck[m_idx_kekurangan];
+            arr4.splice(val[1], 1, (parseInt(truck)-tot)>=0 ? (parseInt(truck)-tot) : 0);
+            m_data_truck.splice(m_idx_kekurangan, 1, arr4);
+
+            var arr5 = m_data_truck[m_idx_total];
+            arr5.splice(val[1], 1, tot);
+            m_data_truck.splice(m_idx_total, 1, arr5);
+
+          } else if(val[1] > 1) {
+
+            bmc_ht = hot_truck.getDataAtCell(m_idx_bmc_ht, val[1]);
+            bst_ht = hot_truck.getDataAtCell(m_idx_bst_ht, val[1]);
+            bst_lowbed = hot_truck.getDataAtCell(m_idx_bst_lowbed, val[1]);
+
+            var tot = parseInt(ctt) + 
+                      parseInt(ht) + 
+                      parseInt(tb) + 
+                      parseInt(tt) + 
+                      parseInt(req) + 
+                      parseInt(bmc_ht) + 
+                      parseInt(bst_ht) + 
+                      parseInt(bst_lowbed);
+
+            var arr4 = m_data_truck[m_idx_kekurangan];
+            arr4.splice(val[1], 1, (parseInt(truck)-tot)>=0 ? (parseInt(truck)-tot) : 0);
+            m_data_truck.splice(m_idx_kekurangan, 1, arr4);
+            
+            var arr5 = m_data_truck[m_idx_total];
+            arr5.splice(val[1], 1, tot);
+            m_data_truck.splice(m_idx_total, 1, arr5);
+
+          }
+        })
+
+        if(e[0][0] != m_idx_req && e[0][1] > 1) {
+          var arr_tt_bds = m_data_truck[m_idx_tt_bds];
+          var arr_ht_bds = m_data_truck[m_idx_ht_bds];
+          var arr_req = m_data_truck[m_idx_req];
+
+          $.each(m_shift_min_max, function (i, val) {
+            var max = 0;
+            $.each(arr_tt_bds, function (j, row) {
+              if(j>1) {
+                if(parseInt(val.max_x)+1 >= j && j >= parseInt(val.min_x)+1) {
+                  if(parseInt(row) > parseInt(max)) {
+                    max = parseInt(row) + parseInt(arr_ht_bds[j]);
+                  }
+                }
+              }
+            })
+
+            $.each(arr_req, function (j, row) {
+              if(parseInt(val.max_x)+1 >= j && j >= parseInt(val.min_x)+1) {
+                arr_req.splice(parseInt(j), 1, max);
+              }
+            })
+          });
+
+          m_data_truck.splice(m_idx_req, 1, arr_req);
+
+        }
+
+        hot_truck.loadData(m_data_truck);
+
+        setTimeout(function () {
+          // console.log("testinggg");
+          cellTruckRequired();
+        }, 100);
+      // } else {
+      // }
+      // } else if(is_run == 0) {
+      //   console.log('gagal');
+      // }
+      // console.log("testing");
+    }
+    // console.log('row', coords.row);
+    // console.log('col', coords.col);
+  });
+
+
+  hot_truck.addHook('afterOnCellMouseUp', function(e,coords){
+    if(coords.row >= 0 && coords.col >= 0) {
+      data = hot_truck.getSelected()[0];
+
+      var y1 = data[0];
+      var x1 = data[1];
+      var y2 = data[2];
+      var x2 = data[3];
+
+      var a1 = (y1 < y2 ? y1 : y2);
+      var b1 = (x1 < x2 ? x1 : x2);
+      var a2 = (y1 > y2 ? y1 : y2);
+      var b2 = (x1 > x2 ? x1 : x2);
+
+      var jum = 0;
+
+      if(a1>=0 && a2>=0 && b1>=0 && b2>=0) {
+        for (a1=a1; a1<=a2; a1++) {
+          for(b1=b1; b1<=b2; b1++) {
+            // if(b1 != 0) {
+              var cell = hot_truck.getDataAtCell(a1,b1); 
+              jum += parseInt(cell);
+            // }
+          }
+          b1 = (x1 < x2 ? x1 : x2);
+        }
+      }
+
+      // console.log(jum);
+      $("#truck_cell_count").text("Sum : "+jum);
+    }
+  });
 
 }
 
@@ -639,20 +980,330 @@ function initialHot() {
   initHotTruck();
 }
 
+function getGenNo(vessels, ves_id) {
+  var gen_no = '';
+  $.each(vessels, function (j, row) {
+    if(row.ves_id == ves_id) {
+      gen_no = row.gen_no;
+      return;
+    }
+  });
+  return gen_no;
+}
+
 function updateColor(key='CRANE') {
+  
   var cur_hot = getHotByKey(key);
+
+  m_data_crane = [];
+
+  for(i=0; i<m_start_rows; i++) {
+    var arr = [];
+    arr.push("");
+    $.each(m_hour, function(i, val) {
+      arr.push("");
+    });
+    m_data_crane.push(arr);
+  }
   $.each(m_allcell[key], function (i, val) {
-    var cell = cur_hot.getCell(parseInt(val.y), parseInt(val.x));
-    cell.style.background = val.color_code; 
-    cell.style.color_code = val.color_code;
-    cell.style.ves_id = val.ves_id;
+    var arr = m_data_crane[parseInt(val.y)];
+    arr.splice(val.x, 1, getGenNo(m_vessel, val.ves_id));
+    m_data_crane[parseInt(val.y)] = arr;
   });
 
+  cur_hot.loadData(m_data_crane);
+
+  $.each(m_allcell[key], function (i, val) {
+    var cell = cur_hot.getCell(parseInt(val.y), parseInt(val.x));
+    if(cell != null) {
+      cell.style.background = val.color_code; 
+      cell.style.color_code = val.color_code;
+      cell.style.ves_id = val.ves_id;
+    }
+  });
 }
 
-function updateDataTruck() {
+function updateDataTruck(key = 'TRUCK') {
 
+  var cur_hot = getHotByKey(key);
+
+  setKesiapan();
+
+  var arr_sts   = ['', ''];
+  var arr_truck = ['', ''];
+  var arr_ctt = [m_eq_ready[m_idx_ctt-2].jum, m_eq_ready[m_idx_ctt-2].kesiapan];
+  var arr_ht = [m_eq_ready[m_idx_ht-2].jum, m_eq_ready[m_idx_ht-2].kesiapan];
+  var arr_tb = [m_eq_ready[m_idx_tb-2].jum, m_eq_ready[m_idx_tb-2].kesiapan];
+  var arr_tt = [m_eq_ready[m_idx_tt-2].jum, m_eq_ready[m_idx_tt-2].kesiapan];
+  var arr_tt_bds = [m_eq_ready[4].jum, m_eq_ready[4].kesiapan];
+  var arr_ht_bds = [m_eq_ready[5].jum, m_eq_ready[5].kesiapan];
+  var arr_req = [m_eq_ready[6].jum, ''];
+  var arr_bmc_ht = [m_eq_ready[7].jum, m_eq_ready[7].kesiapan];
+  var arr_bst_lowbed = [m_eq_ready[8].jum, m_eq_ready[8].kesiapan];
+  var arr_bst_ht = [m_eq_ready[9].jum, m_eq_ready[9].kesiapan];
+  var arr_kekurangan = ['', ''];
+  var arr_total = ['', ''];
+
+  $.each(m_allcell[key+'_DEF'], function (i, val) {
+    $.each(m_truck_str, function (t, truck) {
+      if(truck == 'STS') {
+        arr_sts.push(val.jum_v);
+      } else if(truck == 'TRUCK') {
+        arr_truck.push(val.jum_t);
+      }
+    })
+  });
+
+  if(m_allcell[key].length > 0) {
+
+    $.each(m_allcell[key], function (i, val) {
+      if(val.y == m_idx_ctt) {
+        arr_ctt.push(val.plan_count);
+      } else if(val.y == m_idx_ht) {
+        arr_ht.push(val.plan_count);
+      } else if(val.y == m_idx_tb) {
+        arr_tb.push(val.plan_count);
+      } else if(val.y == m_idx_tt) {
+        arr_tt.push(val.plan_count);
+      } else if(val.y == m_idx_tt_bds) {
+        arr_tt_bds.push(val.plan_count);
+      } else if(val.y == m_idx_ht_bds) {
+        arr_ht_bds.push(val.plan_count);
+      } else if(val.y == m_idx_req) {
+        arr_req.push(val.plan_count);
+      } else if(val.y == m_idx_bmc_ht) {
+        arr_bmc_ht.push(val.plan_count);
+      } else if(val.y == m_idx_bst_lowbed) {
+        arr_bst_lowbed.push(val.plan_count);
+      } else if(val.y == m_idx_bst_ht) {
+        arr_bst_ht.push(val.plan_count);
+      }
+    });
+
+    $.each(arr_truck, function (i, val) {
+      if(i>1) {
+        var tot = parseInt(arr_ctt[i]) + 
+                  parseInt(arr_ht[i]) + 
+                  parseInt(arr_tb[i]) + 
+                  parseInt(arr_tt[i]) + 
+                  parseInt(arr_req[i]) + 
+                  parseInt(arr_bmc_ht[i]) + 
+                  parseInt(arr_bst_ht[i]) + 
+                  parseInt(arr_bst_lowbed[i]);
+        arr_total.push(tot);
+        arr_kekurangan.push((val-tot) >= 0 ? (val-tot) : 0);
+      }
+    })
+
+  } else {
+
+  }
+
+  m_data_truck = [arr_sts, arr_truck, arr_tt, arr_tb, arr_ht, arr_ctt, arr_tt_bds, arr_ht_bds, arr_req, arr_bmc_ht, arr_bst_lowbed, arr_bst_ht, arr_total, arr_kekurangan];
+  hot_truck.loadData(m_data_truck);
+
+  hot_truck.updateSettings({
+    cells(row, col) {
+      const cellProperties = {};
+
+      if (col>1 && (row == 6 || row == 7 || row == 0 || row == 1 || row == 11 || row == 12)) {
+        cellProperties.readOnly = true;
+      }
+
+      return cellProperties;
+    }
+  });
+
+  cellTruckRequired();
+
+  // var cur_hot = getHotByKey(key);
+  // if(m_allcell[key].length > 0) {
+  //   $.each(m_allcell[key], function (i, val) {
+  //     hot_truck.setDataAtCell(parseInt(val.y), parseInt(val.x), val.plan_count);
+  //   });
+  //   $.each(m_eq_ready, function (i, val) {
+  //     $.each(m_truck_str, function (t, truck) {
+  //       if(truck == val.jenis) {
+  //         hot_truck.setDataAtCell(t, 0, val.jum);
+  //       }
+  //       if(truck == 'BDS') {
+  //         m_idx_tt_bds = t;
+  //       } else if(truck == 'REQ') {
+  //         m_idx_req = t;
+  //       } else if(truck == 'BMC_HT') {
+  //         m_idx_bmc_ht = t;
+  //       } else if(truck == 'BST_HT') {
+  //         m_idx_bst_ht = t;
+  //       } else if(truck == 'BST_LOWBED') {
+  //         m_idx_bst_lowbed = t;
+  //       }
+  //     })
+  //   })
+  // } else {
+  //   $.each(m_allcell[key+'_DEF'], function (i, val) {
+  //     $.each(m_truck_str, function (t, truck) {
+  //       if(truck == 'STS') {
+  //         hot_truck.setDataAtCell(t, i+1, val.jum_v);
+  //       } else if(truck == 'TRUCK') {
+  //         hot_truck.setDataAtCell(t, i+1, val.jum_t);
+  //       }
+  //     })
+  //   });
+
+  //   $.each(m_eq_ready, function (i, val) {
+  //     $.each(m_truck_str, function (t, truck) {
+  //       if(truck == val.jenis) {
+  //         hot_truck.setDataAtCell(t, 0, val.jum);
+  //       }
+  //       if(truck == 'BDS') {
+  //         m_idx_tt_bds = t;
+  //       } else if(truck == 'REQ') {
+  //         m_idx_req = t;
+  //       } else if(truck == 'BMC_HT') {
+  //         m_idx_bmc_ht = t;
+  //       } else if(truck == 'BST_HT') {
+  //         m_idx_bst_ht = t;
+  //       } else if(truck == 'BST_LOWBED') {
+  //         m_idx_bst_lowbed = t;
+  //       }
+  //     })
+  //   })
+
+  //   cellTruckRequired();
+  // }
 }
+
+function setKesiapan() {
+  $.each(m_eq_ready, function (i, val) {
+    $.each(m_truck_str, function (t, truck) {
+      if(truck == val.jenis) {
+        hot_truck.setDataAtCell(t, 0, val.jum);
+      }
+
+      if(i == 0) {
+        if(truck == 'CTT') {
+          m_idx_ctt = t;
+        }else if(truck == 'HT') {
+          m_idx_ht = t;
+        }else if(truck == 'TB') {
+          m_idx_tb = t;
+        }else if(truck == 'TT') {
+          m_idx_tt = t;
+        } else if(truck == 'TT_BDS') {
+          m_idx_tt_bds = t;
+        } else if(truck == 'HT_BDS') {
+          m_idx_ht_bds = t;
+        } else if(truck == 'REQ') {
+          m_idx_req = t;
+        } else if(truck == 'BMC_HT') {
+          m_idx_bmc_ht = t;
+        } else if(truck == 'BST_LOWBED') {
+          m_idx_bst_lowbed = t;
+        } else if(truck == 'BST_HT') {
+          m_idx_bst_ht = t;
+        } else if(truck == 'KEKURANGAN') {
+          m_idx_kekurangan = t;
+        } else if(truck == 'TOTAL') {
+          m_idx_total = t;
+        }
+      }
+
+    })
+  })
+}
+
+function validateSaveTruck(data) {
+  var is_valid = true;
+  $.each(data, function (i, val) {
+    $.each(val, function (j, row) {
+      if(parseInt(row) < 0) {
+        is_valid = false;
+        return;
+      }
+    })
+    if(!is_valid) {
+      return;
+    }
+  })
+  return is_valid;
+}
+
+function cellTruckRequired() {
+  for(var i=0; i<m_start_rows_truck; i++) {
+    // data = hot_truck.getDataAtCell(i, 0);
+
+    $.each(m_hour, function (j, val) {
+      // if(j > 0) {
+
+        if(j <= 1) {
+          if(i >=2 && i<=5) {
+            cell = hot_truck.getCell(i, j);
+            if(cell != null)
+              cell.style.background = '#fff952';
+          }
+        }
+
+        var k = j+2;
+        data = hot_truck.getDataAtCell(i, k);
+        data = parseInt(data ? data : 0);
+
+        cell = hot_truck.getCell(i, k);
+
+        if(cell != null) {
+          if(i == 0 || i == 1) {
+            cell.style.background = '#cccccc';
+          } else if(i >=2 && i<=5) {
+            // if(data >= 0) {
+              cell.style.background = '#fff952';
+            // } else {
+            //   cell.style.background = '#ff5f3b';
+            // }
+          } else if(i == 6 || i == 7) {
+            cell.style.background = '#cccccc';
+            // cell.readOnly = true;
+          } else if(i == 8) {
+            var color = val.shift == 1 ? '#ffa3fd' : val.shift == 2 ? '#a9fcec' : val.shift == 3 ? '#9cc5ff' : val.shift == 4 ? '#a8ffab' : '';
+            cell.style.background = color;
+          } else if(i == 12) {
+
+            data_truck = hot_truck.getDataAtCell(1, k);
+            data_truck = parseInt(data_truck ? data_truck : 0);
+            
+            if(data >= data_truck) {
+              cell.style.background = '#cccccc';
+            } else {
+              cell.style.background = '#ff5f3b';
+            }
+          } else if(i == 13) {
+            if(data <= 0) {
+              cell.style.background = '#cccccc';
+            } else {
+              cell.style.background = '#ff5f3b';
+            }
+          }
+        }
+        if(i >=2 && i<=6) {
+          if(data < 0 && cell != null) {
+            cell.style.background = '#ff5f3b';
+          }
+        }
+      // }
+    })
+  }
+}
+
+var m_idx_ctt = 0;
+var m_idx_ht = 0;
+var m_idx_tb = 0;
+var m_idx_tt = 0;
+var m_idx_tt_bds = 0;
+var m_idx_ht_bds = 0;
+var m_idx_req = 0;
+var m_idx_bmc_ht = 0;
+var m_idx_bst_ht = 0;
+var m_idx_bst_lowbed = 0;
+var m_idx_kekurangan = 0;
+var m_idx_total = 0;
 
 
 function getHotByKey(key = 'CRANE') {
@@ -705,6 +1356,67 @@ function getCountColByKey(key = 'CRANE') {
   return col;
 }
 
+
+$('#btn_resend_pdf').on('click', function () {
+    if(confirm('Are you sure to resend pdf?')) {
+        $.ajax({  
+            url : "https://tower.teluklamong.co.id/index.php/service/vier_eqp_send_pdf/"+"{{session('nipp')}}",
+            type : "get",
+            dataType : "json",
+            async : true,
+            success : function(result){
+                swal({
+                    title: result.message,
+                    text: result.message,
+                    icon: result.success ? "success" : "danger",
+                    button: "Oke",
+                });
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
+        });
+        setTimeout(function () {
+            swal({
+                title: 'Sukses',
+                text: 'Sukses',
+                icon: "success",
+                button: "Oke",
+            });
+        }, 2000)
+    }
+})
+
+
+$('#btn_resend_spk').on('click', function () {
+    if(confirm('Are you sure to resend pdf?')) {
+        $.ajax({  
+            url : "https://tower.teluklamong.co.id/index.php/service/vier_eqp_send_spk/"+"{{session('nipp')}}",
+            type : "get",
+            dataType : "json",
+            async : true,
+            success : function(result){
+                swal({
+                    title: result.message,
+                    text: result.message,
+                    icon: result.success ? "success" : "danger",
+                    button: "Oke",
+                });
+            },
+            error: function(request, textStatus, errorThrown) {
+                alert(request.responseJSON.message);
+            }
+        });
+        setTimeout(function () {
+            swal({
+                title: 'Sukses',
+                text: 'Sukses',
+                icon: "success",
+                button: "Oke",
+            });
+        }, 2000)
+    }
+})
 
 
 </script>

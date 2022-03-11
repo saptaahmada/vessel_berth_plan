@@ -108,6 +108,13 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/MPic/json','MPicController@json');
 
 
+    Route::get('/VesselSim','VesselSimController@index');
+    Route::post('/VesselSim/add','VesselSimController@add');
+    Route::post('/VesselSim/update','VesselSimController@update');
+    Route::post('/VesselSim/remove','VesselSimController@remove');
+    Route::get('/VesselSim/json','VesselSimController@json');
+
+
     Route::get('/ReqBerth','ReqBerthController@index')->name('reqberth');
     Route::post('/ReqBerth/add','ReqBerthController@add')->name('reqberthAdd');
     Route::post('/ReqBerth/cancel','ReqBerthController@cancel')->name('reqberthCancel');
@@ -131,6 +138,18 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/Blokirkade/update','BlokirkadeController@update')->name('blokirkadeUpdate');
     Route::post('/Blokirkade/remove','BlokirkadeController@remove')->name('blokirkadeRemove');
     Route::get('/Blokirkade/json','BlokirkadeController@json');
+
+
+    Route::get('/EqpAsgTheme','EqpAsgThemeController@index');
+    Route::get('/EqpAsgTheme/add','EqpAsgThemeController@add');
+    Route::post('/EqpAsgTheme/addProcess','EqpAsgThemeController@addProcess');
+    Route::get('/EqpAsgTheme/update/{theme_name}','EqpAsgThemeController@update');
+    Route::post('/EqpAsgTheme/updateProcess','EqpAsgThemeController@updateProcess');
+    Route::post('/EqpAsgTheme/getData','EqpAsgThemeController@getData');
+    Route::post('/EqpAsgTheme/getDataUpdate','EqpAsgThemeController@getDataUpdate');
+    Route::post('/EqpAsgTheme/remove','EqpAsgThemeController@remove');
+    Route::post('/EqpAsgTheme/getMyTheme','EqpAsgThemeController@getMyTheme');
+    Route::get('/EqpAsgTheme/json','EqpAsgThemeController@json');
     
 
     Route::get('/Signature','SignatureController@index')->name('signature');
@@ -183,8 +202,11 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/EquipmentPlan/getEqGroup','EquipmentPlanController@getEqGroup');
     Route::post('/EquipmentPlan/getEqPlanHour','EquipmentPlanController@getEqPlanHour');
     Route::post('/EquipmentPlan/getEqTruckReady','EquipmentPlanController@getEqTruckReady');
+    Route::post('/EquipmentPlan/getShiftMinMax','EquipmentPlanController@getShiftMinMax');
     Route::post('/EquipmentPlan/save','EquipmentPlanController@save');
     Route::post('/EquipmentPlan/saveTruck','EquipmentPlanController@saveTruck');
+    Route::get('/EquipmentPlan/print/{tipe}/{manager}/{planner}','EquipmentPlanController@print');
+    Route::get('/EquipmentPlan/print_spk','EquipmentPlanController@print_spk');
     
     Route::get('/EquipmentPlanAsg','EquipmentPlanAsgController@index');
     Route::post('/EquipmentPlanAsg/getData','EquipmentPlanAsgController@getData');
@@ -201,6 +223,8 @@ Route::post('/print/grup','PrintController@grup')->name('grup');
 Route::post('/print/qr','SignatureController@qrcode')->name('printQr');
 Route::post('/print/getvessel', 'PrintController@getvessel')->name('print_getvessel');
 
+Route::get('/eqp/show_pdf','EquipmentPlanController@show_pdf');
+Route::get('/eqp/show_spk','EquipmentPlanController@show_spk');
 
 Route::get('/Signature/qr', function () {
     return view('content.signature.signature_qr');
