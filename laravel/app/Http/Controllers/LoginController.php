@@ -160,6 +160,11 @@ class LoginController extends Controller
     public function rolesession(Request $request)
     {
         $session=$request->param_role;
+        if($session == 'PIC PDS') {
+            session(['plan_type'=> 'PDS']);
+        } else if($session == 'PIC BDS') {
+            session(['plan_type'=> 'BDS']);
+        }
         session(['role'=> $session]);
         return response()->json($session);
 

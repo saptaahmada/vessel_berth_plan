@@ -1165,110 +1165,117 @@ circle3 {
                     for (a = 1; a < vesselcur.length+1; ++a) {
                         var vees = vesselcur[a-1];
 
-                        var crane =   vees.crane;
-                        var uncrane=[];
-                        if (crane==null)
-                        uncrane=[];
-                        else
-                        uncrane = crane.split(',');
+                        if(vees.act_dep_ts == null) {
+
+                            var crane =   vees.crane;
+                            var uncrane=[];
+                            if (crane==null)
+                            uncrane=[];
+                            else
+                            uncrane = crane.split(',');
 
 
-                        var pot= vees.next_port;
-                        if (pot == null)
-                            pod = "-";
-                        else 
-                            pod = pot;
+                            var pot= vees.dest_port;
+                            if (pot == null)
+                                pod = "-";
+                            else 
+                                pod = pot;
 
-                        // console.log(uncrane);
-                        var craneloop = "";
-                        for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
-                            craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
-                        };
+                            // console.log(uncrane);
+                            var craneloop = "";
+                            for (var x = 0; x < uncrane.length; x++) { //Move the for loop from here
+                                craneloop += '<circle2><span>'+uncrane[x]+'</span></circle2>';
+                            };
 
-                        var act_berth_ts = null;
+                            var act_berth_ts = null;
 
-                        if(vees.act_berth_ts != null)
-                            act_berth_ts = moment(vees.act_berth_ts).format('DD/MM/YYYY HH:mm');
-                        
-                        var est_pilot_ts = moment(vees.est_pilot_ts).format('DD/MM/YYYY HH:mm');
-                        var req_berth_ts = moment(vees.req_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_berth_ts = moment(vees.est_berth_ts).format('DD/MM/YYYY HH:mm');
-                        var est_dep_ts = moment(vees.est_dep_ts).format('DD/MM/YYYY HH:mm');
-                        var info = vees.info != null ? vees.info.replace("\n", "<br>") : '';
-                        var height = parseInt(vees.height);
+                            if(vees.act_berth_ts != null)
+                                act_berth_ts = moment(vees.act_berth_ts).format('DD/MM/YYYY HH:mm');
+                            
+                            var est_pilot_ts = moment(vees.est_pilot_ts).format('DD/MM/YYYY HH:mm');
+                            var req_berth_ts = moment(vees.req_berth_ts).format('DD/MM/YYYY HH:mm');
+                            var est_berth_ts = moment(vees.est_berth_ts).format('DD/MM/YYYY HH:mm');
+                            var est_dep_ts = moment(vees.est_dep_ts).format('DD/MM/YYYY HH:mm');
+                            var info = vees.info != null ? vees.info.replace("\n", "<br>") : '';
+                            var height = parseInt(vees.height);
 
-                        $("#curah").append(
-                            '<div id="cur'+a+'" class="zone">'+
-                                '<div id="img'+a+'">'+
-                                    '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vees.image+'"/>'+
-                                '</div>'+
-                                '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vees.ves_id+'">'+
-                                    'MV. '+vees.ves_name+' ('+vees.ves_id+')'+
-                                '</div>'+
-                                '<div id="text_detailcur'+a+'" class="text_detail">'+
-                                    (vees.est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
-                                    (height >= min_height ?
-                                    (vees.req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
-                                    (act_berth_ts != null ? 
-                                        ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
-                                        ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
-                                    )+
-                                    '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
-                                    '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vees.est_discharge+' MT</div>'+
-                                    '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
-                                    (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
-                                    (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
-                                    '<div style="margin:1px;">WINDOW : '+(vees.windows=='1'?'ON':'OFF')+'</div>'+
-                                    ' <circle><span>'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
-                                    craneloop+
-                                '</div>'+
-                            '</div>');
+                            $("#curah").append(
+                                '<div id="cur'+a+'" class="zone">'+
+                                    '<div id="img'+a+'">'+
+                                        '<img id="ims'+a+'" class="ims" src = "{{asset('/img/customer/')}}/'+vees.image+'"/>'+
+                                    '</div>'+
+                                    '<div id="text_judulcur'+a+'" class="text_judul" val="'+ vees.ves_id+'">'+
+                                        'MV. '+vees.ves_name+' ('+vees.ves_id+')'+
+                                    '</div>'+
+                                    '<div id="text_detailcur'+a+'" class="text_detail">'+
+                                        (vees.est_pilot_ts == null ? '' : '<div style="margin:1px; color:red;">ETA :'+est_pilot_ts+'</div>')+
+                                        (height >= min_height ?
+                                        (vees.req_berth_ts == null? '' : '<div style="margin:1px;">RBT :'+req_berth_ts+'</div>') : '')+
+                                        (act_berth_ts != null ? 
+                                            ('<div style="margin:1px;">ATB :'+act_berth_ts+'</div>') : 
+                                            ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
+                                        )+
+                                        '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                        '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vees.est_discharge+' MT</div>'+
+                                        '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
+                                        (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                                        (height > min_height || info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
+                                        '<div style="margin:1px;">WINDOW : '+(vees.windows=='1'?'ON':'OFF')+'</div>'+
+                                        ' <circle><span>'+vees.berth_fr_metre_ori+' On '+vees.berth_to_metre_ori+'</span></circle>'+
+                                        craneloop+
+                                    '</div>'+
+                                '</div>');
+                        }
+
                     }
                     for (i = 1; i < vesselcur.length+1; ++i) {
-                        var vees = vesselcur[i-1];
+                        // if(vees.act_dep_ts ==  null) {
 
-                        if(vees.act_berth_ts != null) {
-                            if(vees.time_remain_label != null) {
-                                rand = getColor(0);
-                            } else {
-                                rand = getColor(3);
+                            var vees = vesselcur[i-1];
+
+                            if(vees.act_berth_ts != null) {
+                                if(vees.time_remain_label != null) {
+                                    rand = getColor(0);
+                                } else {
+                                    rand = getColor(3);
+                                }
+                            } else if(vees.tentatif == 1) {
+                                rand = getColor(2);
+                            } else if(vees.tentatif == 0) {
+                                rand = getColor(1);
                             }
-                        } else if(vees.tentatif == 1) {
-                            rand = getColor(2);
-                        } else if(vees.tentatif == 0) {
-                            rand = getColor(1);
-                        }
 
-                        console.log(vees);
-                       
-                        var leftcur = (((250 - vees.berth_to_metre_ori)/10)*7.611111111111111);
-                        var widthcur = (((250 - vees.berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
+                            console.log('vees', vees);
+                           
+                            var leftcur = (((250 - vees.berth_to_metre_ori)/10)*7.611111111111111);
+                            var widthcur = (((250 - vees.berth_fr_metre_ori)/10) *7.611111111111111) - (leftcur); // done
 
-                        // console.log("left", leftcur);
+                            // console.log("left", leftcur);
 
-                        var top= vees.y_awal/20 * 5.1875; // done
-                        var height = vees.height/20 * 5.1875;
-                        var along_side = vees.btoa_side;
-                        
-                        // console.log(height);
-                        if(along_side == "P"){ //kiri star
-                        $("#cur"+i).css("left", leftcur+"px");
-                        $("#cur"+i).css("width", widthcur+"px");
-                        $("#cur"+i).css("top", top +"px");
-                        $("#cur"+i).css("height", height+"px");
-                        $("#text_judulcur"+i).css("padding-left", "20%");
-                        $("#text_detailcur"+i).css("padding-left", "18%");
-                        $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
-                        }else if (along_side == "S") {
-                        $("#cur"+i).css("left", leftcur+"px");
-                        $("#cur"+i).css("width", widthcur+"px");
-                        $("#cur"+i).css("top", top +"px");
-                        $("#cur"+i).css("height", height+"px");
-                        $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
-                        $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
-                        
-                        $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
-                        }
+                            var top= vees.y_awal/20 * 5.1875; // done
+                            var height = vees.height/20 * 5.1875;
+                            var along_side = vees.btoa_side;
+                            
+                            // console.log(height);
+                            if(along_side == "P"){ //kiri star
+                            $("#cur"+i).css("left", leftcur+"px");
+                            $("#cur"+i).css("width", widthcur+"px");
+                            $("#cur"+i).css("top", top +"px");
+                            $("#cur"+i).css("height", height+"px");
+                            $("#text_judulcur"+i).css("padding-left", "20%");
+                            $("#text_detailcur"+i).css("padding-left", "18%");
+                            $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%); -webkit-clip-path: polygon(100% 95%, 100% 5%, 95% 0, 15% 0, 0 50%, 15% 100%, 95% 100%);}</style>');
+                            }else if (along_side == "S") {
+                            $("#cur"+i).css("left", leftcur+"px");
+                            $("#cur"+i).css("width", widthcur+"px");
+                            $("#cur"+i).css("top", top +"px");
+                            $("#cur"+i).css("height", height+"px");
+                            $("#text_judulcur"+i+".text_judul").css("padding-left", "5px");
+                            $("#text_detailcur"+i+".text_detail").css("padding-left", "5px");
+                            
+                            $("#cur"+i).append('<style>#cur'+i+'::before{content:""; position:absolute;clip-path: border-box;top:0;left:0px; right:0;bottom:0; z-index:-1;background: '+rand+' ;clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%); -webkit-clip-path: polygon(100% 50%, 85% 0, 5% 0, 0 5%, 0 95%, 5% 100%, 85% 100%);}</style>');
+                            }
+                        // }
                     }
 
 
@@ -1364,7 +1371,7 @@ circle3 {
             else
             uncrane = crane.split(',');
 
-            var pot= vees.next_port;
+            var pot= vees.dest_port;
             if (pot == null)
                 pod = "-";
             else 
