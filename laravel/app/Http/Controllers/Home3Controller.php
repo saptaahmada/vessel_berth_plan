@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use PDF;
 use Session;
+use Storage;
 use App\Blokirkade;
 use App\Note;
 use DataTables;
@@ -26,7 +27,6 @@ class Home3Controller extends Controller
 
     public function parkingbackup()
     {
-        set_time_limit(60000);
         $blokirkade = Blokirkade::where('PARAM1', 'BLOKIR_KADE')->get();
         return view('content.berthplan3', compact("blokirkade"));
     }
@@ -250,6 +250,8 @@ class Home3Controller extends Controller
                                                 $vessel['req_berth_ts'] : $null_date,
                     'est_berth_ts'          => $vessel['est_berth_ts'],
                     'est_dep_ts'            => $vessel['est_dep_ts'],
+                    'no_surat'              => isset($vessel['no_surat']) ? $vessel['no_surat'] : '',
+                    'no_pmh_agent'          => isset($vessel['no_pmh_agent']) ? $vessel['no_pmh_agent'] : '',
                     'CRANE'                 => (implode(",", isset($vessel['crane'])?$vessel['crane']:[])),
                     'BCH'                   => $vessel['bsh'],
                     'BSH'                   => $vessel['bsh'],
@@ -288,6 +290,8 @@ class Home3Controller extends Controller
                                                 $vessel['req_berth_ts'] : $null_date,
                     'est_berth_ts'          => $vessel['est_berth_ts'],
                     'est_dep_ts'            => $vessel['est_dep_ts'],
+                    'no_surat'              => isset($vessel['no_surat']) ? $vessel['no_surat'] : '',
+                    'no_pmh_agent'          => isset($vessel['no_pmh_agent']) ? $vessel['no_pmh_agent'] : '',
                     'EST_ANCHORAGE_TS'      => $null_date,
                     'EST_START_WORK_TS'     => $null_date,
                     'EST_END_WORK_TS'       => $null_date,
@@ -422,6 +426,8 @@ class Home3Controller extends Controller
                                                 $param_vess[$i]['req_berth_ts'] : $null_date,
                     'est_berth_ts'          => $param_vess[$i]['est_berth_ts'],
                     'est_dep_ts'            => $param_vess[$i]['est_dep_ts'],
+                    'no_surat'              => $param_vess[$i]['no_surat'],
+                    'no_pmh_agent'          => $param_vess[$i]['no_pmh_agent'],
                     'CRANE'                 => $crane_string,
                     'BCH'                   => $param_vess[$i]['bsh'],
                     'BSH'                   => $param_vess[$i]['bsh'],
@@ -790,6 +796,75 @@ class Home3Controller extends Controller
                 ORDER BY TO_DATE(ACT_DEP_TS, 'DD/MM/YYYY HH24:MI') DESC)
                 WHERE ROWNUM<=3")
         )->make(true);
+    }
+
+    public function ijin_kawasan()
+    {
+        $vessel = DB::table('CBSLAM.CBS_VESSEL_PLANNING')->where('ves_id', $_GET['ves_id'])->get();
+
+        $params = safeEncrypt("{$vessel[0]->no_surat}||3720203820||KARYO RAHARJO||".date('d-m-Y H:i'), 'P3lindoBer1');
+
+        $arr = explode(' ', $vessel[0]->est_berth_ts);
+        $arr_date = explode('-', $arr[0]);
+        $arr_time = explode(':', $arr[1]);
+
+        $data['today']      = date('d')." ".getMonthName(date('m'))." ".date('Y') ;
+        $data['berth']      = $arr_date[2]." ".getMonthName($arr_date[1])." ".$arr_date[0]." ".$arr_time[0].":".$arr_time[1];
+        $data['vessel']     = $vessel;
+        $data['url']        = url("Signature/qrcode?params=".$params);
+        $pdf = PDF::loadview('content.print.ijin_kawasan', $data);
+        return $pdf->download("ijin_kawasan_{$_GET['ves_id']}.pdf");
+
+    }
+
+    public function send_ijin_kawasan()
+    {
+        $vessel = DB::table('CBSLAM.CBS_VESSEL_PLANNING')->where('ves_id', $_GET['ves_id'])->get();
+        $m_pic  = DB::table('CBSLAM.VIER_M_PIC')
+                    ->where('AGENT', $vessel[0]->agent)
+                    ->where('TIPE', '1')->get();
+
+        $params = safeEncrypt("{$vessel[0]->no_surat}||3720203820||KARYO RAHARJO||".date('d-m-Y H:i'), 'P3lindoBer1');
+
+        $arr = explode(' ', $vessel[0]->est_berth_ts);
+        $arr_date = explode('-', $arr[0]);
+        $arr_time = explode(':', $arr[1]);
+
+        $data['today']      = date('d')." ".getMonthName(date('m'))." ".date('Y') ;
+        $data['berth']      = $arr_date[2]." ".getMonthName($arr_date[1])." ".$arr_date[0]." ".$arr_time[0].":".$arr_time[1];
+        $data['vessel']     = $vessel;
+        $data['url']        = url("Signature/qrcode?params=".$params);
+        $pdf = PDF::loadview('content.print.ijin_kawasan', $data);
+
+        $pdf->save("./public/ijin_kawasan/ijin_kawasan_{$_GET['ves_id']}.pdf");
+
+        $no_hp = [];
+
+        foreach ($m_pic as $i => $val) {
+            $no_hp[] = $val->hp;
+        }
+        // $no_hp  = ['0895342688799'];
+
+        $text   = "ijin_kawasan_{$_GET['ves_id']}.pdf";
+        $file   = asset("ijin_kawasan/ijin_kawasan_{$_GET['ves_id']}.pdf");
+        $idapp  = '42';
+        send_wa_file(implode(';', $no_hp), $text, $file, $idapp);
+
+        // return $pdf->download("ijin_kawasan_{$_GET['ves_id']}.pdf");
+        echo "<script>window.close();</script>";
+
+        // $vessel = DB::table('CBSLAM.CBS_VESSEL_PLANNING')->where('ves_id', $_GET['ves_id'])->get();
+
+        // $arr = explode(' ', $vessel[0]->est_berth_ts);
+        // $arr_date = explode('-', $arr[0]);
+        // $arr_time = explode(':', $arr[1]);
+
+        // $data['today']      = date('d')." ".getMonthName(date('m'))." ".date('Y') ;
+        // $data['berth']      = $arr_date[2]." ".getMonthName($arr_date[1])." ".$arr_date[0]." ".$arr_time[0].":".$arr_time[1];
+        // $data['vessel']     = $vessel;
+        // $pdf = PDF::loadview('content.print.ijin_kawasan', $data);
+        // $pdf->output('./', 'I');
+        // return $pdf->download('ijin_kawasan.pdf');
     }
 
 }

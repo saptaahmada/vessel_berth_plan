@@ -93,7 +93,7 @@
                   <tr>
                     <td >Judul</td>
                     <td>:</td>
-                    <td>PENGESAHAN SHIP BERTHING PLAN TERMINAL TELUK LAMONG 2021</td>
+                    <td id="title_doc">PENGESAHAN SHIP BERTHING PLAN TERMINAL TELUK LAMONG 2021</td>
                    
                   </tr>
                   <tr>
@@ -142,11 +142,14 @@
     var url_string= window.location.href;
     var url = new URL(url_string);
 
+    var title_doc = url.searchParams.get("title_doc");
     var no_doc = url.searchParams.get("no_doc");
     var nama = url.searchParams.get("bp");
     var tgl = url.searchParams.get("date");
 
-    
+    if(title_doc != '' && title_doc != null) {
+      $('#title_doc').text(title_doc);
+    }
     $('#no_doc').text(no_doc);
     $('#nama').text(nama);
     $('#tgl').text(tgl);

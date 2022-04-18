@@ -675,6 +675,9 @@ circle3 {
     } 
     .legend_berthing {
         -webkit-print-color-adjust: exact; 
+    } 
+    .hidden_old_logo {
+        -webkit-print-color-adjust: exact; 
     }
 
     .hari1{
@@ -851,6 +854,23 @@ circle3 {
         <div class = "grup_detail" id="3g"><p class="grup_text"> III / B</p></div> -->
     </div>
     <div id="print_at">
+    </div>
+
+    <div id="logo">
+        <div class="hidden_old_logo" 
+        style="position:absolute; 
+        width:53px; 
+        height: 45px; 
+        background:#FFF;
+        top:20px;
+        left: 10px"></div>
+
+        <img src="{{asset('img/logo_ttl.png')}}" 
+        style="position:absolute; 
+        width:100px; 
+        top:10px;
+        left: 1280px">
+
     </div>
 
     <div id="legend">
@@ -1078,15 +1098,18 @@ circle3 {
 
                         if(vees.act_berth_ts != null) {
                             if(vees.est_end_date != null) {
-                                rand = getColor(0);
+                                rand = getColor(0, vees.status_berth);
                             } else {
-                                rand = getColor(3);
+                                rand = getColor(3, vees.status_berth);
                             }
                         } else if(vees.tentatif == 1) {
-                            rand = getColor(2);
+                            rand = getColor(2, vees.status_berth);
                         } else if(vees.tentatif == 0) {
-                            rand = getColor(1);
+                            rand = getColor(1, vees.status_berth);
                         }
+
+                        if(vees.status_berth == 'A')
+                            rand = "#9ebfde";
                         
                         var left = vees.berth_fr_metre_ori /10 *7.611111111111111;;
                         var top = vees.y_awal/20 * 5.1875;;
@@ -1123,14 +1146,14 @@ circle3 {
 
                         if(vees.act_berth_ts != null) {
                             if(vees.est_end_date != null) {
-                                rand = getColor(0);
+                                rand = getColor(0, vees.status_berth);
                             } else {
-                                rand = getColor(3);
+                                rand = getColor(3, vees.status_berth);
                             }
                         } else if(vees.tentatif == 1) {
-                            rand = getColor(2);
+                            rand = getColor(2, vees.status_berth);
                         } else if(vees.tentatif == 0) {
-                            rand = getColor(1);
+                            rand = getColor(1, vees.status_berth);
                         }
                         
                         
@@ -1216,6 +1239,7 @@ circle3 {
                                             ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
                                         )+
                                         '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                                        '<div style="margin:1px;">VOY IN/OUT : '+vees.in_voyage+' / '+vees.out_voyage+'</div>'+
                                         '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vees.est_discharge+' MT</div>'+
                                         '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
                                         (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
@@ -1235,14 +1259,14 @@ circle3 {
 
                             if(vees.act_berth_ts != null) {
                                 if(vees.time_remain_label != null) {
-                                    rand = getColor(0);
+                                    rand = getColor(0, vees.status_berth);
                                 } else {
-                                    rand = getColor(3);
+                                    rand = getColor(3, vees.status_berth);
                                 }
                             } else if(vees.tentatif == 1) {
-                                rand = getColor(2);
+                                rand = getColor(2, vees.status_berth);
                             } else if(vees.tentatif == 0) {
-                                rand = getColor(1);
+                                rand = getColor(1, vees.status_berth);
                             }
 
                             console.log('vees', vees);
@@ -1424,9 +1448,10 @@ circle3 {
                             ('<div style="margin:1px;">ETB :'+est_berth_ts+'</div>')
                         )+
                         '<div style="margin:1px;">ETD : '+est_dep_ts+'</div>'+
+                        '<div style="margin:1px;">VOY IN/OUT : '+vees.in_voyage+' / '+vees.out_voyage+'</div>'+
                         '<div style="margin:1px; color:red; font-style: italic;">MOVES EST:'+vees.est_discharge+'/'+vees.est_load+' BOX</div>'+
                         '<div style="margin:1px;">LOA : '+vees.width_ori+' M</div>'+
-                        (height > min_height ? '<div style="margin:1px;">POD : '+pod+'</div>':'')+
+                        '<div style="margin:1px;">POD : '+pod+'</div>'+
                         (info != '' ? '<div style="margin:1px;">INFO : '+info+'</div>':'')+
                         '<div style="margin:1px;">WINDOW : '+(vees.windows=='1'?'ON':'OFF')+'</div>'+
                     '</div>'+
@@ -1468,11 +1493,14 @@ circle3 {
         }
     }
 
-    function getColor(param) {
-        var departed = '#5eebeb';
+    function getColor(param, status_berth) {
+        var departed = '#5cede8';
         var berth = '#F5E89A';
         var commit = '#BDE992';
         var tentatif = '#c7d6c7';
+
+        if(status_berth == 'A')
+            return '#9ebfde';
 
         if(param == 0)
             return berth;

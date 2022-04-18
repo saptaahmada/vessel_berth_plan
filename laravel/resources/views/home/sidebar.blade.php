@@ -14,6 +14,8 @@
             <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li>
             <li class="ripple"><a href="{{ url('VesselBerthPlan3') }}"><span class="fa fa-ship"></span>Berth Plan</a></li>
             <li class="ripple"><a href="{{ url('EquipmentPlan') }}"><span class="fa fa-ship"></span>Equipment Plan</a></li>
+            <li class="ripple"><a href="{{ url('YardPlan') }}"><span class="fa fa-ship"></span>Yard Plan</a></li>
+            <li class="ripple"><a href="{{ url('VesselSim') }}"><span class="fa-ship fa"></span>Change Ves Id</a></li>
             <li class="ripple"><a class="tree-toggle nav-header"><span class="fa fa-table"></span>Data Master  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
               <ul class="nav nav-list tree">
                 <li><a style="margin-top:-10px;" href="{{ url('VesselBerthPlan_Logo') }}"><span></span><span></span>Customer</a></li>
@@ -32,6 +34,7 @@
                 <li><a style="margin-top:-20px;" href="{{ url('MonAssignmentPandu') }}"><span></span><span></span>Assignment Pandu</a></li>
                 <li><a style="margin-top:-20px;" href="{{ url('Monitoring/0') }}"><span></span><span></span>Monitoring Berth Plan</a></li>
                 <li><a style="margin-top:-20px;" href="{{ url('Monitoring/1') }}"><span></span><span></span>Monitoring Berth Act</a></li>
+                <li><a style="margin-top:-20px;" href="{{ url('MonEquipmentPlan') }}"><span></span><span></span>Monitoring EQ Plan</a></li>
               </ul>
             </li>
             @elseif (session('role') === "VESSEL PLANNER")
@@ -54,8 +57,6 @@
             <li class="ripple"><a href="{{ url('Dashboard') }}"><span class="fa-home fa"></span>Dashboard</a></li>
             <!-- <li class="ripple"><a href="{{ url('Monitoring/0') }}"><span class="fa fa-inbox"></span>Monitoring Berth Plan</a></li> -->
             @endif
-
-           
 
         </ul>
         

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Testing</title>
+	<title>TAP</title>
 	<style type="text/css">
 		.vertical {
 		    writing-mode: vertical-lr;
@@ -37,7 +37,7 @@
 <?php
 $jum = 0;
 foreach ($data['kesiapan'] as $i => $val) {
-	if($i == 4 || $i == 5)
+	if($i == 5 || $i == 6)
 		$jum += $val->kesiapan;
 }
 
@@ -63,7 +63,7 @@ function getAlat($kode)
 	<table class="no_border" width="100%">
 		<tr class="no_border">
 			<td class="no_border" width="33%">
-				<img src="{{url('public/img/pt_terminal_teluk_lamong.png')}}" width="200">
+				<img src="{{url('public/img/logo_ttl.png')}}" width="200">
 			</td>
 			<td class="center no_border" width="33%">
 				<span style="font-size: 30px;"><b>TRUCK ALLOCATION PLAN</b></span>

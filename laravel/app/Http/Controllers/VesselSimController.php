@@ -24,6 +24,8 @@ class VesselSimController extends Controller
             ->where('VES_ID', $request->ves_id)
             ->update([
                 'VES_ID'        => $request->ves_id_new,
+                'EST_BERTH_TS'  => $request->etb,
+                'EST_DEP_TS'    => $request->etd,
                 'UPDATED_BY'    => session('data'),
                 'UPDATED_DATE'  => date('Y-m-d H:i:s')
             ]);
@@ -36,6 +38,32 @@ class VesselSimController extends Controller
     }
 
     public function json(){
-        return DataTables::of(DB::table('CBSLAM.CBS_VESSEL_MONITORING')->orderBy('EST_BERTH_TS')->get())->make(true);
+        $draw   = $_GET['draw'];
+        $start  = $_GET['start'];
+        $length = $_GET['length'];
+        $search = $_GET['search'];
+
+        $total_members = DB::table('CBSLAM.CBS_VESSEL_MONITORING')->count();;
+        $sql = DB::table('CBSLAM.CBS_VESSEL_MONITORING')
+                ->skip($start)
+                ->take($length);
+
+
+        // if($search['']) {
+            $result = $sql->where('VES_NAME', 'like', '%' . strtoupper($search['value']) . '%')
+            ->orWhere('VES_ID', 'like', '%' . strtoupper($search['value']) . '%')
+            ->get();
+        // } else {
+        //     $result = $sql->get();
+        // }
+
+        $data = array(
+            'draw' => $draw,
+            'recordsTotal' => $total_members,
+            'recordsFiltered' => $total_members,
+            'data' => $result,
+        );
+
+        echo json_encode($data);
     }
 }

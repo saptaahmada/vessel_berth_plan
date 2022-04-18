@@ -22,8 +22,8 @@
 	</style>
 </head>
 <body>
-	<img src="{{url('public/img/pt_terminal_teluk_lamong.png')}}" width="300" style="display: block; margin: 0 auto;">
-	<div style="text-align: center; font-size: 30px"><b><u>SURAT PERINTAH KERJA</u></b></div>
+	<img src="{{url('public/img/logo_ttl.png')}}" width="300" style="display: block; margin: 0 auto;">
+	<div style="text-align: center; font-size: 30px; margin-top: 20px"><b><u>SURAT PERINTAH KERJA</u></b></div>
 	<div style="margin-top:20px">1. Yang bertanda tangan dibawah ini :</div>
 	<div style="margin-left: 20px">
 		<div style="margin-left: 10px;">

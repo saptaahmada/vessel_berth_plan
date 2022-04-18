@@ -94,15 +94,19 @@
                                     <div class="col-md-3">
                                         <table>
                                             <tr>
-                                                <td class="small_margin"><span class="legend" style="background-color: #a9d18e"></span></td>
-                                                <td class="small_margin">Sudah Sandar</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="small_margin"><span class="legend" style="background-color: #9dc3e6"></span></td>
-                                                <td class="small_margin">Plan Pasti Sandar</td>
+                                                <td class="small_margin"><span class="legend" style="background-color: #5cede8"></span></td>
+                                                <td class="small_margin">Sudah Depart</td>
                                             </tr>
                                             <tr>
                                                 <td class="small_margin"><span class="legend" style="background-color: #ffe699"></span></td>
+                                                <td class="small_margin">Sudah Sandar</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="small_margin"><span class="legend" style="background-color: #a9d18e"></span></td>
+                                                <td class="small_margin">Plan Pasti Sandar</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="small_margin"><span class="legend" style="background-color: #c7d6c7"></span></td>
                                                 <td class="small_margin">Plan Tentatif</td>
                                             </tr>
                                             <tr>
@@ -124,6 +128,10 @@
                                             <tr>
                                                 <td class="small_margin"><span class="legend" style="background-color: #b8b8b8"></span></td>
                                                 <td class="small_margin">Blokir Kade</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="small_margin"><span class="legend" style="background-color: #9ebfde"></span></td>
+                                                <td class="small_margin">Anchore</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -531,6 +539,15 @@
                                                             </div>
                                                             <!-- <input id="etD" type="datetime-local" class="form-control"> -->
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">No Surat :</label>
+                                                            <input id="no_surat" type="text" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">No PMH Agent :</label>
+                                                            <input id="no_pmh_agent" type="text" class="form-control">
+                                                        </div>
+
                                                     </div>
                                                     <div class="col-md-4">
 
@@ -807,6 +824,15 @@
                                                             </div>
                                                         </div>
                                                         
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">No Surat :</label>
+                                                            <input id="edit_no_surat" type="text" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">No PMH Agent :</label>
+                                                            <input id="edit_no_pmh_agent" type="text" class="form-control">
+                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="col-md-4">
 
@@ -1047,6 +1073,14 @@
                                                                     <input id="unreg_end" placeholder="End" type="text" class="form-control" disabled>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">No Surat :</label>
+                                                            <input id="unreg_no_surat" type="text" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">No PMH Agent :</label>
+                                                            <input id="unreg_no_pmh_agent" type="text" class="form-control">
                                                         </div>
                                                         
                                                     </div>

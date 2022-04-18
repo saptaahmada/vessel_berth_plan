@@ -29,6 +29,42 @@ function send_wa($hp, $text)
     // return true;
 }
 
+function send_wa_link($no_hp, $text, $idapp)
+{
+    ini_set("soap.wsdl_cache_enabled", "0");
+    $url = "http://sittl.teluklamong.co.id/wsouth.asmx?wsdl";
+    $client=new SoapClient($url);
+    $p = $client->kirim_WA_link([
+        "xUser" => "raka",
+        "xpassword" => "rakar",
+        "Xidapp" => $idapp,
+        "xNoHP" => $no_hp,
+        "xText" => $text,
+    ]);
+
+    $response=$p->kirim_WA_linkResult;
+    return true;
+}
+
+function send_wa_file($no_hp, $text, $file, $idapp)
+{
+    ini_set("soap.wsdl_cache_enabled", "0");
+    $url = "http://sittl.teluklamong.co.id/wsouth.asmx?wsdl";
+    $client=new SoapClient($url);
+    $p = $client->kirim_WA_file([
+        "xUser" => "raka",
+        "xpassword" => "rakar",
+        "Qidapp" => $idapp,
+        "xNoHP" => $no_hp,
+        "xText" => $text,
+        "xfile" => $file,
+    ]);
+
+    $response=$p->kirim_WA_fileResult;
+    return true;
+}
+
+
 function sendCurlBasicAuth($url, $auth="ttl:pelindottl", $data)
 {
     // $url = 'https://vasa.api.pelindo.co.id/ttl/ship-departure-estimation';
@@ -65,6 +101,32 @@ function getDefaultDate($date, $is_excel=false)
         else 
             return "{$arrTgl[2]}-{$arrTgl[0]}-{$arrTgl[1]}";
     }
+}
+
+function getMonthName($month, $country = 'INDONESIA')
+{
+    $month_name = "";
+
+    if($country == 'INDONESIA') {
+        switch ($month) {
+            case '1': $month_name = 'JANUARI'; break;
+            case '2': $month_name = 'FEBRUARI'; break;
+            case '3': $month_name = 'MARET'; break;
+            case '4': $month_name = 'APRIL'; break;
+            case '5': $month_name = 'MEI'; break;
+            case '6': $month_name = 'JUNI'; break;
+            case '7': $month_name = 'JULI'; break;
+            case '8': $month_name = 'AGUSTUS'; break;
+            case '9': $month_name = 'SEPTEMBER'; break;
+            case '10': $month_name = 'OKTOBER'; break;
+            case '11': $month_name = 'NOVEMBER'; break;
+            case '12': $month_name = 'DESEMBER'; break;
+            default:
+                break;
+        }
+    }
+
+    return $month_name;
 }
 
 

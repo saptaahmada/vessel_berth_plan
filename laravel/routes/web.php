@@ -86,6 +86,9 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/VesselBerthPlan3/ves_not_yet_json/{status}', 'Home3Controller@ves_not_yet_json')->name('ves_not_yet_json');
     Route::get('/VesselBerthPlan3/ves_bsh_history_json/{ves_code}', 'Home3Controller@ves_bsh_history_json');
     Route::post('/VesselBerthPlan3/delete_ves_not_input', 'Home3Controller@delete_ves_not_input');
+
+    Route::get('/VesselBerthPlan3/ijin_kawasan', 'Home3Controller@ijin_kawasan');
+    Route::get('/VesselBerthPlan3/send_ijin_kawasan', 'Home3Controller@send_ijin_kawasan');
     
     Route::get('/VesselBerthPlan3/getkade', 'DermagaController@getkade')->name('getkade');
     Route::get('/Dermaga','DermagaController@index')->name('dermaga');
@@ -203,6 +206,7 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::post('/EquipmentPlan/getEqPlanHour','EquipmentPlanController@getEqPlanHour');
     Route::post('/EquipmentPlan/getEqTruckReady','EquipmentPlanController@getEqTruckReady');
     Route::post('/EquipmentPlan/getShiftMinMax','EquipmentPlanController@getShiftMinMax');
+    Route::post('/EquipmentPlan/getShiftMinMax2Day','EquipmentPlanController@getShiftMinMax2Day');
     Route::post('/EquipmentPlan/save','EquipmentPlanController@save');
     Route::post('/EquipmentPlan/saveTruck','EquipmentPlanController@saveTruck');
     Route::get('/EquipmentPlan/print/{tipe}/{manager}/{planner}','EquipmentPlanController@print');
@@ -211,6 +215,29 @@ Route::group(['middleware'=> 'CekLogin'],function(){
     Route::get('/EquipmentPlanAsg','EquipmentPlanAsgController@index');
     Route::post('/EquipmentPlanAsg/getData','EquipmentPlanAsgController@getData');
     Route::post('/EquipmentPlanAsg/save','EquipmentPlanAsgController@save');
+
+
+
+    Route::get('/YardPlan','YardPlanController@index');
+    Route::post('/YardPlan/getVesBerth','YardPlanController@getVesBerth');
+    Route::post('/YardPlan/getBlock','YardPlanController@getBlock');
+    Route::post('/YardPlan/getDestination','YardPlanController@getDestination');
+
+
+
+    Route::get('/MonEquipmentPlan','MonEquipmentPlanController@index');
+    Route::post('/MonEquipmentPlan/getVesBerth','MonEquipmentPlanController@getVesBerth');
+    Route::post('/MonEquipmentPlan/getNodes','MonEquipmentPlanController@getNodes');
+    Route::post('/MonEquipmentPlan/getEq','MonEquipmentPlanController@getEq');
+    Route::post('/MonEquipmentPlan/getEqGroup','MonEquipmentPlanController@getEqGroup');
+    Route::post('/MonEquipmentPlan/getEqPlanHour','MonEquipmentPlanController@getEqPlanHour');
+    Route::post('/MonEquipmentPlan/getEqTruckReady','MonEquipmentPlanController@getEqTruckReady');
+    Route::post('/MonEquipmentPlan/getShiftMinMax','MonEquipmentPlanController@getShiftMinMax');
+    Route::post('/MonEquipmentPlan/getShiftMinMax2Day','MonEquipmentPlanController@getShiftMinMax2Day');
+    Route::post('/MonEquipmentPlan/save','MonEquipmentPlanController@save');
+    Route::post('/MonEquipmentPlan/saveTruck','MonEquipmentPlanController@saveTruck');
+    Route::get('/MonEquipmentPlan/print/{tipe}/{manager}/{planner}','MonEquipmentPlanController@print');
+    Route::get('/MonEquipmentPlan/print_spk/{date}','MonEquipmentPlanController@print_spk');
 
     Route::get('/print/export','PrintController@export');
 });
@@ -225,6 +252,8 @@ Route::post('/print/getvessel', 'PrintController@getvessel')->name('print_getves
 
 Route::get('/eqp/show_pdf','EquipmentPlanController@show_pdf');
 Route::get('/eqp/show_spk','EquipmentPlanController@show_spk');
+
+Route::get('/Signature/qrcode','SignatureController@qrcode');
 
 Route::get('/Signature/qr', function () {
     return view('content.signature.signature_qr');

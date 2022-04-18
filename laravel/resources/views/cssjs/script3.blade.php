@@ -499,11 +499,14 @@ function borang(param) {
     }
 }
 
-function getColor(param) {
-    var departed = '#5eebeb';
+function getColor(param, status_berth) {
+    var departed = '#5cede8';
     var berth = '#F5E89A';
     var commit = '#BDE992';
     var tentatif = '#c7d6c7';
+
+    if(status_berth == 'A')
+        return '#9ebfde';
 
     if(param == 0)
         return berth;
@@ -975,7 +978,7 @@ $('#btn_send_to_tos').on('click', function () {
 $('#btn_resend_pdf').on('click', function () {
     if(confirm('Are you sure to resend pdf?')) {
         $.ajax({  
-            url : "https://tower.teluklamong.co.id/index.php/service/notif_viera_pdf",
+            url : "https://tower.teluklamong.co.id/index.php/service/notif_viera_pdf/"+"{{session('nipp')}}",
             type : "get",
             dataType : "json",
             async : true,
@@ -1519,14 +1522,14 @@ function setVesselBoxPosition(vees, i) {
 
     if(vees.act_berth_ts != null) {
         if(vees.est_end_date != null) {
-            rand = getColor(0);
+            rand = getColor(0, vees.status_berth);
         } else {
-            rand = getColor(3);
+            rand = getColor(3, vees.status_berth);
         }
     } else if(vees.tentatif == 1) {
-        rand = getColor(2);
+        rand = getColor(2, vees.status_berth);
     } else if(vees.tentatif == 0) {
-        rand = getColor(1);
+        rand = getColor(1, vees.status_berth);
     }
 
     var left = getLeft(vees.berth_fr_metre, vees.width);
@@ -1585,7 +1588,11 @@ function getVesselContent(vees, i, craneloopload=null) {
                         '<span class="text_title"> MV. '+vees.ves_name+' ('+ vees.ves_id + ')</span><br>'+
                         '<button onclick="toEdit('+(i-1)+')" class="btn_edit" id="btn_edit_'+i+'"><i class="fa fa-pencil"></i></button>'+
                         '<button onclick="toDelete('+(i-1)+')" class="btn_delete badge badge-danger" id="btn_delete_'+i+'"><i class="fa fa-trash"></i></button>'+
-                        '<button onclick="toSave('+(i-1)+')" class="btn_save badge badge-success '+(vees.is_edited==0?'this_hide':'')+'" id="btn_save_'+i+'"><i class="fa fa-check"></i></button><br>'+
+                        '<button onclick="toSave('+(i-1)+')" class="btn_save badge badge-success '+(vees.is_edited==0?'this_hide':'')+'" id="btn_save_'+i+'"><i class="fa fa-check"></i></button>'+
+                        (vees.no_surat != null && vees.no_surat != '' ? 
+                        '<button onclick="toDownload('+(i-1)+')" class="btn_download badge badge-primary" id="btn_download_'+i+'"><i class="fa fa-download"></i></button>' : '')+
+                        (vees.no_surat != null && vees.no_surat != '' ? 
+                        '<button onclick="toSend('+(i-1)+')" class="btn_send badge badge-warning" id="btn_send_'+i+'"><i class="fa fa-send"></i></button><br>' : '<br>')+
                         (vees.req_berth_ts!=null?'RBT :'+moment(vees.req_berth_ts).format('DD/MM/YYYY HH:mm')+'<br>':'')+
                         (vees.est_pilot_ts!=null?'ETA : '+moment(vees.est_pilot_ts).format('DD/MM/YYYY HH:mm')+'<br>':'')+
                         (vees.act_berth_ts!=null ? 
@@ -1786,6 +1793,8 @@ function toEdit(index) {
 
     $('#edit_bsh').val(vees.bsh);
     $('#edit_tgh').val(vees.bsh);
+    $('#edit_no_surat').val(vees.no_surat);
+    $('#edit_no_pmh_agent').val(vees.no_pmh_agent);
     // $(m_dermaga_current == 'C' ? '#edit_tgh' : '#edit_bsh').val(m_dermaga_current == 'C' ? vees.bch : vees.bsh);
     $('#edit_nextp').val(vees.next_port).trigger('change');
     $('#edit_deshp').val(vees.dest_port).trigger('change');
@@ -2019,6 +2028,7 @@ function toSave(index) {
 }
 
 function toSaveNote(index) {
+
     if(confirm("Apakah anda yakin ingin menyimpan data ini?")) {        
         $.ajax({  
             url : "{{ url('VesselBerthPlan3/save_note_one') }}",
@@ -2046,6 +2056,24 @@ function toSaveNote(index) {
                 alert(request.responseJSON.message);
             }
         });
+    }
+}
+
+function toDownload(index) {
+    window.open("{{ url('VesselBerthPlan3/ijin_kawasan') }}?ves_id="+vessel[index].ves_id, "_blank");
+}
+
+function toSend(index) {
+    if(confirm("Apakah anda yakin ingin mengirim ijin kawasan?")) {
+        window.open("{{ url('VesselBerthPlan3/send_ijin_kawasan') }}?ves_id="+vessel[index].ves_id, "_blank");
+        setTimeout(function () {
+            swal({
+                title: "Success",
+                text: "Kirim PDF ijin Kawasan Sukses",
+                icon: "success",
+                button: "Oke",
+            });
+        }, 4000);
     }
 }
 
@@ -2166,6 +2194,8 @@ function addvessel(){
         var type_moves = "";
         var crane_density = "";
         var ves_service = "";
+        var no_surat = "";
+        var no_pmh_agent = "";
         crane_select = [];
 
         var today1 = new Date();
@@ -2191,6 +2221,8 @@ function addvessel(){
             kade_start = document.getElementById("start").value;
             kade_to= document.getElementById("end").value;
             info= document.getElementById("info").value;
+            no_surat= document.getElementById("no_surat").value;
+            no_pmh_agent= document.getElementById("no_pmh_agent").value;
             tentatif= $('input[name=tentatif]:checked').val();
             crane_density = document.getElementById("craneDensity").value;
             $('.crane:checked').each(function(){
@@ -2298,9 +2330,9 @@ function addvessel(){
                 if(!isStack) {
 
                     if(tentatif == "1")
-                        rand = getColor(2);
+                        rand = getColor(2, 'B');
                     else if(tentatif == "0")
-                        rand = getColor(1); 
+                        rand = getColor(1, 'B'); 
                    
                     if (cok.includes(id_vess)){
                         crane = [];
@@ -2341,7 +2373,9 @@ function addvessel(){
                             dest_port: dest_port,
                             info: info.replace("\n", '<br>'),
                             berth_fr_metre_ori: kade_start,
-                            berth_to_metre_ori: kd_end
+                            berth_to_metre_ori: kd_end,
+                            no_surat: no_surat,
+                            no_pmh_agent: no_pmh_agent
                         };
 
                         $("#wrap_sw").append(getVesselContent(vees, vessel.length+1, craneloop2));
@@ -2472,6 +2506,8 @@ function editvessel() {
     vees.ves_id         = $('#edit_vessel').val();
     vees.ves_code       = $('#edit_ves_code').val();
     vees.ves_service    = $('#edit_ves_service').val();
+    vees.no_surat       = $('#edit_no_surat').val();
+    vees.no_pmh_agent   = $('#edit_no_pmh_agent').val();
     vees.btoa_side      = $('input[class=edit_side]:checked').val();
     vees.bsh            = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
     vees.bch            = m_dermaga_current == 'C' ? $('#edit_tgh').val() : $('#edit_bsh').val();
@@ -2678,6 +2714,8 @@ function unregvessel() {
             btoa_side      :  $('input[class=unreg_side]:checked').val(),
             bsh            : unreg_type == 'DRY_BULK' ? $('#unreg_tgh').val() : $('#unreg_bsh').val(),
             bch            : unreg_type == 'DRY_BULK' ? $('#unreg_tgh').val() : $('#unreg_bsh').val(),
+            no_surat       : $('#no_surat').val(),
+            no_pmh_agent   : $('#no_pmh_agent').val(),
             next_port      : $('#unreg_nextp').val(),
             dest_port      : $('#unreg_deshp').val(),
             est_disch      : $('#unreg_disc').val(),

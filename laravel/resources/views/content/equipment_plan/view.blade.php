@@ -14,9 +14,9 @@
   <div class="panel box-shadow-none content-header">
     <div class="panel-body">
         <div class="col-md-12">
-          <h3 class="animated fadeInLeft" style="color:#2e80ce;"><b>PIC</b></h3>
+          <h3 class="animated fadeInLeft" style="color:#2e80ce;"><b>Equipment Plan</b></h3>
           <p class="animated fadeInDown">
-           Data Tables <span class="fa-angle-right fa"></span> Data PIC
+           Data Tables <span class="fa-angle-right fa"></span> Equipment Plan
           </p>
         </div>
     </div>
@@ -775,7 +775,7 @@ function initHotTruck() {
           }
         }
 
-        if(e[0][1] == 1 && e[0][0] >=2 && e[0][0] <=5) {
+        if(e[0][1] == 1 && e[0][0] >=2 && e[0][0] <=6) {
           var arr = m_data_truck[e[0][0]];
           val = hot_truck.getDataAtCell(e[0][0], e[0][1]);
           for(var i=0; i<m_hour.length; i++) {
@@ -789,26 +789,28 @@ function initHotTruck() {
           ht = m_data_truck[m_idx_ht][val[1]];
           tb = m_data_truck[m_idx_tb][val[1]];
           tt = m_data_truck[m_idx_tt][val[1]];
+          movela = m_data_truck[m_idx_movela][val[1]];
           tt_bds = hot_truck.getDataAtCell(m_idx_tt_bds, 1);
           ht_bds = hot_truck.getDataAtCell(m_idx_ht_bds, 1);
           req = hot_truck.getDataAtCell(m_idx_req, val[1]);
           truck = hot_truck.getDataAtCell(1, val[1]);
           bmc_ht = hot_truck.getDataAtCell(m_idx_tt_bds, val[1]);
           h_bmc_ht = hot_truck.getDataAtCell(m_idx_bmc_ht, 1);
-          h_bst_ht = hot_truck.getDataAtCell(m_idx_bst_ht, 1);
+          // h_bst_ht = hot_truck.getDataAtCell(m_idx_bst_ht, 1);
           h_bst_lowbed = hot_truck.getDataAtCell(m_idx_bst_lowbed, 1);
 
-          if(val[1] > 1 && val[0] >= 2 && val[0]<=5) {
+          if(val[1] > 1 && val[0] >= 2 && val[0]<=6) {
 
             ctt = parseInt(ctt ? ctt : 0);
             ht = parseInt(ht ? ht : 0);
             tb = parseInt(tb ? tb : 0);
             tt = parseInt(tt ? tt : 0);
+            movela = parseInt(movela ? movela : 0);
             tt_bds = parseInt(tt_bds ? tt_bds : 0);
             ht_bds = parseInt(ht_bds ? ht_bds : 0);
             truck = parseInt(truck ? truck : 0);
 
-            jum = ctt+ht+tb+tt;
+            jum = ctt+ht+tb+tt+movela;
             bds_tt = (truck-jum) <= tt_bds ? ((truck-jum) >= 0 ? (truck-jum) : 0) : tt_bds;
             bds_ht = (truck-jum-bds_tt) <= ht_bds ? ((truck-jum-bds_tt) >= 0 ? (truck-jum-bds_tt) : 0) : ht_bds;
             bds_req = (truck-jum-bds_tt-bds_ht) <= bds_tt+bds_ht ? ((truck-jum-bds_tt-bds_ht) >= 0 ? (truck-jum-bds_tt-bds_ht) : 0) : bds_tt+bds_ht;
@@ -830,21 +832,21 @@ function initHotTruck() {
             sisa_bds = truck-jum-tt_bds-ht_bds;
             bmc_ht          = sisa_bds >= h_bmc_ht ? h_bmc_ht : sisa_bds;
             sisa_bmc_ht     = sisa_bds - bmc_ht;
-            bst_ht          = sisa_bmc_ht >= h_bst_ht ? h_bst_ht : sisa_bmc_ht;
-            sisa_bst_ht     = sisa_bmc_ht - bst_ht;
-            bst_lowbed      = sisa_bst_ht >= h_bst_lowbed ? h_bst_lowbed : sisa_bst_ht;
+            bst_lowbed          = sisa_bmc_ht >= h_bst_lowbed ? h_bst_lowbed : sisa_bmc_ht;
+            sisa_bst_lowbed     = sisa_bmc_ht - bst_lowbed;
+            // bst_lowbed      = sisa_bst_ht >= h_bst_lowbed ? h_bst_lowbed : sisa_bst_ht;
 
             bmc_ht          = bmc_ht>0 ? bmc_ht : 0;
-            bst_ht          = bst_ht>0 ? bst_ht : 0;
+            // bst_ht          = bst_ht>0 ? bst_ht : 0;
             bst_lowbed      = bst_lowbed>0 ? bst_lowbed : 0;
 
             var arr1 = m_data_truck[m_idx_bmc_ht];
             arr1.splice(val[1], 1, bmc_ht);
             m_data_truck.splice(m_idx_bmc_ht, 1, arr1);
 
-            var arr2 = m_data_truck[m_idx_bst_ht];
-            arr2.splice(val[1], 1, bst_ht);
-            m_data_truck.splice(m_idx_bst_ht, 1, arr2);
+            // var arr2 = m_data_truck[m_idx_bst_ht];
+            // arr2.splice(val[1], 1, bst_ht);
+            // m_data_truck.splice(m_idx_bst_ht, 1, arr2);
 
             var arr3 = m_data_truck[m_idx_bst_lowbed];
             arr3.splice(val[1], 1, bst_lowbed);
@@ -855,9 +857,10 @@ function initHotTruck() {
                       parseInt(ht) + 
                       parseInt(tb) + 
                       parseInt(tt) + 
+                      parseInt(movela) + 
                       parseInt(req) + 
                       parseInt(bmc_ht) + 
-                      parseInt(bst_ht) + 
+                      // parseInt(bst_ht) + 
                       parseInt(bst_lowbed);
 
             var arr4 = m_data_truck[m_idx_kekurangan];
@@ -871,16 +874,17 @@ function initHotTruck() {
           } else if(val[1] > 1) {
 
             bmc_ht = hot_truck.getDataAtCell(m_idx_bmc_ht, val[1]);
-            bst_ht = hot_truck.getDataAtCell(m_idx_bst_ht, val[1]);
+            // bst_ht = hot_truck.getDataAtCell(m_idx_bst_ht, val[1]);
             bst_lowbed = hot_truck.getDataAtCell(m_idx_bst_lowbed, val[1]);
 
             var tot = parseInt(ctt) + 
                       parseInt(ht) + 
                       parseInt(tb) + 
                       parseInt(tt) + 
+                      parseInt(movela) + 
                       parseInt(req) + 
                       parseInt(bmc_ht) + 
-                      parseInt(bst_ht) + 
+                      // parseInt(bst_ht) + 
                       parseInt(bst_lowbed);
 
             var arr4 = m_data_truck[m_idx_kekurangan];
@@ -904,12 +908,17 @@ function initHotTruck() {
             $.each(arr_tt_bds, function (j, row) {
               if(j>1) {
                 if(parseInt(val.max_x)+1 >= j && j >= parseInt(val.min_x)+1) {
-                  if(parseInt(row) > parseInt(max)) {
-                    max = parseInt(row) + parseInt(arr_ht_bds[j]);
+                  var temp = parseInt(row) + parseInt(arr_ht_bds[j]);
+                  if(temp > parseInt(max)) {
+                    max = temp;
                   }
                 }
               }
             })
+            if(val.distinct_shift == 2) {
+              console.log(arr_tt_bds);
+              console.log("cook", max);
+            }
 
             $.each(arr_req, function (j, row) {
               if(parseInt(val.max_x)+1 >= j && j >= parseInt(val.min_x)+1) {
@@ -1035,12 +1044,13 @@ function updateDataTruck(key = 'TRUCK') {
   var arr_ht = [m_eq_ready[m_idx_ht-2].jum, m_eq_ready[m_idx_ht-2].kesiapan];
   var arr_tb = [m_eq_ready[m_idx_tb-2].jum, m_eq_ready[m_idx_tb-2].kesiapan];
   var arr_tt = [m_eq_ready[m_idx_tt-2].jum, m_eq_ready[m_idx_tt-2].kesiapan];
-  var arr_tt_bds = [m_eq_ready[4].jum, m_eq_ready[4].kesiapan];
-  var arr_ht_bds = [m_eq_ready[5].jum, m_eq_ready[5].kesiapan];
-  var arr_req = [m_eq_ready[6].jum, ''];
-  var arr_bmc_ht = [m_eq_ready[7].jum, m_eq_ready[7].kesiapan];
-  var arr_bst_lowbed = [m_eq_ready[8].jum, m_eq_ready[8].kesiapan];
-  var arr_bst_ht = [m_eq_ready[9].jum, m_eq_ready[9].kesiapan];
+  var arr_movela = [m_eq_ready[m_idx_movela-2].jum, m_eq_ready[m_idx_movela-2].kesiapan];
+  var arr_tt_bds = [m_eq_ready[m_idx_tt_bds-2].jum, m_eq_ready[m_idx_tt_bds-2].kesiapan];
+  var arr_ht_bds = [m_eq_ready[m_idx_ht_bds-2].jum, m_eq_ready[m_idx_ht_bds-2].kesiapan];
+  var arr_req = [m_eq_ready[m_idx_req-2].jum, ''];
+  var arr_bmc_ht = [m_eq_ready[m_idx_bmc_ht-2].jum, m_eq_ready[m_idx_bmc_ht-2].kesiapan];
+  var arr_bst_lowbed = [m_eq_ready[m_idx_bst_lowbed-2].jum, m_eq_ready[m_idx_bst_lowbed-2].kesiapan];
+  // var arr_bst_ht = [m_eq_ready[9].jum, m_eq_ready[9].kesiapan];
   var arr_kekurangan = ['', ''];
   var arr_total = ['', ''];
 
@@ -1065,6 +1075,8 @@ function updateDataTruck(key = 'TRUCK') {
         arr_tb.push(val.plan_count);
       } else if(val.y == m_idx_tt) {
         arr_tt.push(val.plan_count);
+      } else if(val.y == m_idx_movela) {
+        arr_movela.push(val.plan_count);
       } else if(val.y == m_idx_tt_bds) {
         arr_tt_bds.push(val.plan_count);
       } else if(val.y == m_idx_ht_bds) {
@@ -1075,9 +1087,10 @@ function updateDataTruck(key = 'TRUCK') {
         arr_bmc_ht.push(val.plan_count);
       } else if(val.y == m_idx_bst_lowbed) {
         arr_bst_lowbed.push(val.plan_count);
-      } else if(val.y == m_idx_bst_ht) {
-        arr_bst_ht.push(val.plan_count);
       }
+      // else if(val.y == m_idx_bst_ht) {
+      //   arr_bst_ht.push(val.plan_count);
+      // }
     });
 
     $.each(arr_truck, function (i, val) {
@@ -1086,9 +1099,10 @@ function updateDataTruck(key = 'TRUCK') {
                   parseInt(arr_ht[i]) + 
                   parseInt(arr_tb[i]) + 
                   parseInt(arr_tt[i]) + 
+                  parseInt(arr_movela[i]) + 
                   parseInt(arr_req[i]) + 
                   parseInt(arr_bmc_ht[i]) + 
-                  parseInt(arr_bst_ht[i]) + 
+                  // parseInt(arr_bst_ht[i]) + 
                   parseInt(arr_bst_lowbed[i]);
         arr_total.push(tot);
         arr_kekurangan.push((val-tot) >= 0 ? (val-tot) : 0);
@@ -1099,14 +1113,14 @@ function updateDataTruck(key = 'TRUCK') {
 
   }
 
-  m_data_truck = [arr_sts, arr_truck, arr_tt, arr_tb, arr_ht, arr_ctt, arr_tt_bds, arr_ht_bds, arr_req, arr_bmc_ht, arr_bst_lowbed, arr_bst_ht, arr_total, arr_kekurangan];
+  m_data_truck = [arr_sts, arr_truck, arr_tt, arr_tb, arr_ht, arr_ctt, arr_movela, arr_tt_bds, arr_ht_bds, arr_req, arr_bmc_ht, arr_bst_lowbed,arr_total, arr_kekurangan];
   hot_truck.loadData(m_data_truck);
 
   hot_truck.updateSettings({
     cells(row, col) {
       const cellProperties = {};
 
-      if (col>1 && (row == 6 || row == 7 || row == 0 || row == 1 || row == 11 || row == 12)) {
+      if (col>1 && (row == 7 || row == 8 || row == 0 || row == 1 || row == 11 || row == 12)) {
         cellProperties.readOnly = true;
       }
 
@@ -1189,6 +1203,8 @@ function setKesiapan() {
           m_idx_tb = t;
         }else if(truck == 'TT') {
           m_idx_tt = t;
+        }else if(truck == 'MOVELA') {
+          m_idx_movela = t;
         } else if(truck == 'TT_BDS') {
           m_idx_tt_bds = t;
         } else if(truck == 'HT_BDS') {
@@ -1199,9 +1215,11 @@ function setKesiapan() {
           m_idx_bmc_ht = t;
         } else if(truck == 'BST_LOWBED') {
           m_idx_bst_lowbed = t;
-        } else if(truck == 'BST_HT') {
-          m_idx_bst_ht = t;
-        } else if(truck == 'KEKURANGAN') {
+        }
+        // else if(truck == 'BST_HT') {
+        //   m_idx_bst_ht = t;
+        // }
+        else if(truck == 'KEKURANGAN') {
           m_idx_kekurangan = t;
         } else if(truck == 'TOTAL') {
           m_idx_total = t;
@@ -1236,7 +1254,7 @@ function cellTruckRequired() {
       // if(j > 0) {
 
         if(j <= 1) {
-          if(i >=2 && i<=5) {
+          if(i >=2 && i<=6) {
             cell = hot_truck.getCell(i, j);
             if(cell != null)
               cell.style.background = '#fff952';
@@ -1252,19 +1270,19 @@ function cellTruckRequired() {
         if(cell != null) {
           if(i == 0 || i == 1) {
             cell.style.background = '#cccccc';
-          } else if(i >=2 && i<=5) {
+          } else if(i >=2 && i<=6) {
             // if(data >= 0) {
               cell.style.background = '#fff952';
             // } else {
             //   cell.style.background = '#ff5f3b';
             // }
-          } else if(i == 6 || i == 7) {
+          } else if(i == 7 || i == 8) {
             cell.style.background = '#cccccc';
             // cell.readOnly = true;
-          } else if(i == 8) {
+          } else if(i == 9) {
             var color = val.shift == 1 ? '#ffa3fd' : val.shift == 2 ? '#a9fcec' : val.shift == 3 ? '#9cc5ff' : val.shift == 4 ? '#a8ffab' : '';
             cell.style.background = color;
-          } else if(i == 12) {
+          } else if(i == 13) {
 
             data_truck = hot_truck.getDataAtCell(1, k);
             data_truck = parseInt(data_truck ? data_truck : 0);
@@ -1274,7 +1292,7 @@ function cellTruckRequired() {
             } else {
               cell.style.background = '#ff5f3b';
             }
-          } else if(i == 13) {
+          } else if(i == 14) {
             if(data <= 0) {
               cell.style.background = '#cccccc';
             } else {
@@ -1282,7 +1300,7 @@ function cellTruckRequired() {
             }
           }
         }
-        if(i >=2 && i<=6) {
+        if(i >=2 && i<=7) {
           if(data < 0 && cell != null) {
             cell.style.background = '#ff5f3b';
           }
@@ -1296,11 +1314,12 @@ var m_idx_ctt = 0;
 var m_idx_ht = 0;
 var m_idx_tb = 0;
 var m_idx_tt = 0;
+var m_idx_movela = 0;
 var m_idx_tt_bds = 0;
 var m_idx_ht_bds = 0;
 var m_idx_req = 0;
 var m_idx_bmc_ht = 0;
-var m_idx_bst_ht = 0;
+// var m_idx_bst_ht = 0;
 var m_idx_bst_lowbed = 0;
 var m_idx_kekurangan = 0;
 var m_idx_total = 0;

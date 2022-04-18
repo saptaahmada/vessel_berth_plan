@@ -160,7 +160,7 @@ function getMyTheme() {
 
 function getShiftMinMax() {
   $.ajax({
-      url :  "{{url('EquipmentPlan/getShiftMinMax')}}",
+      url :  "{{url('EquipmentPlan/getShiftMinMax2Day')}}",
       type : "post",
       dataType : "json",
       data : {
@@ -343,19 +343,16 @@ $('#save').on('click', function () {
 })
 
 $('#send_spk').on('click', function () {
-  var shift = "";
+  var shift = '';
+  var date = '';
   if(m_plan_type == 'BDS') {
-    if($('#shift_min_max').val() == '0' || $('#shift_min_max').val() == '1') {
-      shift = '/3-4';
-    } else if($('#shift_min_max').val() == '3' || $('#shift_min_max').val() == '4') {
-      shift = '/1-2';
-    } else if($('#shift_min_max').val() == '5' || $('#shift_min_max').val() == '6') {
-      shift = '/3-4';
-    }
+    shift = '/'+m_shift_min_max[parseInt($('#shift_min_max').val())].shift;
+    date = '/'+m_shift_min_max[parseInt($('#shift_min_max').val())].min_tgl_2;
   }
+  
   if(confirm('Apakah anda yakin ingin mengirim SPK Sekarang?')) {
     $.ajax({  
-        url : "https://tower.teluklamong.co.id/index.php/service/vier_eqp_asg_send_spk/{{session('nipp')}}/"+m_plan_type+shift,
+        url : "https://tower.teluklamong.co.id/index.php/service/vier_eqp_asg_send_spk/{{session('nipp')}}/"+m_plan_type+shift+date,
         type : "get",
         dataType : "json",
         async : true,

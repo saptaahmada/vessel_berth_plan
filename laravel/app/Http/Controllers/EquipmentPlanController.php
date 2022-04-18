@@ -203,7 +203,7 @@ class EquipmentPlanController extends Controller
             ORDER BY MAX(TGL)");
         $data_tgl_vessel = DB::select("SELECT TO_CHAR(DT, 'DD/MM/YYYY') TGL_STR 
             FROM TOWER.VW_TW_LIST_DATE_ALL
-            WHERE DT>=TRUNC(SYSDATE)
+            WHERE DT>=TRUNC(SYSDATE-1)
             AND DT<=TRUNC(SYSDATE+1)
             ORDER BY DT");
         $data = DB::table('CBSLAM.VIERV_EQ_PLAN_HOUR')->get();
@@ -242,6 +242,16 @@ class EquipmentPlanController extends Controller
     public function getShiftMinMax()
     {
         $data = DB::table("CBSLAM.VIERV_EQ_PLAN_SHIFT_MIN_MAX")->get();
+
+        return response()->json([
+            'success'   => true,
+            'data'      => $data,
+        ]);
+    }
+
+    public function getShiftMinMax2Day()
+    {
+        $data = DB::table("CBSLAM.VIERV_EQP_SHIFT_MIN_MAX_2DAY")->get();
 
         return response()->json([
             'success'   => true,
@@ -379,16 +389,47 @@ class EquipmentPlanController extends Controller
 
 
         $tgl = DB::select("SELECT INITCAP(TO_CHAR(TGL, 'DY DD MON YYYY')) TGL, TGL_STR, COUNT(1) JUM 
-            FROM CBSLAM.VIERV_EQ_PLAN_HOUR 
-            GROUP BY TGL_STR, TGL 
-            ORDER BY TO_DATE(TGL_STR, 'DD/MM/YYYY') ASC");
+                            FROM (
+                                SELECT CASE WHEN DISTINCT_SHIFT IN (0,1) THEN MIN_DATE
+                                ELSE MAX_DATE
+                                END TGL,
+                                TO_CHAR(CASE WHEN DISTINCT_SHIFT IN (0,1) THEN MIN_DATE
+                                ELSE MAX_DATE
+                                END, 'DD/MM/YYYY') TGL_STR
+                                FROM CBSLAM.VIERV_EQ_PLAN_HOUR A,
+                                (SELECT MIN(PLAN_DATE) MIN_DATE, MAX(PLAN_DATE) MAX_DATE FROM CBSLAM.VIER_EQ_PLAN_TMP
+                                WHERE PRINT_CODE='{$arrParam[4]}') B
+                            )
+                            GROUP BY TGL_STR, TGL 
+                            ORDER BY TO_DATE(TGL_STR, 'DD/MM/YYYY') ASC");
 
         $shift = DB::select("SELECT TGL, SHIFT, COUNT(SHIFT) JUM 
-            FROM CBSLAM.VIERV_EQ_PLAN_HOUR_ROSID
+            FROM (SELECT CASE WHEN DISTINCT_SHIFT IN (0,1) THEN MIN_DATE
+                ELSE MAX_DATE
+                END TGL,
+                TO_CHAR(CASE WHEN DISTINCT_SHIFT IN (0,1) THEN MIN_DATE
+                ELSE MAX_DATE
+                END, 'DD/MM/YYYY') TGL_STR,
+                SHIFT,
+                DISTINCT_SHIFT
+                FROM CBSLAM.VIERV_EQ_PLAN_HOUR_ROSID A,
+                (SELECT MIN(PLAN_DATE) MIN_DATE, MAX(PLAN_DATE) MAX_DATE FROM CBSLAM.VIER_EQ_PLAN_TMP
+                WHERE PRINT_CODE='{$arrParam[4]}') B)
             GROUP BY TGL, SHIFT
             ORDER BY TGL, SHIFT");
 
-        $jam = DB::select("SELECT * FROM CBSLAM.VIERV_EQ_PLAN_HOUR");
+        $jam = DB::select("SELECT JAM_STR, JAM_ID, 
+                CASE WHEN DISTINCT_SHIFT IN (0,1) THEN MIN_DATE
+                ELSE MAX_DATE
+                END TGL,
+                TO_CHAR(CASE WHEN DISTINCT_SHIFT IN (0,1) THEN MIN_DATE
+                ELSE MAX_DATE
+                END, 'DD/MM/YYYY') TGL_STR,
+                SHIFT,
+                DISTINCT_SHIFT
+                FROM CBSLAM.VIERV_EQ_PLAN_HOUR A,
+                (SELECT MIN(PLAN_DATE) MIN_DATE, MAX(PLAN_DATE) MAX_DATE FROM CBSLAM.VIER_EQ_PLAN_TMP
+                WHERE PRINT_CODE='{$arrParam[4]}') B");
         $sts_group = DB::select("SELECT VES_ID, TO_NUMBER(regexp_replace(EQ_ID, '[^0-9]', '')) ||SUBSTR (EQ_ID, -1) CRANE
                         FROM CBSLAM.VIER_EQ_PLAN_TMP
                         WHERE PRINT_CODE='{$arrParam[4]}' 
@@ -409,7 +450,7 @@ class EquipmentPlanController extends Controller
                 WHERE A.VES_ID=B.VES_ID AND PRINT_CODE='{$arrParam[4]}' 
                 ORDER BY MIN_DATE");
 
-        $perhour = DB::select("SELECT * FROM CBSLAM.VIERV_EQ_PLAN_VES_PERHOUR");
+        $perhour = DB::select("SELECT * FROM CBSLAM.VIERV_EQ_PLAN_VES_PERHOUR_TMP WHERE PRINT_CODE='{$arrParam[4]}'");
 
         $det_count = DB::table("CBSLAM.VIER_EQ_PLAN_COUNT_DEFAULT_TMP")->where('PRINT_CODE', $arrParam[4])->get();
         $det_now = DB::table("CBSLAM.VIER_EQ_PLAN_COUNT_TMP")->where('PRINT_CODE', $arrParam[4])->orderBy('X')->get();
@@ -432,6 +473,7 @@ class EquipmentPlanController extends Controller
         // $det_total = [];
 
         foreach ($sts as $i => $val) {
+            $val['hours'] = [];
             foreach ($perhour as $j => $row) {
                 if($val['ves_id'] == $row['ves_id']) {
                     $val['hours'][] = $row;
@@ -466,6 +508,8 @@ class EquipmentPlanController extends Controller
             }
         }
 
+        // echo json_encode($perhour);
+        // die();
 
         $data = [
             'tgl'   => $tgl,
